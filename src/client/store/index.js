@@ -13,6 +13,7 @@ const dummyReducer = function(state = {}, action) {
 const reducer = combineReducers({
   dummyReducer
 });
+
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
 );
