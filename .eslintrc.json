@@ -1,6 +1,5 @@
 {
     "root": true,
-    "extends": ["prettier", "prettier/react"],
     "rules": {
       "semi": 0
     }
