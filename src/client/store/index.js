@@ -2,16 +2,12 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-
-const dummyReducer = function(state = {}, action) {
-  switch(action.type) {
-    default:
-      return state;
-  }
-}
+import auth from './auth'
+import user from './auth/user'
 
 const reducer = combineReducers({
-  dummyReducer
+  auth,
+  user
 });
 
 const middleware = composeWithDevTools(
