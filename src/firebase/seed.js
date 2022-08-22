@@ -1,5 +1,13 @@
 import {createUserWithEmailAndPassword, signOut} from 'firebase/auth'
-import {addDoc, collection} from 'firebase/firestore'
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  query,
+  where,
+  getDocs,
+} from 'firebase/firestore'
 import {auth} from './auth.js'
 import {db} from './db.js'
 import {faker} from '@faker-js/faker'
@@ -175,11 +183,36 @@ const allInterests = [
   'Zumba',
 ]
 
+const interestExists = async function (interest) {
+  try {
+    const q = query(
+      collection(db, 'interests'),
+      where('interest', '==', interest)
+    )
+    const querySnapshot = await getDocs(q)
+
+    //TODO: Figure out why signOut() is required here. Without it, the process never ends.
+    signOut(auth)
+
+    let docs = []
+
+    querySnapshot.forEach((doc) => {
+      docs.push(doc.data())
+    })
+
+    if (docs[0]) return true
+    else return false
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 const seedInterests = async function () {
   for (let i in allInterests) {
     let interest = allInterests[i]
     try {
-      //TODO: check if doc already exists
+      //Don't duplicate seed documents:
+      if (interestExists(interest)) continue
 
       await addDoc(collection(db, 'interests'), {
         interest,
@@ -190,22 +223,37 @@ const seedInterests = async function () {
   }
 }
 
-const randomInterests = function (numberOfInterests = 5) {
-  //TODO: make references to real interests
+// const randomInterests = function (numberOfInterests = 5) {
+//   //TODO: make references to real interests
 
-  let userInterests = []
+//   let userInterests = []
 
-  while (userInterests.length < numberOfInterests) {
-    let randomInterest =
-      allInterests[Math.floor(Math.random() * allInterests.length)]
+//   while (userInterests.length < numberOfInterests) {
+//     let randomInterest =
+//       allInterests[Math.floor(Math.random() * allInterests.length)]
 
-    if (!userInterests.includes(randomInterest))
-      userInterests.push(randomInterest)
-  }
-  return userInterests
-}
+//     if (!userInterests.includes(randomInterest))
+//       userInterests.push(randomInterest)
+//   }
+//   return userInterests
+// }
 
-const seedUsers = async function (usersToSeed = 10) {
+// const randomInterests = function (numberOfInterests = 5) {
+//   //TODO: make references to real interests
+
+//   let userInterests = []
+
+//   while (userInterests.length < numberOfInterests) {
+//     let randomInterest =
+//       allInterests[Math.floor(Math.random() * allInterests.length)]
+
+//     if (!userInterests.includes(randomInterest))
+//       userInterests.push(randomInterest)
+//   }
+//   return userInterests
+// }
+
+const seedUsers = async function (usersToSeed = 1) {
   for (let i = 0; i < usersToSeed; i++) {
     const email = faker.internet.email()
     const password = faker.internet.password()
