@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { setUser } from '../../store/auth/user';
-import { logIn } from '../../store/auth';
+import { logIn, logInGoogle } from '../../store/auth';
+import { Button } from '@mui/material';
 
 const LogIn = () => {
     const dispatch = useDispatch();
@@ -32,9 +33,18 @@ const LogIn = () => {
       });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
-       dispatch(logIn(userInfo.username, userInfo.password))
+       await dispatch(logIn(userInfo.username, userInfo.password))
+
+       setSuccess(true)
+
+       dispatch(setUser())
+    };
+
+    const handleSubmitGoogle = async(e) => {
+      e.preventDefault();
+       await dispatch(logInGoogle())
 
        setSuccess(true)
 
@@ -65,6 +75,8 @@ const LogIn = () => {
             />
             <button type="submit">Sign In</button>
           </form>
+
+  <Button type='button' onClick={handleSubmitGoogle}>Sign in with Google</Button>
   
           <div>
             Need an Account?
