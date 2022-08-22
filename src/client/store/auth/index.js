@@ -53,7 +53,7 @@ export const logOutUser = () => {
 /**
  * REDUCER
  */
-export default function (state = {}, action) {
+export default function (state = false, action) {
   switch (action.type) {
     case LOG_IN:
       return action.status
