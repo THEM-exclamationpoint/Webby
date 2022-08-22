@@ -22,7 +22,6 @@ const googleProvider = new GoogleAuthProvider();
 
 export async function getUserData(){
   const user = auth.currentUser
-  const uid = user.uid
   const q = query(collection(db, "users"), where("uid", "==", user.uid));
   const docs = await getDocs(q);
   return docs

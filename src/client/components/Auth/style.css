@@ -1,0 +1,7 @@
+.signup-component .signup-form{
+    display:flex;
+    flex-direction: column;
+}
+.signup-component .form-field {
+    margin-bottom: 5px
+}
