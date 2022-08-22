@@ -2,6 +2,7 @@ import {useNavigate} from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import {useDispatch} from 'react-redux'
 import {TextField, Button, FormHelperText} from '@mui/material'
+import { signUpUser } from '../../store/auth'
 import './style.css'
 
 export default function Signup() {
@@ -15,17 +16,24 @@ export default function Signup() {
     confirmPassword: '',
   })
   let [success, setSuccess] = useState(false)
-  let [match, setMatch] = useState(true)
+
+  useEffect(() => {
+    if (success) {
+      navigate('/preferences');
+    }
+  });
+
 
   function handleChange(e) {
     setUserInfo({
       ...userInfo,
       [e.target.name]: e.target.value,
     })
-    console.log(userInfo)
   }
   function handleSubmit(e) {
     e.preventDefault()
+    dispatch(signUpUser(userInfo.name, userInfo.email, userInfo.password))
+    setSuccess(true)
   }
 
 
@@ -65,7 +73,7 @@ export default function Signup() {
           label="Confirm Password"
           variant="filled"
           type="password"
-          error={userInfo.password == userInfo.confirmPassword ? false : true}
+          error={userInfo.password === userInfo.confirmPassword ? false : true}
           required
         />
         <Button type="submit">Submit</Button>
