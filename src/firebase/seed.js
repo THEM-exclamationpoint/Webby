@@ -223,37 +223,22 @@ const seedInterests = async function () {
   }
 }
 
-// const randomInterests = function (numberOfInterests = 5) {
-//   //TODO: make references to real interests
+const randomInterests = function (numberOfInterests = 5) {
+  //TODO: make references to real interests
 
-//   let userInterests = []
+  let userInterests = []
 
-//   while (userInterests.length < numberOfInterests) {
-//     let randomInterest =
-//       allInterests[Math.floor(Math.random() * allInterests.length)]
+  while (userInterests.length < numberOfInterests) {
+    let randomInterest =
+      allInterests[Math.floor(Math.random() * allInterests.length)]
 
-//     if (!userInterests.includes(randomInterest))
-//       userInterests.push(randomInterest)
-//   }
-//   return userInterests
-// }
+    if (!userInterests.includes(randomInterest))
+      userInterests.push(randomInterest)
+  }
+  return userInterests
+}
 
-// const randomInterests = function (numberOfInterests = 5) {
-//   //TODO: make references to real interests
-
-//   let userInterests = []
-
-//   while (userInterests.length < numberOfInterests) {
-//     let randomInterest =
-//       allInterests[Math.floor(Math.random() * allInterests.length)]
-
-//     if (!userInterests.includes(randomInterest))
-//       userInterests.push(randomInterest)
-//   }
-//   return userInterests
-// }
-
-const seedUsers = async function (usersToSeed = 1) {
+const seedUsers = async function (usersToSeed = 10) {
   for (let i = 0; i < usersToSeed; i++) {
     const email = faker.internet.email()
     const password = faker.internet.password()
