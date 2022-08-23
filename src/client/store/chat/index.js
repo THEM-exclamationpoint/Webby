@@ -3,6 +3,8 @@ import {
   getMessagesWithUser,
   sendNewMessage,
 } from '../../../firebase/chat'
+
+
 /**
  * ACTION TYPES
  */
@@ -44,23 +46,26 @@ export const getChatUsers = (uid) => {
 }
 export const getChatMessages = (uid1,uid2) => {
   return async (dispatch) => {
-    let messages = await 
-    dispatch(_logIn(true))
+    let messages = await getMessagesWithUser(uid1,uid2)
+    dispatch(setChatMessages(messages))
   }
 }
-export const logOutUser = () => {
+export const sentMessage = () => {
   return async (dispatch) => {
-    await logout()
-    dispatch(_logOut(false))
+    await sendNewMessage(uid1,uid2,content)
+    dispatch(sendMessage(true))
   }
 }
 
+let state = {
+    
+}
 /**
  * REDUCER
  */
 export default function (state = {}, action) {
   switch (action.type) {
-    case LOG_IN:
+    case GET_CHAT_USERS:
       return action.status
     default:
       return state
