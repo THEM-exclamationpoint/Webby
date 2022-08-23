@@ -10,6 +10,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Avatar from '@material-ui/core/Avatar'
+import Collapse from '@material-ui/core/Collapse';
 import SingleChat from './SingleChat'
 
 // need to fetch: user thats logged in, and any users they have a chat with, as well as that users' PFP
