@@ -2,7 +2,7 @@ import {Routes, Route} from 'react-router-dom'
 import LogIn from './Auth/Login'
 import Home from './Home'
 import Signup from './Auth/Sign-up'
-import Graph from './Graph.js'
+import Graph from './Graph/index.js'
 
 function WebbyRoutes() {
   return (

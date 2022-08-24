@@ -2,6 +2,7 @@ import React from 'react'
 import * as d3 from 'd3'
 import {useRef, useEffect} from 'react'
 import Tree from 'react-d3-tree'
+import {useDispatch} from 'react-redux'
 
 const testData = {
   name: 'Davi',
@@ -65,6 +66,8 @@ const testData = {
 }
 
 function Graph() {
+  const dispatch = useDispatch()
+
   return (
     <div id="treeWrapper" style={{width: '100em', height: '100em'}}>
       <Tree data={testData} />
