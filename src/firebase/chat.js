@@ -8,7 +8,14 @@ export async function getListOfGroups() {
     const user = auth.currentUser;
     const q = query(collection(db, 'groups'), where('members', 'array-contains', user.uid));
     const docs = await getDocs(q);
-    return docs;
+    if(docs){
+    let groups =[]
+    docs.forEach(doc =>{
+      groups.push(doc.data())
+    })
+    return groups
+  }
+    return null
   }
   catch(err) { console.error(err) };
 }
@@ -17,7 +24,14 @@ export async function getMessagesWithGroup(groupId) {
 try {
   const q = query(collection(db, 'messages'), where('toGroup','==', groupId), orderBy('timeStamp', 'desc'));
   const docs = await getDocs(q);
-  return docs;
+  if(docs){
+  const messages = []
+  docs.forEach(doc=>{
+    messages.push(doc.data())
+  })
+  return messages;
+}
+  return null
 }
 catch(err) {console.error(err)}
 }
