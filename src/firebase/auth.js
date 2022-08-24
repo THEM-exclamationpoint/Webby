@@ -20,21 +20,6 @@ import {
 
 export const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
-let returnUser
-
-//  onAuthStateChanged(auth, async (user) => {
-//   if (user) {
-//   const q = query(collection(db, "users"), where("uid", "==", user.uid));
-//   const docs = await getDocs(q);
-//   docs.forEach((doc) => {
-//     returnUser= doc.data()
-//   });
-//   console.log('inside onauth',returnUser)
-
-//   } else {
-//     return null
-//   }
-// });
 
 export async function getUserData() {
   const user = auth.currentUser

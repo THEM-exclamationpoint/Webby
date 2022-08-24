@@ -18,7 +18,7 @@ import Drawer from '@mui/material/Drawer'
 import SingleChat from './SingleChat'
 
 import {setUser} from '../../store/auth/user'
-
+import { getChatUsers } from '../../store/chat/chatUsers';
 // need to fetch: user thats logged in, and any users they have a chat with, as well as that users' PFP
 
 const useStyles = makeStyles({
@@ -38,16 +38,16 @@ const Chat = () => {
   const dispatch = useDispatch()
   const classes = useStyles()
   let [collapse, setCollapse] = useState(false)
-  let [user,setUserData] = useState(null)
-  // let user = useSelector((state) => state.user);
-  useEffect(() => {
-    setUserData(dispatch(setUser()))
+  // let [user,setUserData] = useState(null)
+  let user = useSelector((state) => state.user);
+  // useEffect(() => {
+  //   setUserData(dispatch(setUser()))
     
-  },[]);
+  // },[user]);
   function clickMenu() {
     setCollapse(!collapse)
   }
-console.log('user',user)
+  console.log(user)
   return (
     <div>
       <Grid container>
@@ -72,7 +72,7 @@ console.log('user',user)
                     src="https://material-ui.com/static/images/avatar/4.jpg"
                   />
                 </ListItemIcon>
-                <ListItemText primary="John Wick"></ListItemText>
+                <ListItemText primary={user.name}></ListItemText>
               </ListItem>
             </List>
             <Divider />

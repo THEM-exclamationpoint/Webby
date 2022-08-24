@@ -10,7 +10,7 @@ import SendIcon from '@mui/icons-material/Send'
 
 const useStyles = makeStyles({
   messageArea: {
-    height: '70vh',
+     height: '70vh',
     overflowY: 'auto',
   },
 })
