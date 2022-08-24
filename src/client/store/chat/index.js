@@ -1,6 +1,5 @@
 import {
-  getListOfUsers,
-  getMessagesWithUser,
+  getMessagesWithGroup,
   sendNewMessage,
 } from '../../../firebase/chat'
 
@@ -8,65 +7,50 @@ import {
 /**
  * ACTION TYPES
  */
-const GET_CHAT_USERS = 'GET_CHAT_USERS'
 const GET_CHAT_MESSAGES = 'GET_CHAT_MESSAGES'
 const SEND_MESSAGE = 'SEND_MESSAGE'
 
 /**
  * ACTION CREATORS
  */
-const setChatUsers = (users) => {
-  return {
-    type: GET_CHAT_USERS,
-    users,
-  }
-}
-
 const setChatMessages = (messages) => {
   return {
     type: GET_CHAT_MESSAGES,
     messages,
   }
 }
-const sendMessage = (status) => {
+const sendMessage = (messages) => {
   return {
     type: SEND_MESSAGE,
-    status,
+    messages,
   }
 }
 
 /**
  * THUNK CREATORS
  */
-export const getChatUsers = (uid) => {
+export const getChatMessages = (groupId) => {
   return async (dispatch) => {
-    let users = await getListOfUsers(uid)
-    dispatch(setChatUsers(users))
-  }
-}
-export const getChatMessages = (uid1,uid2) => {
-  return async (dispatch) => {
-    let messages = await getMessagesWithUser(uid1,uid2)
+    let messages = await getMessagesWithUser(groupId)
     dispatch(setChatMessages(messages))
   }
 }
-export const sentMessage = () => {
+export const sentMessage = (groupId, content) => {
   return async (dispatch) => {
-    await sendNewMessage(uid1,uid2,content)
-    dispatch(sendMessage(true))
+    await sendNewMessage(groupId,content)
+    let messages = await getMessagesWithUser(groupId)
+    dispatch(sendMessage(messages))
   }
-}
-
-let state = {
-    
 }
 /**
  * REDUCER
  */
-export default function (state = {}, action) {
+export default function (state = [], action) {
   switch (action.type) {
-    case GET_CHAT_USERS:
-      return action.status
+    case GET_CHAT_MESSAGES:
+      return action.messages
+    case SEND_MESSAGE:
+      return action.messages
     default:
       return state
   }

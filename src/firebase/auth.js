@@ -17,7 +17,7 @@ import {
   addDoc,
   } from "firebase/firestore";
 
-const auth = getAuth(app);
+export const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
 export async function getUserData(){
