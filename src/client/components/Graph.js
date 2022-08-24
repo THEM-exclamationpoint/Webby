@@ -211,15 +211,30 @@ const chart = Tree(testData, {
 console.log(chart)
 
 function Graph() {
-  const ref = useRef()
+  const d3chart = useRef()
 
-  //this is like componentDidMount / componentDidUpdate
+  //useEffect is like componentDidMount. Add a second parameter: [] to make it act like componentDidUpdate
   useEffect(() => {
-    const svgElement = d3.select(ref.current) //select the svg tag
-    svgElement.append('circle').attr('cx', 150).attr('cy', 70).attr('r', 50)
-  }, [])
+    const svgElement = d3.select(d3chart.current) //select the svg element
 
-  return <svg ref={ref} />
+    svgElement.append('circle').attr('cx', 150).attr('cy', 70).attr('r', 50)
+  })
+
+  return <svg ref={d3chart} />
 }
+
+// // ORIGINAL:
+// function Graph() {
+//   const d3chart = useRef()
+
+//   //useEffect is like componentDidMount. Add a second parameter: [] to make it act like componentDidUpdate
+//   useEffect(() => {
+//     const svgElement = d3.select(d3chart.current) //select the svg element
+
+//     svgElement.append('circle').attr('cx', 150).attr('cy', 70).attr('r', 50)
+//   })
+
+//   return <svg ref={d3chart} />
+// }
 
 export default Graph
