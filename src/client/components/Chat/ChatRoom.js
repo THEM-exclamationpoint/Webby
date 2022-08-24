@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-
+import { useDispatch, useSelector } from 'react-redux';
 import {makeStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
@@ -35,13 +35,19 @@ const useStyles = makeStyles({
 })
 
 const Chat = () => {
+  const dispatch = useDispatch()
   const classes = useStyles()
   let [collapse, setCollapse] = useState(false)
-
-  function openMenu() {
+  let [user,setUserData] = useState(null)
+  // let user = useSelector((state) => state.user);
+  useEffect(() => {
+    setUserData(dispatch(setUser()))
+    
+  },[]);
+  function clickMenu() {
     setCollapse(!collapse)
   }
-
+console.log(user)
   return (
     <div>
       <Grid container>
@@ -49,7 +55,7 @@ const Chat = () => {
           <Typography variant="h5" className="header-message">
             Chat
           </Typography>
-          <ArrowForwardIosIcon onClick={openMenu} />
+          <ArrowForwardIosIcon onClick={clickMenu} />
         </Grid>
       </Grid>
 
@@ -57,7 +63,7 @@ const Chat = () => {
         <Drawer anchor="left" open={collapse}>
           <Grid >
             {/* first person above search bar is the person who's chat is opened / can do this using usestate? */}
-            <ArrowBackIosIcon onClick={openMenu} />
+            <ArrowBackIosIcon onClick={clickMenu} />
             <List>
               <ListItem button key="RemySharp">
                 <ListItemIcon>

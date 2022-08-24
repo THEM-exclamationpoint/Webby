@@ -20,11 +20,21 @@ import {
 export const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
+
 export async function getUserData(){
-  const user = auth.currentUser
+ onAuthStateChanged(auth, async (user) => {
+  if (user) {
+ console.log(user)
   const q = query(collection(db, "users"), where("uid", "==", user.uid));
   const docs = await getDocs(q);
   return docs
+  } else {
+    // User is signed out
+    // ...
+  }
+});
+
+ 
 }
 
 export const signInWithGoogle = async () => {

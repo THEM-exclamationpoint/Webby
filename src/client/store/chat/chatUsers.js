@@ -23,7 +23,7 @@ import {
    */
   export const getChatUsers = (uid) => {
     return async (dispatch) => {
-      let users = await getListOfUsers(uid)
+      let users = await getListOfGroups(uid)
       dispatch(setChatUsers(users))
     }
   }

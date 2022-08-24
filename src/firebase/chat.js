@@ -12,6 +12,7 @@ export async function getListOfGroups() {
   }
   catch(err) { console.error(err) };
 }
+
 export async function getMessagesWithGroup(groupId) {
 try {
   const q = query(collection(db, 'messages'), where('toGroup','==', groupId), orderBy('timeStamp', 'desc'));

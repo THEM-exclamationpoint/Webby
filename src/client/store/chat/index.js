@@ -31,14 +31,14 @@ const sendMessage = (messages) => {
  */
 export const getChatMessages = (groupId) => {
   return async (dispatch) => {
-    let messages = await getMessagesWithUser(groupId)
+    let messages = await getMessagesWithGroup(groupId)
     dispatch(setChatMessages(messages))
   }
 }
 export const sentMessage = (groupId, content) => {
   return async (dispatch) => {
     await sendNewMessage(groupId,content)
-    let messages = await getMessagesWithUser(groupId)
+    let messages = await getMessagesWithGroup(groupId)
     dispatch(sendMessage(messages))
   }
 }
