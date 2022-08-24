@@ -14,17 +14,6 @@ import { Button,
       } from '@mui/material';
 import './style.css';
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
 const ChipMultiSelect = (props) => {
   const {
     options = [],
@@ -44,15 +33,8 @@ const ChipMultiSelect = (props) => {
 
   const handleChange = (e) => {
     const {target: { value }} = e;
-    if(!limitSelection || value.split(',').length < +limitSelection) {
-      setOption(
-        typeof value === 'string' ? 
-          value.split(',') 
-          : 
-          value
-      );
+    if(!limitSelection || value.length <= +limitSelection) setOption(value);
     }
-  };
 
   return (
     <div className='chip-multi-select'>
@@ -75,7 +57,6 @@ const ChipMultiSelect = (props) => {
               ))}
             </Box>
           )}
-          MenuProps={MenuProps}
         >
           {options.map((option) => (
             <MenuItem
@@ -90,6 +71,6 @@ const ChipMultiSelect = (props) => {
       </FormControl>
     </div>
   )
-          }
+}
 
 export default ChipMultiSelect;
