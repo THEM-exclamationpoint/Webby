@@ -47,7 +47,7 @@ const Chat = () => {
   function clickMenu() {
     setCollapse(!collapse)
   }
-console.log(user)
+console.log('user',user)
   return (
     <div>
       <Grid container>
