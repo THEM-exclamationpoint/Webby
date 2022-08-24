@@ -6,7 +6,8 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
-import MoreIcon from '@mui/icons-material/MoreVert';
+import FadeMenu from './UserMenu';
+import TemporaryDrawer from './NavMenu';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: 'flex-start',
@@ -14,7 +15,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   paddingBottom: theme.spacing(2),
   // Override media queries injected by theme.mixins.toolbar
   '@media all': {
-    minHeight: 128,
+    minHeight: 50,
   },
 }));
 
@@ -30,7 +31,8 @@ export default function ProminentAppBar() {
             aria-label="open drawer"
             sx={{ mr: 2 }}
           >
-            <MenuIcon />
+            {/* <MenuIcon /> */}
+            <TemporaryDrawer/>
           </IconButton>
           <Typography
             variant="h5"
@@ -49,7 +51,7 @@ export default function ProminentAppBar() {
             edge="end"
             color="inherit"
           >
-            <MoreIcon />
+            <FadeMenu/>
           </IconButton>
         </StyledToolbar>
       </AppBar>
