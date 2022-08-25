@@ -12,28 +12,28 @@ const label = { inputProps: { 'aria-label': 'Switch demo' } };
 export default function AppSettings() {
   return (
     <div>
-        Settings:
+    Settings:
         <Divider />
-        App Theme:
+    App Theme:
         <br />
       Dark/Light: <Switch {...label} defaultChecked />
         <br />
        High Contrast: <Switch {...label} />
        <Divider />
-       Notifications:
-       <br />
+    Notifications:
+        <br />
        Friend Requests: <Switch {...label} defaultChecked />
-       <br />
+        <br />
        Messages: <Switch {...label} defaultChecked />
-       <br />
+        <br />
        Group Messages: <Switch {...label} defaultChecked />
-       <br />
+        <br />
        Time To Update!: <Switch {...label} defaultChecked />
-       <br />
+        <br />
        New Features: <Switch {...label} defaultChecked />
-       <Divider />
-       Accessibility:
-       <br/>
+        <Divider />
+    Accessibility:
+        <br/>
             <FormControl>
                 <FormLabel id="demo-radio-buttons-group-label">Colorblind Mode:</FormLabel>
                 <RadioGroup
