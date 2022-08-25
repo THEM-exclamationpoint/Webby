@@ -31,7 +31,7 @@ export async function getUserData() {
     returnUser = doc.data()
   })
   return returnUser
-
+}
 export const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider)
