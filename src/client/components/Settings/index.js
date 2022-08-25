@@ -16,7 +16,7 @@ export default function AppSettings() {
         <Divider />
     App Theme:
         <br />
-      Dark/Light: <Switch {...label} defaultChecked />
+      Light/Dark: <Switch {...label} />
         <br />
        High Contrast: <Switch {...label} />
        <Divider />
@@ -48,9 +48,9 @@ export default function AppSettings() {
             </FormControl>
  
        <br />
-       Large Text: <Switch {...label} defaultChecked />
+       Large Text: <Switch {...label} />
        <br />
-       Screen Reader Safe: <Switch {...label} defaultChecked />
+       Screen Reader Safe: <Switch {...label} />
        <Divider />
        Blocked Users {/* this should link to its own page */}
        <br /> 
