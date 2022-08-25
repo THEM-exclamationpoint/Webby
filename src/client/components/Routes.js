@@ -13,8 +13,11 @@ function WebbyRoutes () {
         <Route exact path="/register" element={<Signup/>} />
         <Route exact path="/editprofile" element={<EditProfile/>} />
         <Route exact path="/chatroom" element={<Chat/>} />
-      </Routes>
-    )
+        <Route exact path="/chatroom" element={<Chat/>} />
+
+      <Route exact path="/graph" element={<Graph />} />
+    </Routes>
+  )
 }
 
-export default WebbyRoutes;
+export default WebbyRoutes
