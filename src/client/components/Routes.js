@@ -4,6 +4,7 @@ import Home from './Home';
 import Signup from './Auth/Sign-up';
 import EditProfile from './Profile/EditProfile';
 import Chat from './Chat/ChatRoom'
+import Graph from './Graph'
 
 function WebbyRoutes () {
     return (
@@ -13,8 +14,6 @@ function WebbyRoutes () {
         <Route exact path="/register" element={<Signup/>} />
         <Route exact path="/editprofile" element={<EditProfile/>} />
         <Route exact path="/chatroom" element={<Chat/>} />
-        <Route exact path="/chatroom" element={<Chat/>} />
-
       <Route exact path="/graph" element={<Graph />} />
     </Routes>
   )

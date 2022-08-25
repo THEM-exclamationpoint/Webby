@@ -66,8 +66,7 @@ let [selectedGroup,setSelectedGroup] = useState(null)
 
       <Grid container component={Paper} className={classes.chatSection}>
         <Drawer anchor="left" open={collapse}>
-
-
+<Grid>
             <ArrowBackIosIcon onClick={clickMenu} />
             <List>
               <ListItem button key="RemySharp">
