@@ -20,7 +20,6 @@ import SingleChat from './SingleChat'
 import {setUser} from '../../store/auth/user'
 import { getChatUsers } from '../../store/chat/chatUsers';
 
-
 const useStyles = makeStyles({
   chatSection: {
     width: '100%',
@@ -38,6 +37,7 @@ const Chat = () => {
   const dispatch = useDispatch()
   const classes = useStyles()
   let [collapse, setCollapse] = useState(false)
+
   let user = useSelector((state) => state.user);
   let groups = useSelector((state) => state.chatUsers);
 let [selectedGroup,setSelectedGroup] = useState(null)
@@ -46,14 +46,17 @@ let [selectedGroup,setSelectedGroup] = useState(null)
     dispatch(setUser())
     dispatch(getChatUsers())
     setSelectedGroup(groups[0])
+
   },[]);
   function clickMenu() {
     setCollapse(!collapse)
   }
+
   return (
     <div>
       <Grid container>
         <Grid item={true} xs={12}>
+
           <Typography variant="h5" className="header-message">
             Chat
           </Typography>
@@ -63,7 +66,8 @@ let [selectedGroup,setSelectedGroup] = useState(null)
 
       <Grid container component={Paper} className={classes.chatSection}>
         <Drawer anchor="left" open={collapse}>
-          <Grid >
+
+
             <ArrowBackIosIcon onClick={clickMenu} />
             <List>
               <ListItem button key="RemySharp">

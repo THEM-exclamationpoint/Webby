@@ -18,7 +18,6 @@ import {
   getDoc,
 } from 'firebase/firestore'
 
-
 export const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
 
@@ -32,7 +31,6 @@ export async function getUserData() {
     returnUser = doc.data()
   })
   return returnUser
-
 
 export const signInWithGoogle = async () => {
   try {
