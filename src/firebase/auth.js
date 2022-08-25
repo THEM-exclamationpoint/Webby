@@ -9,17 +9,30 @@ import {
   signOut,
   onAuthStateChanged,
 } from 'firebase/auth'
-import {query, getDocs, collection, where, addDoc} from 'firebase/firestore'
+import {
+  query,
+  getDocs,
+  collection,
+  where,
+  addDoc,
+  getDoc,
+} from 'firebase/firestore'
+
 
 export const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
 
 export async function getUserData() {
   const user = auth.currentUser
+  if (!user) return null
+  let returnUser
   const q = query(collection(db, 'users'), where('uid', '==', user.uid))
   const docs = await getDocs(q)
-  return docs
-}
+  docs.forEach((doc) => {
+    returnUser = doc.data()
+  })
+  return returnUser
+
 
 export const signInWithGoogle = async () => {
   try {
@@ -33,6 +46,8 @@ export const signInWithGoogle = async () => {
         name: user.displayName,
         authProvider: 'google',
         email: user.email,
+        profilePicture: user.photoURL
+
       })
     }
   } catch (err) {

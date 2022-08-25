@@ -1,3 +1,4 @@
+
 import {
     getUserData
   } from '../../../firebase/auth'
@@ -12,8 +13,12 @@ import {
 
   export const setUser = () => {
     return async (dispatch) => {
+      try{
       const user = await getUserData()
-      dispatch(fetchUser(user))
+      dispatch(fetchUser(user))}
+      catch(err){
+        console.error(err)
+      }
     }
   }
 
