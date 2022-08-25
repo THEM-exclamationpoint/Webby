@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { Button, 
-        OutlinedInput, 
+import { OutlinedInput, 
         Select,
         Chip, 
         InputLabel, 
@@ -19,17 +18,18 @@ const ChipMultiSelect = (props) => {
     options = [],
     label = 'multi-select',
     required = false,
-    helperText,
+    helperText = null,
     limitSelection = null,
+    value,
   } = props;
 
   const printLabel = 
     label
       .split(/[^\w]+/gm)
-      .map(word => word[0].toUpperCase()+word.slice(1))
+      .map(word => word[0].toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
 
-  const [optionsSelected, setOption] = useState([]);
+  const [optionsSelected, setOption] = useState([value ? value : '']);
 
   const handleChange = (e) => {
     const {target: { value }} = e;
@@ -43,11 +43,11 @@ const ChipMultiSelect = (props) => {
           {printLabel}
         </InputLabel>
         <Select
-          style={{'width' : '200px'}}
+          style={{'width' : '20rem'}}
           labelId={`${label}-label`}
           id={`${label}`}
           multiple
-          value={optionsSelected}
+          value={optionsSelected || ''}
           onChange={handleChange}
           input={<OutlinedInput id="select-multiple-chip" label="Chip"/>}
           renderValue={(selected) => (
@@ -67,7 +67,7 @@ const ChipMultiSelect = (props) => {
             </MenuItem>
           ))}
         </Select>
-        {helperText ? <FormHelperText>{helperText}</FormHelperText> : ''}
+        {helperText ? <FormHelperText>{helperText}</FormHelperText> : null}
       </FormControl>
     </div>
   )
