@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore'
 import {auth} from './auth.js'
 import {db} from './db.js'
-import {faker} from '@faker-js/faker'
+//import {faker} from '@faker-js/faker'
 
 function randomPronouns() {
   //40% of the user base uses he/they or she/they
@@ -212,10 +212,11 @@ const seedInterests = async function () {
     let interest = allInterests[i]
     try {
       //Don't duplicate seed documents:
-      if (interestExists(interest)) continue
+      //if (interestExists(interest)) continue
 
       await addDoc(collection(db, 'interests'), {
         interest,
+        interestId: i,
       })
     } catch (e) {
       console.error('error seeding: ', interest)
@@ -238,38 +239,38 @@ const randomInterests = function (numberOfInterests = 5) {
   return userInterests
 }
 
-const seedUsers = async function (usersToSeed = 10) {
-  for (let i = 0; i < usersToSeed; i++) {
-    const email = faker.internet.email()
-    const password = faker.internet.password()
-    const name = faker.name.firstName()
-    const pronouns = randomPronouns()
-    const interests = randomInterests()
-    const profilePicture = 'https://i.imgur.com/dDvuTRg.png'
-    const zipCode = faker.address.zipCode()
+// const seedUsers = async function (usersToSeed = 10) {
+//   for (let i = 0; i < usersToSeed; i++) {
+//     const email = faker.internet.email()
+//     const password = faker.internet.password()
+//     const name = faker.name.firstName()
+//     const pronouns = randomPronouns()
+//     const interests = randomInterests()
+//     const profilePicture = 'https://i.imgur.com/dDvuTRg.png'
+//     const zipCode = faker.address.zipCode()
 
-    const res = await createUserWithEmailAndPassword(auth, email, password)
-    const uid = res.user.uid
-    await addDoc(collection(db, 'users'), {
-      authProvider: 'local',
-      uid,
-      email,
-      password,
-      name,
-      pronouns,
-      interests,
-      profilePicture,
-      zipCode,
-    })
+//     const res = await createUserWithEmailAndPassword(auth, email, password)
+//     const uid = res.user.uid
+//     await addDoc(collection(db, 'users'), {
+//       authProvider: 'local',
+//       uid,
+//       email,
+//       password,
+//       name,
+//       pronouns,
+//       interests,
+//       profilePicture,
+//       zipCode,
+//     })
 
-    signOut(auth)
-  }
-  return
-}
+//     signOut(auth)
+//   }
+//   return
+// }
 
 const seedDatabase = async function () {
   await seedInterests()
-  seedUsers()
+  //seedUsers()
 }
 
 seedDatabase()
