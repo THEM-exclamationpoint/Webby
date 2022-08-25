@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../../store/auth/user';
+import { Link } from 'react-router-dom';
  const Home = () => {
     const dispatch = useDispatch();
     let user = useSelector((state) => state.user);
@@ -10,7 +11,8 @@ import { setUser } from '../../store/auth/user';
 
     return (
         <div>
-            Welcome
+           <h1> Welcome, {user.name}!</h1>
+            <Link to= '/chatroom'>Chat</Link>
         </div>
     )
 }

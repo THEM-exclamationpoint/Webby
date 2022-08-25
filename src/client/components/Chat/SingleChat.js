@@ -24,20 +24,20 @@ const SingleChat = () => {
         {/* map over messages between user and user selected, if message is from user, display on the right, if message is from other person, display on left. also add time message was sent */}
         <ListItem key="1">
           <Grid container>
-            <Grid item xs={12}>
+            <Grid item={true} xs={12}>
               <ListItemText
                 align="right"
                 primary="Do you think God stays in heaven because he too lives in fear of what he's created?"
               ></ListItemText>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item={true} xs={12}>
               <ListItemText align="right" secondary="09:30"></ListItemText>
             </Grid>
           </Grid>
         </ListItem>
         <ListItem key="2">
           <Grid container>
-            <Grid item xs={12}>
+            <Grid item={true} xs={12}>
               <ListItemText align="left" primary="What"></ListItemText>
             </Grid>
             <Grid item xs={12}>
@@ -47,10 +47,10 @@ const SingleChat = () => {
         </ListItem>
         <ListItem key="3">
           <Grid container>
-            <Grid item xs={12}>
+            <Grid item={true} xs={12}>
               <ListItemText align="right" primary="<3"></ListItemText>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item={true} xs={12}>
               <ListItemText align="right" secondary="10:30"></ListItemText>
             </Grid>
           </Grid>
@@ -58,14 +58,14 @@ const SingleChat = () => {
       </List>
       <Divider />
       <Grid container style={{padding: '20px'}}>
-        <Grid item xs={11}>
+        <Grid item={true} xs={11}>
           <TextField
             id="outlined-basic-email"
             label="Type Something"
             fullWidth
           />
         </Grid>
-        <Grid xs={1} align="right">
+        <Grid item={true} xs={1} align="right">
           <Fab color="primary" aria-label="add">
             <SendIcon />
           </Fab>

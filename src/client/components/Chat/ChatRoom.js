@@ -19,7 +19,7 @@ import SingleChat from './SingleChat'
 
 import {setUser} from '../../store/auth/user'
 import { getChatUsers } from '../../store/chat/chatUsers';
-// need to fetch: user thats logged in, and any users they have a chat with, as well as that users' PFP
+
 
 const useStyles = makeStyles({
   chatSection: {
@@ -38,20 +38,22 @@ const Chat = () => {
   const dispatch = useDispatch()
   const classes = useStyles()
   let [collapse, setCollapse] = useState(false)
-  // let [user,setUserData] = useState(null)
   let user = useSelector((state) => state.user);
-  // useEffect(() => {
-  //   setUserData(dispatch(setUser()))
-    
-  // },[user]);
+  let groups = useSelector((state) => state.chatUsers);
+let [selectedGroup,setSelectedGroup] = useState(null)
+
+  useEffect(() => {
+    dispatch(setUser())
+    dispatch(getChatUsers())
+    setSelectedGroup(groups[0])
+  },[]);
   function clickMenu() {
     setCollapse(!collapse)
   }
-  console.log(user)
   return (
     <div>
       <Grid container>
-        <Grid item xs={12}>
+        <Grid item={true} xs={12}>
           <Typography variant="h5" className="header-message">
             Chat
           </Typography>
@@ -62,14 +64,13 @@ const Chat = () => {
       <Grid container component={Paper} className={classes.chatSection}>
         <Drawer anchor="left" open={collapse}>
           <Grid >
-            {/* first person above search bar is the person who's chat is opened / can do this using usestate? */}
             <ArrowBackIosIcon onClick={clickMenu} />
             <List>
               <ListItem button key="RemySharp">
                 <ListItemIcon>
                   <Avatar
                     alt="Remy Sharp"
-                    src="https://material-ui.com/static/images/avatar/4.jpg"
+                    src={user.profilePicture}
                   />
                 </ListItemIcon>
                 <ListItemText primary={user.name}></ListItemText>
@@ -77,7 +78,8 @@ const Chat = () => {
             </List>
             <Divider />
             {/* search for anyone on your friends list */}
-            <Grid item xs={12} style={{padding: '10px'}}>
+    
+            <Grid item={true} xs={12} style={{padding: '10px'}}>
               <TextField
                 id="outlined-basic-email"
                 label="Search"
@@ -85,9 +87,18 @@ const Chat = () => {
                 fullWidth
               />
             </Grid>
-            <Divider />
+            <Divider />    
+                {groups.map(group => {
+              return (
+                <ListItem button key="RemySharp">
+                <ListItemIcon>
+                </ListItemIcon>
+                <ListItemText primary={group.groupname}>{group.groupname}</ListItemText>
+                <ListItemText align="right"></ListItemText>
+              </ListItem>
+              )
+            })}
             <List>
-              {/* map over every user that the person has an open chat with, display their name and icon -extra: if theyre online*/}
               <ListItem button key="RemySharp">
                 <ListItemIcon>
                   <Avatar

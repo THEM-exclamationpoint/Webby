@@ -22,6 +22,7 @@ export async function getListOfGroups() {
 
 export async function getMessagesWithGroup(groupId) {
 try {
+  // snapshot
   const q = query(collection(db, 'messages'), where('toGroup','==', groupId), orderBy('timeStamp', 'desc'));
   const docs = await getDocs(q);
   if(docs){
