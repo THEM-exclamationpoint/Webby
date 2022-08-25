@@ -1,67 +1,8 @@
 import React from 'react'
 import * as d3 from 'd3'
 import {useRef, useEffect, useState} from 'react'
-
-const testData = {
-  name: 'Davi',
-  children: [
-    {
-      name: 'Climbing',
-      children: [
-        {name: 'Wondo', children: []},
-        {name: 'Kale', children: []},
-        {name: 'Eric', children: []},
-        {name: 'Colleen', children: []},
-      ],
-    },
-    {
-      name: 'Dancing',
-      children: [
-        {name: 'Kayla', children: []},
-        {name: 'Andi', children: []},
-        {name: 'Beacon', children: []},
-        {name: 'BeLove', children: []},
-        {name: 'Steph', children: []},
-      ],
-    },
-    {
-      name: 'Cooking',
-      children: [
-        {name: 'Kayla', children: []},
-        {name: 'Wondo', children: []},
-        {name: 'Joshi', children: []},
-      ],
-    },
-    {
-      name: 'Fire spinning',
-      children: [
-        {name: 'Beacon', children: []},
-        {name: 'Kimchee', children: []},
-        {name: 'BeLove', children: []},
-        {name: 'Wondo', children: []},
-        {name: 'Kayla', children: []},
-        {name: 'Colleen', children: []},
-        {name: 'Juan', children: []},
-        {name: 'Joshi', children: []},
-        {name: 'Iva', children: []},
-        {name: 'Doc', children: []},
-        {name: 'Mike', children: []},
-        {name: 'Olive', children: []},
-        {name: 'PJ', children: []},
-      ],
-    },
-    {
-      name: 'Art',
-      children: [
-        {name: 'Kayla', children: []},
-        {name: 'Andi', children: []},
-        {name: 'Kimchee', children: []},
-        {name: 'Amanda', children: []},
-        {name: 'Tina', children: []},
-      ],
-    },
-  ],
-}
+import {setUser} from '../../store/auth/user'
+import {useDispatch, useSelector} from 'react-redux'
 
 // Copyright 2022 Observable, Inc.
 // Released under the ISC license.
@@ -200,10 +141,31 @@ function Tree(
 //TODO: move all firebase interactions to redux
 
 function Graph() {
+  const dispatch = useDispatch()
+  let user = useSelector((state) => state.user)
+  useEffect(() => {
+    dispatch(setUser())
+  }, [])
+
+  console.log(user)
+  console.log(user.interests)
+
+  const userInterests = user.interests.map((interest) => {
+    return {
+      name: interest,
+      children: [],
+    }
+  })
+
+  const userData = {
+    name: user.name,
+    children: userInterests,
+  }
+
   const web = useRef()
   //firebase data will be dependency for this function so that when it changes, graph re-render
   useEffect(() => {
-    Tree(testData, {
+    Tree(userData, {
       label: (d) => d.name,
       title: (d, n) =>
         `${n
