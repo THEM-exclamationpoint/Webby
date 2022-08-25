@@ -31,7 +31,7 @@ export default function TemporaryDrawer() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {['Inbox', 'Friends', 'Network'].map((text, index) => (
+        {['Home', 'Inbox', 'Friends', 'Network', 'App Settings'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemText primary={text} />

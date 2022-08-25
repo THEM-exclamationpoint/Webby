@@ -18,6 +18,7 @@ import {
   getDoc,
 } from 'firebase/firestore'
 
+
 export const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
 
@@ -31,13 +32,12 @@ export async function getUserData() {
     returnUser = doc.data()
   })
   return returnUser
-}
+
 
 export const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider)
     const user = res.user
-    console.log(user)
     const q = query(collection(db, 'users'), where('uid', '==', user.uid))
     const docs = await getDocs(q)
     if (docs.docs.length === 0) {
@@ -47,6 +47,7 @@ export const signInWithGoogle = async () => {
         authProvider: 'google',
         email: user.email,
         profilePicture: user.photoURL
+
       })
     }
   } catch (err) {
