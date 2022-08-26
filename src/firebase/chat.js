@@ -32,19 +32,25 @@ export async function getListOfGroups() {
   }
 }
 
-export function getMessagesWithGroup(groupId) {
+export function getMessagesWithGroup(groupId, callback) {
   try {
-    const messages = []
     const q = query(
       collection(db, 'messages'),
       where('toGroup', '==', groupId),
       orderBy('timeStamp', 'asc')
     )
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      querySnapshot.docs.forEach((doc) => {
-        messages.push(doc.data())
-      })
-    }, (err)=> console.error(err))
+
+    const messages = onSnapshot(
+      q,
+      (querySnapshot) => {
+          const messages = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+          }))
+          callback(messages)
+        
+      },
+      (err) => console.error(err)
+    )
     return messages
   } catch (err) {
     console.error(err)

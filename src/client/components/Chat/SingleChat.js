@@ -10,8 +10,8 @@ import SendIcon from '@mui/icons-material/Send'
 import {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {setUser} from '../../store/auth/user'
-import {getChatMessages} from '../../store/chat'
 import {sentMessage} from '../../store/chat/sendMessage'
+import { getMessagesWithGroup } from '../../../firebase/chat'
 
 const useStyles = makeStyles({
   messageArea: {
@@ -20,21 +20,20 @@ const useStyles = makeStyles({
   },
 })
 
-// need to fetch: user thats logged in, messages between logged in user and user that they clicked on
 const SingleChat = (props) => {
   const dispatch = useDispatch()
   const classes = useStyles()
   let user = useSelector((state) => state.user)
-  let messages = useSelector((state) => state.messages)
   let [message, setMessage] = useState('')
-
+let [messages, setMessages] = useState([])
   useEffect(() => {
     dispatch(setUser())
   }, [])
 
   useEffect(() => {
-    dispatch(getChatMessages(props.group.groupId))
-  }, [])
+    const unsubscribe = getMessagesWithGroup(props.group.groupId, setMessages);
+        return unsubscribe;
+  }, [props.group.groupId])
 
   function handleClick() {
     dispatch(sentMessage(user.uid, props.group.groupId, message))
