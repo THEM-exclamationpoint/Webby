@@ -7,11 +7,13 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Fab from '@material-ui/core/Fab'
 import SendIcon from '@mui/icons-material/Send'
+
 import {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {setUser} from '../../store/auth/user'
 import {sentMessage} from '../../store/chat/sendMessage'
-import { getMessagesWithGroup } from '../../../firebase/chat'
+import {getMessagesWithGroup} from '../../../firebase/chat'
+import {setUsers} from '../../store/auth/users'
 
 const useStyles = makeStyles({
   messageArea: {
@@ -24,15 +26,18 @@ const SingleChat = (props) => {
   const dispatch = useDispatch()
   const classes = useStyles()
   let user = useSelector((state) => state.user)
+  let users = useSelector((state) => state.users)
+
   let [message, setMessage] = useState('')
-let [messages, setMessages] = useState([])
+  let [messages, setMessages] = useState([])
   useEffect(() => {
     dispatch(setUser())
+    dispatch(setUsers(props.group.members))
   }, [])
 
   useEffect(() => {
-    const unsubscribe = getMessagesWithGroup(props.group.groupId, setMessages);
-        return unsubscribe;
+    const unsubscribe = getMessagesWithGroup(props.group.groupId, setMessages)
+    return unsubscribe
   }, [props.group.groupId])
 
   function handleClick() {
@@ -44,15 +49,22 @@ let [messages, setMessages] = useState([])
       message: e.target.value,
     })
   }
-  console.log(messages)
+
   return (
     <Grid item xs={9}>
       <List className={classes.messageArea}>
         {messages.map((message, i) => {
+          let from = users.find((curuser) => {
+            return curuser.uid === message.fromUser
+          })
           return (
             <ListItem key={i}>
               <Grid container>
                 <Grid item={true} xs={12}>
+                  <ListItemText
+                    align={message.fromUser !== user.uid ? 'left' : 'right'}
+                    secondary={from && from.name}
+                  ></ListItemText>
                   <ListItemText
                     align={message.fromUser !== user.uid ? 'left' : 'right'}
                     primary={message.content.message}
@@ -61,7 +73,11 @@ let [messages, setMessages] = useState([])
                 <Grid item={true} xs={12}>
                   <ListItemText
                     align={message.fromUser !== user.uid ? 'left' : 'right'}
-                    secondary={message.timeStamp ? message.timeStamp.seconds : 'today'}
+                    secondary={
+                      message.timeStamp
+                        ? `${new Date(message.timeStamp.seconds * 1000)}`
+                        : 'unkown'
+                    }
                   ></ListItemText>
                 </Grid>
               </Grid>

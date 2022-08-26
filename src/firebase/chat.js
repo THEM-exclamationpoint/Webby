@@ -39,7 +39,6 @@ export function getMessagesWithGroup(groupId, callback) {
       where('toGroup', '==', groupId),
       orderBy('timeStamp', 'asc')
     )
-
     const messages = onSnapshot(
       q,
       (querySnapshot) => {
@@ -47,7 +46,6 @@ export function getMessagesWithGroup(groupId, callback) {
             ...doc.data(),
           }))
           callback(messages)
-        
       },
       (err) => console.error(err)
     )
@@ -55,6 +53,21 @@ export function getMessagesWithGroup(groupId, callback) {
   } catch (err) {
     console.error(err)
   }
+}
+export function getUsersById(uids) {
+  let users = []
+
+  uids.map(async uid=>{
+    let q = query(collection(db, 'users'), where('uid','==', uid))
+    let docs = await getDocs(q)
+    let user 
+    docs.forEach(doc => {
+      users.push(doc.data())
+    })
+    return
+  })
+  console.log('in firebase file',users)
+return users
 }
 
 export async function sendNewMessage(uid, groupId, content) {
