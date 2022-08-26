@@ -18,6 +18,7 @@ import {setUsers} from '../../store/auth/users'
 const useStyles = makeStyles({
   messageArea: {
     height: '70vh',
+    width:'100%',
     overflowY: 'auto',
   },
 })
@@ -40,6 +41,12 @@ const SingleChat = (props) => {
     return unsubscribe
   }, [props.group.groupId])
 
+  function isEnter(e){
+    if(e.key === 'Enter'){
+      e.preventDefault()
+      handleClick()
+    }
+  }
   function handleClick() {
     dispatch(sentMessage(user.uid, props.group.groupId, message))
   }
@@ -51,7 +58,7 @@ const SingleChat = (props) => {
   }
 
   return (
-    <Grid item xs={9}>
+    <Grid item xs={9}onKeyPress={isEnter} >
       <List className={classes.messageArea}>
         {messages.map((message, i) => {
           let from = users.find((curuser) => {
