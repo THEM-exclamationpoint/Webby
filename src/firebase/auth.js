@@ -8,6 +8,8 @@ import {
   sendPasswordResetEmail,
   signOut,
   onAuthStateChanged,
+  setPersistence,
+  browserSessionPersistence, 
 } from 'firebase/auth'
 import {
   query,
@@ -20,6 +22,8 @@ import {
 
 export const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
+
+
 
 export async function getUserData() {
   const user = auth.currentUser
