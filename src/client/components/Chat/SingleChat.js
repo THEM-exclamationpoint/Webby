@@ -7,6 +7,10 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Fab from '@material-ui/core/Fab'
 import SendIcon from '@mui/icons-material/Send'
+import {useState, useEffect} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {setUser} from '../../store/auth/user'
+import { sentMessage } from '../../store/chat'
 
 const useStyles = makeStyles({
   messageArea: {
@@ -16,8 +20,26 @@ const useStyles = makeStyles({
 })
 
 // need to fetch: user thats logged in, messages between logged in user and user that they clicked on
-const SingleChat = () => {
+const SingleChat = (props) => {
+
+  const dispatch = useDispatch()
   const classes = useStyles()
+  let user = useSelector((state) => state.user)
+  let [message,setMessage] = useState('')
+
+  useEffect(() => {
+    dispatch(setUser())
+  }, [])
+
+ function handleClick(){
+   dispatch( sentMessage(user.uid, props.group.groupId, message))
+  }
+
+  function handleChange(e){
+    setMessage({
+      message: e.target.value
+    })
+  }
   return (
     <Grid item xs={9}>
       <List className={classes.messageArea}>
@@ -63,11 +85,12 @@ const SingleChat = () => {
             id="outlined-basic-email"
             label="Type Something"
             fullWidth
+            onChange={handleChange}
           />
         </Grid>
-        <Grid item={true} xs={1} align="right">
+        <Grid onClick={handleClick} item={true} xs={1} align="right">
           <Fab color="primary" aria-label="add">
-            <SendIcon />
+            <SendIcon  />
           </Fab>
         </Grid>
       </Grid>

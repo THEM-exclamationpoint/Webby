@@ -1,6 +1,6 @@
 import {
   getMessagesWithGroup,
-  sendNewMessage,
+  sendNewMessage
 } from '../../../firebase/chat'
 
 
@@ -35,11 +35,11 @@ export const getChatMessages = (groupId) => {
     dispatch(setChatMessages(messages))
   }
 }
-export const sentMessage = (groupId, content) => {
+export const sentMessage = (uid,groupId, content) => {
   return async (dispatch) => {
-    await sendNewMessage(groupId,content)
-    let messages = await getMessagesWithGroup(groupId)
-    dispatch(sendMessage(messages))
+    let newMessage= await sendNewMessage(uid,groupId,content)
+    // let messages = await getMessagesWithGroup(groupId)
+    dispatch(sendMessage(newMessage))
   }
 }
 /**
@@ -50,7 +50,7 @@ export default function (state = [], action) {
     case GET_CHAT_MESSAGES:
       return action.messages
     case SEND_MESSAGE:
-      return action.messages
+      return [...state]
     default:
       return state
   }
