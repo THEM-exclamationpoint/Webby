@@ -3,6 +3,7 @@ import * as d3 from 'd3'
 import {useRef, useEffect, useState} from 'react'
 import {setUser} from '../../store/auth/user'
 import {useDispatch, useSelector} from 'react-redux'
+import {getUserInterests} from '../../../firebase/graph'
 
 // Copyright 2022 Observable, Inc.
 // Released under the ISC license.
@@ -136,7 +137,7 @@ function Tree(
   return svg.node()
 }
 
-//TODO: get current user, user's interests, and the other users who share that interest from firebase
+//TODO: get user's interests and the other users who share that interest from firebase
 
 //TODO: move all firebase interactions to redux
 
@@ -146,9 +147,6 @@ function Graph() {
   useEffect(() => {
     dispatch(setUser())
   }, [])
-
-  console.log(user)
-  console.log(user.interests)
 
   const userInterests = user.interests.map((interest) => {
     return {
