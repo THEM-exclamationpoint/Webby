@@ -38,14 +38,14 @@ const Chat = () => {
 
   let user = useSelector((state) => state.user)
   let groups = useSelector((state) => state.chatUsers)
-  let [selectedGroup, setSelectedGroup] = useState(null)
+  
 
   useEffect(() => {
     dispatch(setUser())
     dispatch(getChatUsers())
-    setSelectedGroup(groups[0])
-  }, [])
 
+  }, [])
+let [selectedGroup, setSelectedGroup] = useState(groups[0])
   function clickMenu() {
     setCollapse(!collapse)
   }
@@ -104,7 +104,7 @@ const Chat = () => {
           </Grid>
         </Drawer>
         {/* single chat component, should change as the state changes when you click on a different chat */}
-        <SingleChat group={selectedGroup}/>
+       { selectedGroup && <SingleChat group={selectedGroup}/>}
       </Grid>
     </div>
   )

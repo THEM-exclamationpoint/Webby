@@ -10,73 +10,65 @@ import SendIcon from '@mui/icons-material/Send'
 import {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {setUser} from '../../store/auth/user'
-import { sentMessage } from '../../store/chat'
+import {getChatMessages} from '../../store/chat'
+import {sentMessage} from '../../store/chat/sendMessage'
 
 const useStyles = makeStyles({
   messageArea: {
-     height: '70vh',
+    height: '70vh',
     overflowY: 'auto',
   },
 })
 
 // need to fetch: user thats logged in, messages between logged in user and user that they clicked on
 const SingleChat = (props) => {
-
   const dispatch = useDispatch()
   const classes = useStyles()
   let user = useSelector((state) => state.user)
-  let [message,setMessage] = useState('')
+  let messages = useSelector((state) => state.messages)
+  let [message, setMessage] = useState('')
 
   useEffect(() => {
     dispatch(setUser())
   }, [])
 
- function handleClick(){
-   dispatch( sentMessage(user.uid, props.group.groupId, message))
+  useEffect(() => {
+    dispatch(getChatMessages(props.group.groupId))
+  }, [])
+
+  function handleClick() {
+    dispatch(sentMessage(user.uid, props.group.groupId, message))
   }
 
-  function handleChange(e){
+  function handleChange(e) {
     setMessage({
-      message: e.target.value
+      message: e.target.value,
     })
   }
+  console.log(messages)
   return (
     <Grid item xs={9}>
       <List className={classes.messageArea}>
-        {/* map over messages between user and user selected, if message is from user, display on the right, if message is from other person, display on left. also add time message was sent */}
-        <ListItem key="1">
-          <Grid container>
-            <Grid item={true} xs={12}>
-              <ListItemText
-                align="right"
-                primary="Do you think God stays in heaven because he too lives in fear of what he's created?"
-              ></ListItemText>
-            </Grid>
-            <Grid item={true} xs={12}>
-              <ListItemText align="right" secondary="09:30"></ListItemText>
-            </Grid>
-          </Grid>
-        </ListItem>
-        <ListItem key="2">
-          <Grid container>
-            <Grid item={true} xs={12}>
-              <ListItemText align="left" primary="What"></ListItemText>
-            </Grid>
-            <Grid item xs={12}>
-              <ListItemText align="left" secondary="09:31"></ListItemText>
-            </Grid>
-          </Grid>
-        </ListItem>
-        <ListItem key="3">
-          <Grid container>
-            <Grid item={true} xs={12}>
-              <ListItemText align="right" primary="<3"></ListItemText>
-            </Grid>
-            <Grid item={true} xs={12}>
-              <ListItemText align="right" secondary="10:30"></ListItemText>
-            </Grid>
-          </Grid>
-        </ListItem>
+        {messages.map((message, i) => {
+          return (
+            <ListItem key={i}>
+              <Grid container>
+                <Grid item={true} xs={12}>
+                  <ListItemText
+                    align={message.fromUser !== user.uid ? 'left' : 'right'}
+                    primary={message.content.message}
+                  ></ListItemText>
+                </Grid>
+                <Grid item={true} xs={12}>
+                  <ListItemText
+                    align={message.fromUser !== user.uid ? 'left' : 'right'}
+                    secondary={message.timeStamp ? message.timeStamp.seconds : 'today'}
+                  ></ListItemText>
+                </Grid>
+              </Grid>
+            </ListItem>
+          )
+        })}
       </List>
       <Divider />
       <Grid container style={{padding: '20px'}}>
@@ -90,7 +82,7 @@ const SingleChat = (props) => {
         </Grid>
         <Grid onClick={handleClick} item={true} xs={1} align="right">
           <Fab color="primary" aria-label="add">
-            <SendIcon  />
+            <SendIcon />
           </Fab>
         </Grid>
       </Grid>
