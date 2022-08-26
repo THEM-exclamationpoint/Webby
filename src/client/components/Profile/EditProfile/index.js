@@ -11,11 +11,16 @@ import { Button,
         FormLabel, 
         MenuItem,
         Switch,
+        Card,
+        Paper,
+        Grid,
+        Divider,
+        Typography,
+        Autocomplete,
       } from '@mui/material';
-import ChipMultiSelect from '../../Elements/ChipMultiSelect';
+import EditAvailabilityGrid from '../Elements/EditAvailibilityGrid';
+import MultiSelctorAuto from '../Elements/MultiSelectorAuto';
 import './style.css';
-
-const pronounList = ['any','none (name only)','he/him', 'she/her', 'they/them', 'ey/em', 'xe/xem', 'ze/hir', 'fae/faer', 've/ver', 'e/em', 'it/its']
 
 const EditProfile = () => {
   const dispatch = useDispatch();
@@ -61,52 +66,68 @@ const EditProfile = () => {
         <h3>Tell us a little about yourself...</h3>
         <h6>(your personal information will only be shared with other users of this app)</h6>
         <form onSubmit={handleSubmit}>
-          <TextField
-            required
-            label='Name'
-            type='text'
-            name='displayName'
-            autoComplete='off'
-            helperText='This is the name that will be shown on your profile'
-            onChange={handleChange}
-            value={userProfile.displayName}
-          />
-          <ChipMultiSelect
-            label='pronouns'
-            options={pronounList}
-            required={true}
-            helperText='Order will be preserved'
-            value={userProfile.pronouns}
-          />
-          <ChipMultiSelect
-            label='interests'
-            options={['thing0','thing1', 'thing2', 'thing3', 'thing4', 'thing5', 'thing6']}
-            required={true}
-            helperText='Select up to 5'
-            limitSelection='5'
-            value={userProfile.interests}
-          />
-          <FormGroup>
-            <FormLabel component='legend'>Open to:</FormLabel>
-            <FormControlLabel
-              control={
-                <Switch 
-                  onChange={handleChange}
-                  name='remote'
-                />
-              }
-              label='remote'
+          <Paper>
+            <TextField
+              required
+              label='Name'
+              type='text'
+              name='displayName'
+              autoComplete='off'
+              helperText='This is the name that will be shown on your profile'
+              onChange={handleChange}
+              value={userProfile.displayName}
             />
-            <FormControlLabel
-              control={
-                <Switch 
-                  onChange={handleChange}
-                  name='local'
-                />
-              }
-              label='local'
+            <MultiSelctorAuto
+              label='pronouns'
+              options={pronounList}
+              required={true}
+              helperText='Order will be preserved'
+              defaultValue={userProfile.pronouns}
             />
-          </FormGroup>
+            <MultiSelctorAuto
+              label='interests'
+              options={interestList}
+              required={true}
+              helperText='Enter up to 5'
+              limitSelection='5'
+              defaultValue={userProfile.interests}
+            />
+          </Paper>
+          <Paper
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              '& > *': {
+                m: 1,
+                p: 1,
+              },
+              justifyContent: 'space-between',
+            }}
+          >
+            <FormGroup>
+              <FormLabel component='legend'>Open to:</FormLabel>
+              <FormControlLabel
+                control={
+                  <Switch 
+                    onChange={handleChange}
+                    name='remote'
+                  />
+                }
+                label='remote'
+              />
+              <FormControlLabel
+                control={
+                  <Switch 
+                    onChange={handleChange}
+                    name='local'
+                  />
+                }
+                label='local'
+              />
+            </FormGroup>
+            <EditAvailabilityGrid />
+            <Button variant='contained'>SAVE</Button>
+          </Paper>
         </form>
       </section>
     </div>
@@ -114,3 +135,30 @@ const EditProfile = () => {
 }
 
 export default EditProfile;
+
+
+const pronounList = [
+  'any',
+  'none (name only)',
+  'he/him',
+  'she/her',
+  'they/them',
+  'ey/em',
+  'xe/xem',
+  'ze/hir',
+  'fae/faer',
+  've/ver',
+  'e/em',
+  'it/its',
+]
+
+const interestList = [
+  'thing0',
+  'thing1',
+  'thing2',
+  'thing3',
+  'thing4',
+  'thing5',
+  'thing6',
+
+]
