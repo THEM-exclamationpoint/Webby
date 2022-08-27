@@ -1,16 +1,16 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {makeStyles} from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
+// import {makeStyles} from '@mui/styles'
+import Paper from '@mui/material/Paper'
+import Grid from '@mui/material/Grid'
 import Divider from '@material-ui/core/Divider'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import Avatar from '@material-ui/core/Avatar'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography';
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import Avatar from '@mui/material/Avatar'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import Drawer from '@mui/material/Drawer'
@@ -20,20 +20,20 @@ import SingleChat from './SingleChat'
 import {setUser} from '../../store/auth/user'
 import {getChatUsers} from '../../store/chat/chatUsers'
 
-const useStyles = makeStyles({
-  chatSection: {
-    width: '100%',
-    height: '80vh',
-  },
-  borderRight500: {},
-  collapse: {
-    orientation: 'horizontal',
-  },
-})
+// const useStyles = makeStyles({
+//   chatSection: {
+//     width: '100%',
+//     height: '80vh',
+//   },
+//   borderRight500: {},
+//   collapse: {
+//     orientation: 'horizontal',
+//   },
+// })
 
 const Chat = () => {
   const dispatch = useDispatch()
-  const classes = useStyles()
+  // const classes = useStyles()
   let [collapse, setCollapse] = useState(false)
 
   let user = useSelector((state) => state.user)
@@ -61,7 +61,7 @@ let [selectedGroup, setSelectedGroup] = useState(groups[0])
         </Grid>
       </Grid>
 
-      <Grid container component={Paper} className={classes.chatSection}>
+      <Grid container component={Paper}>
         <Drawer anchor="left" open={collapse}>
           <Grid>
             <ArrowBackIosIcon onClick={clickMenu} />
