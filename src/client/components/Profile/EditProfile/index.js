@@ -160,5 +160,4 @@ const interestList = [
   'thing4',
   'thing5',
   'thing6',
-
 ]

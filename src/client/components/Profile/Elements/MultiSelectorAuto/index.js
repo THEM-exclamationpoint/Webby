@@ -24,6 +24,7 @@ export default function MultiSelctorAuto(props) {
     label
       .split(/[^\w]+/gm)
       .map(word => word[0].toUpperCase() + word.slice(1).toLowerCase())
+      .filter(word => word != '')
       .join(' ')
     :
     '';
