@@ -54,11 +54,11 @@ const newAvailability = (days) => {
 const AvailabilityGrid = (props) => {
   const {
     label='',
-    oldAvailability = [],
+    oldAvailability = null,
     value,
   } = props;
 
-  let [availability, setAvailability] = useState(newAvailability(daysOTW));
+  let [availability, setAvailability] = oldAvailability || useState(newAvailability(daysOTW));
 
   const handleClick = (e) => {
     let updated = JSON.parse(e.target.value);
@@ -124,21 +124,21 @@ const AvailabilityGrid = (props) => {
                         orientation='vertical' 
                       >
                         <Button
-                          color={day.am === 'available' ? 'success' : 'primary'}
+                          color={day.am === 'available' ? 'success' : 'secondary'}
                           value={JSON.stringify({...day, am: 'available'})}
                           onClick={handleClick}
                         >
                           available
                         </Button>
                         <Button 
-                          color={day.am === 'notice' ? 'warning' : 'primary'}
+                          color={day.am === 'notice' ? 'warning' : 'secondary'}
                           value={JSON.stringify({...day, am: 'notice'})}
                           onClick={handleClick}
                         >
                           with notice
                         </Button>
                         <Button
-                          color={day.am === 'unavailable' ? 'error' : 'primary'}
+                          color={day.am === 'unavailable' ? 'error' : 'secondary'}
                           value={JSON.stringify({...day, am: 'unavailable'})}
                           onClick={handleClick}
                         >
@@ -153,21 +153,21 @@ const AvailabilityGrid = (props) => {
                           orientation='vertical' 
                         >
                           <Button 
-                            color={day.pm === 'available' ? 'success' : 'primary'}
+                            color={day.pm === 'available' ? 'success' : 'secondary'}
                             value={JSON.stringify({...day, pm: 'available'})}
                             onClick={handleClick}
                           >
                             available
                           </Button>
                           <Button 
-                            color={day.pm === 'notice' ? 'warning' : 'primary'}
+                            color={day.pm === 'notice' ? 'warning' : 'secondary'}
                             value={JSON.stringify({...day, pm: 'notice'})}
                             onClick={handleClick}
                           >
                             with notice
                           </Button>
                           <Button
-                            color={day.pm === 'unavailable' ? 'error' : 'primary'}
+                            color={day.pm === 'unavailable' ? 'error' : 'secondary'}
                             value={JSON.stringify({...day, pm: 'unavailable'})}
                             onClick={handleClick}
                           >

@@ -126,6 +126,16 @@ const EditProfile = () => {
               />
             </FormGroup>
             <EditAvailabilityGrid />
+            <TextField
+              required
+              label='Image URL'
+              type='text'
+              name='imageUrl'
+              autoComplete='off'
+              helperText='We should make this an uploader'
+              onChange={handleChange}
+              value={userProfile.imageUrl}
+            />
             <Button variant='contained'>SAVE</Button>
           </Paper>
         </form>
