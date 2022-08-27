@@ -1,39 +1,41 @@
-import {makeStyles} from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import Divider from '@material-ui/core/Divider'
-import TextField from '@material-ui/core/TextField'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import Fab from '@material-ui/core/Fab'
+import Grid from '@mui/material/Grid'
+import Divider from '@mui/material/Divider'
+import TextField from '@mui/material/TextField'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemText from '@mui/material/ListItemText'
+import Fab from '@mui/material/Fab'
 import SendIcon from '@mui/icons-material/Send'
+import Typography from '@mui/material/Typography'
+import MenuItem from '@mui/material/MenuItem'
+import Menu from '@mui/material/Menu'
+import Button from '@mui/material/Button'
 
-import {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {setUser} from '../../store/auth/user'
 import {sentMessage} from '../../store/chat/sendMessage'
 import {getMessagesWithGroup} from '../../../firebase/chat'
 import {setUsers} from '../../store/auth/users'
-
-const useStyles = makeStyles({
-  messageArea: {
-    height: '70vh',
-    width:'100%',
-    overflowY: 'auto',
-  },
-})
+import {getFriends} from '../../store/friends'
+import { addChatUsers } from '../../store/chat/chatUsers'
 
 const SingleChat = (props) => {
   const dispatch = useDispatch()
-  const classes = useStyles()
   let user = useSelector((state) => state.user)
   let users = useSelector((state) => state.users)
+  let friends = useSelector((state) => state.friends)
 
   let [message, setMessage] = useState('')
   let [messages, setMessages] = useState([])
+  let [menuOpen, setMenuOpen] = useState(false)
+
+
+
   useEffect(() => {
     dispatch(setUser())
     dispatch(setUsers(props.group.members))
+    dispatch(getFriends(user.uid))
   }, [])
 
   useEffect(() => {
@@ -41,8 +43,8 @@ const SingleChat = (props) => {
     return unsubscribe
   }, [props.group.groupId])
 
-  function isEnter(e){
-    if(e.key === 'Enter'){
+  function isEnter(e) {
+    if (e.key === 'Enter') {
       e.preventDefault()
       handleClick()
     }
@@ -56,10 +58,39 @@ const SingleChat = (props) => {
       message: e.target.value,
     })
   }
-
+  function handleSelect(uid) {
+    dispatch(addChatUsers(uid,user.uid,props.group.groupId))
+  }
+  function toggleMenu(){
+    setMenuOpen(true)
+  }
+  let closeMenu = () => {
+    setMenuOpen(false);
+}
   return (
-    <Grid item xs={9}onKeyPress={isEnter} >
-      <List className={classes.messageArea}>
+    <Grid onKeyPress={isEnter}>
+      <Grid container>
+        <Grid item={true} xs={12}>
+          <Typography variant="h5" className="header-message" align="center">
+            {props.group.groupname}
+          </Typography>
+          <React.Fragment>
+          <Button onClick={toggleMenu}>Add Member</Button>
+          <Menu open={menuOpen} onClose={closeMenu}> 
+            {friends.map((friend) => {
+              return (
+                <MenuItem value={friend} key={friend.uid} onClick={()=>handleSelect(friend.uid)}>
+                  {friend.name}
+                </MenuItem>
+              )
+            })}
+          </Menu>
+          </React.Fragment>
+        </Grid>
+      </Grid>
+      <List width="100%" height="70vh"  style={{
+       maxHeight: 300, overflow: 'auto'
+      }}>
         {messages.map((message, i) => {
           let from = users.find((curuser) => {
             return curuser.uid === message.fromUser

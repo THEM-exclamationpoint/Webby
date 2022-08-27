@@ -7,12 +7,15 @@ import user from './auth/user'
 import chatUsers from './chat/chatUsers'
 import sendMessage from './chat/sendMessage'
 import users from './auth/users'
+import friends from './friends'
+
 const reducer = combineReducers({
   auth,
   user,
   chatUsers,
   sendMessage,
-  users
+  users,
+  friends
 })
 
 const middleware = composeWithDevTools(

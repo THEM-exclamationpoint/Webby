@@ -9,6 +9,9 @@ import {
   orderBy,
   serverTimestamp,
   onSnapshot,
+  doc,
+  updateDoc,
+  arrayUnion
 } from 'firebase/firestore'
 
 export async function getListOfGroups() {
@@ -66,7 +69,6 @@ export function getUsersById(uids) {
     })
     return
   })
-  console.log('in firebase file',users)
 return users
 }
 
@@ -82,3 +84,19 @@ export async function sendNewMessage(uid, groupId, content) {
     console.error(err)
   }
 }
+ export async function addToGroup(uid, groupId){
+  try{
+    const q = query(collection(db, 'groups'),where('groupId','==',groupId))
+    const docs = await getDocs(q)
+    let docId
+    docs.forEach(doc => {
+      docId = doc.id
+    })
+    const ref = doc(db,'groups',docId)
+    console.log(ref)
+    await updateDoc(ref, {
+      members: arrayUnion(uid)
+    })
+  }
+  catch(err){console.error(err)}
+ }
