@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 // import {makeStyles} from '@mui/styles'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
-import Divider from '@material-ui/core/Divider'
+import Divider from '@mui/material/Divider'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List'
