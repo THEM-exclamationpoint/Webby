@@ -17,6 +17,7 @@ import { Button,
         Divider,
         Typography,
         Autocomplete,
+        Slider,
       } from '@mui/material';
 import EditAvailabilityGrid from '../Elements/EditAvailibilityGrid';
 import MultiSelctorAuto from '../Elements/MultiSelectorAuto';
@@ -60,12 +61,16 @@ const EditProfile = () => {
   }
 
   return (
-    <div className = 'edit-profile-block'>
-      <section>
+      <Paper
+        sx={{
+          m: 1,
+          p: 1,
+        }}
+      >
         <h1>Edit Profile</h1>
         <h3>Tell us a little about yourself...</h3>
         <h6>(your personal information will only be shared with other users of this app)</h6>
-        <form onSubmit={handleSubmit}>
+        <FormControl onSubmit={handleSubmit}>
           <Paper>
             <TextField
               required
@@ -125,6 +130,24 @@ const EditProfile = () => {
                 label='local'
               />
             </FormGroup>
+            <TextField
+              required
+              label='Location'
+              type='text'
+              name='location'
+              autoComplete='off'
+              helperText='Enter zip'
+              onChange={handleChange}
+              value={userProfile.zipCode}
+            />
+            <Slider
+              sx={{width:'250px'}}
+              aria-label='range'
+              defaultValue={25}
+              min={5}
+              max={99}
+              valueLabelDisplay='auto'
+            />
             <EditAvailabilityGrid />
             <TextField
               required
@@ -138,9 +161,8 @@ const EditProfile = () => {
             />
             <Button variant='contained'>SAVE</Button>
           </Paper>
-        </form>
-      </section>
-    </div>
+        </FormControl>
+      </Paper>
   );
 }
 
