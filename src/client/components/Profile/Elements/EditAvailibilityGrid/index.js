@@ -84,6 +84,7 @@ const AvailabilityGrid = (props) => {
   return (
       <FormControl sx={{
             display: 'flex',
+            m: 2,
         }}
       >        
         {availability.map((day, idx) => {
@@ -106,9 +107,7 @@ const AvailabilityGrid = (props) => {
                   width: '100%',
                   display: 'flex',
                   alignContent: 'center',
-                  justifyContent: 'center',
-                  '& > *': {
-                  },
+                  justifyContent: 'space-between',
                 }}
               >
                 <Box
@@ -116,7 +115,6 @@ const AvailabilityGrid = (props) => {
                     width: '100%',
                     display: 'flex',
                     alignContent: 'center',
-                    justifyContent: 'center',
                   }}
                 >
                   <h3> {day.day} </h3>
@@ -128,8 +126,11 @@ const AvailabilityGrid = (props) => {
                     alignContent: 'center',
                     justifyContent: 'space-evenly',
                     '& > *': {
-                      p: 1.25,
-                      m: 1.25,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      aspectRatio: '1/1',
+                      m: 1,
                     },
                 }}>
                   <Card>
@@ -148,14 +149,15 @@ const AvailabilityGrid = (props) => {
               <Box
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
+                  justifyContent: 'space-evenly',
                   '& > *': {
                     m: 1,
+                    p: 1,
                   },
                 }}
               >
                 <Item elevation={3} key={`${day.day}-am`}>
-                  <h3>AM</h3>
+                  <h3>DAY</h3>
                   <ButtonGroup 
                     orientation='vertical' 
                   >
@@ -184,7 +186,7 @@ const AvailabilityGrid = (props) => {
                 </Item>
                 <Item elevation={3} key={`${day.day}-pm`}>
                   
-                  <h3>PM</h3>
+                  <h3>NIGHT</h3>
                   <ButtonGroup 
                       orientation='vertical' 
                     >

@@ -40,7 +40,6 @@ export default function MultiSelctorAuto(props) {
       <div className = 'multi-select-auto'>
         <Autocomplete
           freeSolo={limitSelection ? optionsSelected.length < +limitSelection : true}
-          style={{'width' : '20rem'}}
           multiple
           id={label}
           options={options.sort()}

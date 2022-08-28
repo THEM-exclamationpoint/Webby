@@ -65,90 +65,86 @@ const EditProfile = () => {
         sx={{
           m: 1,
           p: 1,
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         <h1>Edit Profile</h1>
         <h3>Tell us a little about yourself...</h3>
         <h6>(your personal information will only be shared with other users of this app)</h6>
         <FormControl onSubmit={handleSubmit}>
-          <Paper>
-            <TextField
-              required
-              label='Name'
-              type='text'
-              name='displayName'
-              autoComplete='off'
-              helperText='This is the name that will be shown on your profile'
-              onChange={handleChange}
-              value={userProfile.displayName}
-            />
-            <MultiSelctorAuto
-              label='pronouns'
-              options={pronounList}
-              required={true}
-              helperText='Order will be preserved'
-              defaultValue={userProfile.pronouns}
-            />
-            <MultiSelctorAuto
-              label='interests'
-              options={interestList}
-              required={true}
-              helperText='Enter up to 5'
-              limitSelection='5'
-              defaultValue={userProfile.interests}
-            />
-          </Paper>
-          <Paper
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              '& > *': {
-                m: 1,
-                p: 1,
-              },
-              justifyContent: 'space-between',
-            }}
-          >
-            <FormGroup>
-              <FormLabel component='legend'>Open to:</FormLabel>
-              <FormControlLabel
-                control={
-                  <Switch 
-                    onChange={handleChange}
-                    name='remote'
-                  />
-                }
-                label='remote'
+            <Paper sx={{m:2,p:2}}>
+              <h3>Personal Details</h3>
+              <TextField
+                required
+                label='Name'
+                type='text'
+                name='displayName'
+                autoComplete='off'
+                helperText='This is the name that will be shown on your profile'
+                onChange={handleChange}
+                value={userProfile.displayName}
               />
-              <FormControlLabel
-                control={
-                  <Switch 
-                    onChange={handleChange}
-                    name='local'
-                  />
-                }
-                label='local'
+              <MultiSelctorAuto
+                label='pronouns'
+                options={pronounList}
+                required={true}
+                helperText='Order will be preserved'
+                defaultValue={userProfile.pronouns}
               />
-            </FormGroup>
-            <TextField
-              required
-              label='Location'
-              type='text'
-              name='location'
-              autoComplete='off'
-              helperText='Enter zip'
-              onChange={handleChange}
-              value={userProfile.zipCode}
-            />
-            <Slider
-              sx={{width:'250px'}}
-              aria-label='range'
-              defaultValue={25}
-              min={5}
-              max={99}
-              valueLabelDisplay='auto'
-            />
+              <MultiSelctorAuto
+                label='interests'
+                options={interestList}
+                required={true}
+                helperText='Enter up to 5'
+                limitSelection='5'
+                defaultValue={userProfile.interests}
+              />
+            </Paper>
+            <Paper sx={{m:2, p:2}}>
+              <h3>Hangout Details</h3>
+              <FormGroup>
+                <FormLabel component='legend'>Open to:</FormLabel>
+                <FormControlLabel
+                  control={
+                    <Switch 
+                      onChange={handleChange}
+                      name='remote'
+                    />
+                  }
+                  label='remote'
+                />
+                <FormControlLabel
+                  control={
+                    <Switch 
+                      onChange={handleChange}
+                      name='local'
+                    />
+                  }
+                  label='local'
+                />
+              </FormGroup>
+              <TextField
+                required
+                label='Location'
+                type='text'
+                name='location'
+                autoComplete='off'
+                helperText='Enter zip'
+                onChange={handleChange}
+                value={userProfile.zipCode}
+              />
+              <Slider
+                sx={{width:'250px'}}
+                aria-label='range'
+                defaultValue={25}
+                min={5}
+                max={99}
+                valueLabelDisplay='auto'
+              />
             <EditAvailabilityGrid />
+            </Paper>
+            <Card sx={{m:2, p:2}}>
             <TextField
               required
               label='Image URL'
@@ -159,8 +155,8 @@ const EditProfile = () => {
               onChange={handleChange}
               value={userProfile.imageUrl}
             />
+            </Card>
             <Button variant='contained'>SAVE</Button>
-          </Paper>
         </FormControl>
       </Paper>
   );
