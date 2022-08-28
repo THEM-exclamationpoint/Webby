@@ -73,7 +73,7 @@ const EditProfile = () => {
         <h3>Tell us a little about yourself...</h3>
         <h6>(your personal information will only be shared with other users of this app)</h6>
         <FormControl onSubmit={handleSubmit}>
-            <Paper sx={{m:2,p:2}}>
+            <Paper sx={{m:1,p:2}}>
               <h3>Personal Details</h3>
               <TextField
                 required
@@ -101,7 +101,7 @@ const EditProfile = () => {
                 defaultValue={userProfile.interests}
               />
             </Paper>
-            <Paper sx={{m:2, p:1}}>
+            <Paper sx={{m:1, p:2}}>
               <h3>Hangout Details</h3>
               <Card sx={{m:1, p:2}}>
               <FormGroup>
@@ -148,7 +148,8 @@ const EditProfile = () => {
                   valueLabelDisplay='auto'
                 />
               </Card>
-            <EditAvailabilityGrid />
+              <h5>Set Availability:</h5>
+              <EditAvailabilityGrid />
             </Paper>
             <Card sx={{m:2, p:2}}>
             <TextField

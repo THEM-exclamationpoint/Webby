@@ -134,14 +134,30 @@ const AvailabilityGrid = (props) => {
                     },
                 }}>
                   <Card>
-                    {day.am === 'available' ? (<WbSunnyIcon color='success'/>) : ''}
-                    {day.am === 'notice' ? (<WbSunnyIcon color='warning'/>) : ''}
-                    {day.am === 'unavailable' ? (<WbSunnyIcon color='error'/>) : ''}
+                    <WbSunnyIcon 
+                      color = {
+                        day.am === 'available' ?
+                          'success'
+                          :
+                        day.am === 'notice' ?
+                          'warning'
+                          :
+                        'error'
+                      }
+                    />
                   </Card>
                   <Card>
-                    {day.pm === 'available' ? (<NightsStayIcon color='success'/>) : ''}
-                    {day.pm === 'notice' ? (<NightsStayIcon color='warning'/>) : ''}
-                    {day.pm === 'unavailable' ? (<NightsStayIcon color='error'/>) : ''}
+                    <NightsStayIcon 
+                      color = {
+                        day.pm === 'available' ?
+                          'success'
+                          :
+                        day.pm === 'notice' ?
+                          'warning'
+                          :
+                        'error'
+                      }
+                    />
                   </Card>
                 </Box>
               </AccordionSummary>
