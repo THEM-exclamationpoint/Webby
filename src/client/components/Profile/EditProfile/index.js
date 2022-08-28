@@ -101,8 +101,9 @@ const EditProfile = () => {
                 defaultValue={userProfile.interests}
               />
             </Paper>
-            <Paper sx={{m:2, p:2}}>
+            <Paper sx={{m:2, p:1}}>
               <h3>Hangout Details</h3>
+              <Card sx={{m:1, p:2}}>
               <FormGroup>
                 <FormLabel component='legend'>Open to:</FormLabel>
                 <FormControlLabel
@@ -124,24 +125,29 @@ const EditProfile = () => {
                   label='local'
                 />
               </FormGroup>
-              <TextField
-                required
-                label='Location'
-                type='text'
-                name='location'
-                autoComplete='off'
-                helperText='Enter zip'
-                onChange={handleChange}
-                value={userProfile.zipCode}
-              />
-              <Slider
-                sx={{width:'250px'}}
-                aria-label='range'
-                defaultValue={25}
-                min={5}
-                max={99}
-                valueLabelDisplay='auto'
-              />
+              </Card>
+              <Card sx={{m:1, p:2}}>
+              
+                <TextField
+                  required
+                  label='Location'
+                  type='text'
+                  name='location'
+                  autoComplete='off'
+                  helperText='Enter zip'
+                  onChange={handleChange}
+                  value={userProfile.zipCode}
+                />
+                <FormLabel component='legend'>Range:</FormLabel>
+                <Slider
+                  sx={{width:'250px'}}
+                  aria-label='range'
+                  defaultValue={25}
+                  min={5}
+                  max={99}
+                  valueLabelDisplay='auto'
+                />
+              </Card>
             <EditAvailabilityGrid />
             </Paper>
             <Card sx={{m:2, p:2}}>
