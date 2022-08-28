@@ -1,8 +1,11 @@
-.NavBarCustom {
+/* .NavBarCustom {
     background-color: #64b6ac !important;
-  }
+  } */
   
   .NavBarCustom .nav-logo {
     max-height: 3rem;
   }
   
+  .navbar {
+    background-color: #2c2c54 !important;
+  }
