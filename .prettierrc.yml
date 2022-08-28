@@ -7,3 +7,4 @@ singleQuote: true # false
 bracketSpacing: false # true
 jsxBracketSameLine: true # false
 # arrowParens: avoid # avoid | always
+editor.formatOnSave: true
