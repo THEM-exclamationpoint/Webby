@@ -35,7 +35,8 @@ export const NewChat = ({friends,user}) => {
   }
 
   function submitNewGroup (){
-    let newMembers = [...selected, user.uid]
+    let uids = selected.map(friend => friend.uid)
+    let newMembers = [...uids, user.uid]
     dispatch(addNewChat(newMembers,name,user.uid))
   }
   return (

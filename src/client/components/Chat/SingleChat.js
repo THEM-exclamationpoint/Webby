@@ -34,6 +34,7 @@ const SingleChat = ({group}) => {
   let [message, setMessage] = useState('')
   let [messages, setMessages] = useState([])
   let [menuOpen, setMenuOpen] = useState(false)
+  let [anchorEl, setAnchorEl] = useState(null)
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -59,21 +60,23 @@ const SingleChat = ({group}) => {
   }
   function handleClick() {
     dispatch(sentMessage(user.uid, group.groupId, message))
-  }
+    console.log(message)
+    setMessage('')
 
+  }
   function handleChange(e) {
-    setMessage({
-      message: e.target.value,
-    })
+    setMessage(e.target.value)
   }
   function handleSelect(uid) {
     dispatch(addChatUsers(uid, user.uid, group.groupId))
   }
-  function toggleMenu(){
+  function toggleMenu(e){
     setMenuOpen(true)
+    setAnchorEl(e.target)
   }
   let closeMenu = () => {
     setMenuOpen(false);
+    setAnchorEl(null)
 }
   return (
     <Grid onKeyPress={isEnter}>
@@ -84,13 +87,16 @@ const SingleChat = ({group}) => {
           </Typography>
           <React.Fragment>
           <Button onClick={toggleMenu}>Add Member</Button>
-          <Menu open={menuOpen} onClose={closeMenu}> 
+          <Menu open={menuOpen} onClose={closeMenu} anchorEl={anchorEl}> 
             {friends.map((friend) => {
-              return (
+              if(!(group.members.includes(friend.uid)) ){
+                              return (
                 <MenuItem value={friend} key={friend.uid} onClick={()=>handleSelect(friend.uid)}>
                   {friend.name}
                 </MenuItem>
               )
+              }
+
             })}
           </Menu>
           </React.Fragment>
@@ -113,7 +119,7 @@ const SingleChat = ({group}) => {
                   ></ListItemText>
                   <ListItemText
                     align={message.fromUser !== user.uid ? 'left' : 'right'}
-                    primary={message.content.message}
+                    primary={message.content.message ? message.content.message : message.content}
                   ></ListItemText>
                 </Grid>
                 <Grid item={true} xs={12}>
@@ -134,10 +140,14 @@ const SingleChat = ({group}) => {
       <Divider />
       <Grid container style={{padding: '20px'}}>
         <Grid item={true} xs={11}>
-          <TextField
-            id="outlined-basic-email"
+        <TextField
+            autoFocus
+            margin="dense"
             label="Type Something"
+            value={message}
+            type="text"
             fullWidth
+            variant="standard"
             onChange={handleChange}
           />
         </Grid>

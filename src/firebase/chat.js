@@ -93,7 +93,6 @@ export async function sendNewMessage(uid, groupId, content) {
       docId = doc.id
     })
     const ref = doc(db,'groups',docId)
-    console.log(ref)
     await updateDoc(ref, {
       members: arrayUnion(uid)
     })
