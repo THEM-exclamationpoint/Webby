@@ -11,8 +11,9 @@ import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import Button from '@mui/material/Button'
 
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+
 import {setUser} from '../../store/auth/user'
 import {sentMessage} from '../../store/chat/sendMessage'
 import {getMessagesWithGroup} from '../../../firebase/chat'
@@ -20,28 +21,35 @@ import {setUsers} from '../../store/auth/users'
 import {getFriends} from '../../store/friends'
 import { addChatUsers } from '../../store/chat/chatUsers'
 
-const SingleChat = (props) => {
+const SingleChat = ({group}) => {
   const dispatch = useDispatch()
   let user = useSelector((state) => state.user)
   let users = useSelector((state) => state.users)
   let friends = useSelector((state) => state.friends)
 
+  const scrollRef = useRef(null);
+
+
+
   let [message, setMessage] = useState('')
   let [messages, setMessages] = useState([])
   let [menuOpen, setMenuOpen] = useState(false)
 
-
-
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
   useEffect(() => {
     dispatch(setUser())
-    dispatch(setUsers(props.group.members))
+    dispatch(setUsers(group.members))
     dispatch(getFriends(user.uid))
   }, [])
 
   useEffect(() => {
-    const unsubscribe = getMessagesWithGroup(props.group.groupId, setMessages)
+    const unsubscribe = getMessagesWithGroup(group.groupId, setMessages)
     return unsubscribe
-  }, [props.group.groupId])
+  }, [group.groupId])
 
   function isEnter(e) {
     if (e.key === 'Enter') {
@@ -50,7 +58,7 @@ const SingleChat = (props) => {
     }
   }
   function handleClick() {
-    dispatch(sentMessage(user.uid, props.group.groupId, message))
+    dispatch(sentMessage(user.uid, group.groupId, message))
   }
 
   function handleChange(e) {
@@ -59,7 +67,7 @@ const SingleChat = (props) => {
     })
   }
   function handleSelect(uid) {
-    dispatch(addChatUsers(uid,user.uid,props.group.groupId))
+    dispatch(addChatUsers(uid, user.uid, group.groupId))
   }
   function toggleMenu(){
     setMenuOpen(true)
@@ -72,7 +80,7 @@ const SingleChat = (props) => {
       <Grid container>
         <Grid item={true} xs={12}>
           <Typography variant="h5" className="header-message" align="center">
-            {props.group.groupname}
+            {group.groupname}
           </Typography>
           <React.Fragment>
           <Button onClick={toggleMenu}>Add Member</Button>
@@ -96,7 +104,7 @@ const SingleChat = (props) => {
             return curuser.uid === message.fromUser
           })
           return (
-            <ListItem key={i}>
+            <ListItem key={i} ref={scrollRef}>
               <Grid container>
                 <Grid item={true} xs={12}>
                   <ListItemText

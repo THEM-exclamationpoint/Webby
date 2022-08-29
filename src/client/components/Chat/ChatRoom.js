@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import Divider from '@mui/material/Divider'
@@ -14,11 +15,14 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import Drawer from '@mui/material/Drawer'
 import Dialog from '@mui/material/Dialog';
+
 import SingleChat from './SingleChat'
+
 import {getFriends} from '../../store/friends'
 import {setUser} from '../../store/auth/user'
 import {getChatUsers} from '../../store/chat/chatUsers'
 import { NewChat } from './NewChat';
+
 const Chat = () => {
   const dispatch = useDispatch()
   let [collapse, setCollapse] = useState(false)
@@ -27,20 +31,6 @@ const Chat = () => {
   let user = useSelector((state) => state.user)
   let groups = useSelector((state) => state.chatUsers)
   let friends = useSelector((state) => state.friends)
-  let [selected, setSelected] = useState([])
-
-
-  function onSelect(friend){
-      if(selected.includes(friend)){
-          setSelected(selected.filter(friends => friends !== friend))
-          return false
-      }
-      else {
-        setSelected([...selected,friend])  
-        return true
-      }
-      
-  }
 
   useEffect(() => {
     dispatch(setUser())
@@ -58,6 +48,7 @@ const Chat = () => {
   function modalToggle() {
     setModalOpen(true)
   }
+  
   return (
     <div>
       <Grid container>
@@ -97,7 +88,6 @@ const Chat = () => {
                   button
                   key={group.groupId}
                   onClick={() => setSelectedGroup(group)}>
-                  <ListItemIcon></ListItemIcon>
                   <ListItemText primary={group.groupname}>
                     {group.groupname}
                   </ListItemText>
