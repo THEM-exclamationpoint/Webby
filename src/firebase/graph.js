@@ -8,7 +8,7 @@ import {
   orderBy,
 } from 'firebase/firestore'
 
-export async function getUserInterests(userId) {
+export async function getInterestsOfUser(userId) {
   try {
     const q = query(
       collection(db, 'junction_user_interest'),
@@ -46,10 +46,26 @@ async function getInterestById(interestId) {
   }
 }
 
-//Work in progress:
-
-export async function getUsersByInterest(interestId) {
+async function getInterestId(interestName) {
   try {
+    const q = query(
+      collection(db, 'interests'),
+      where('interest', '==', interestName)
+    )
+    const docs = await getDocs(q)
+    let interestId
+
+    docs.forEach((doc) => (interestId = doc.data().interestId))
+    return interestId
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function getUsersByInterest(interestName) {
+  try {
+    const interestId = await getInterestId(interestName)
+
     const q = query(
       collection(db, 'junction_user_interest'),
       where('interestId', '==', interestId)
@@ -65,9 +81,6 @@ export async function getUsersByInterest(interestId) {
     const users = await Promise.all(
       userIds.map(async (userId) => await getUserById(userId))
     )
-
-    console.log(users)
-
     return users
   } catch (e) {
     console.error(e)
@@ -85,5 +98,3 @@ async function getUserById(userId) {
     console.error(e)
   }
 }
-
-getUsersByInterest('96')
