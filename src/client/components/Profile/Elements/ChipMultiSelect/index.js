@@ -16,11 +16,11 @@ import './style.css';
 const ChipMultiSelect = (props) => {
   const {
     options = [],
-    label = 'multi-select',
+    label = '',
     required = false,
     helperText = null,
     limitSelection = null,
-    value,
+    value = null,
   } = props;
 
   const printLabel = 
@@ -29,7 +29,7 @@ const ChipMultiSelect = (props) => {
       .map(word => word[0].toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
 
-  const [optionsSelected, setOption] = useState([value ? value : '']);
+  const [optionsSelected, setOption] = useState(value ? [...value] : []);
 
   const handleChange = (e) => {
     const {target: { value }} = e;
@@ -47,7 +47,7 @@ const ChipMultiSelect = (props) => {
           labelId={`${label}-label`}
           id={`${label}`}
           multiple
-          value={optionsSelected || ''}
+          value={optionsSelected}
           onChange={handleChange}
           input={<OutlinedInput id="select-multiple-chip" label="Chip"/>}
           renderValue={(selected) => (
