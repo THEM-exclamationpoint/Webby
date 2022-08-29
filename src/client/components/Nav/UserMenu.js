@@ -1,12 +1,18 @@
-import * as React from 'react';
+import {useState} from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import { Link, useNavigate } from 'react-router-dom';
+import { logOutUser } from '../../store/auth';
+import { useDispatch } from 'react-redux';
 
 export default function FadeMenu() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -14,9 +20,12 @@ export default function FadeMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+const handleLogout = () => {
+  dispatch(logOutUser())
+  navigate('/')
+}
   return (
-    <div>
+    <div className='profile-options'>
     <MoreIcon         
         aria-controls={open ? 'fade-menu' : undefined}
         aria-haspopup="true"
@@ -32,10 +41,11 @@ export default function FadeMenu() {
         open={open}
         onClose={handleClose}
         TransitionComponent={Fade}
+        className= 'menu'
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+      <MenuItem onClick={handleClose}>Profile</MenuItem>
+       <Link to='/editprofile'><MenuItem onClick={handleClose}>My account</MenuItem></Link>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
   );
