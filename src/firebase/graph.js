@@ -1,14 +1,7 @@
 import {app, db} from './db'
-import {
-  query,
-  getDocs,
-  collection,
-  where,
-  addDoc,
-  orderBy,
-} from 'firebase/firestore'
+import {query, getDocs, collection, where} from 'firebase/firestore'
 
-export async function getInterestsOfUser(userId) {
+async function getInterestsOfUser(userId) {
   try {
     const q = query(
       collection(db, 'junction_user_interest'),
@@ -62,10 +55,9 @@ async function getInterestId(interestName) {
   }
 }
 
-export async function getUsersByInterest(interestName) {
+async function getUsersByInterest(interestName) {
   try {
     const interestId = await getInterestId(interestName)
-
     const q = query(
       collection(db, 'junction_user_interest'),
       where('interestId', '==', interestId)
@@ -94,6 +86,38 @@ async function getUserById(userId) {
     let user
     docs.forEach((doc) => (user = doc.data().name))
     return user
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function getGraphData(userId) {
+  try {
+    const username = await getUserById(userId)
+    const interests = await getInterestsOfUser(userId)
+    let graphData = {
+      name: username,
+      children: await Promise.all(
+        interests.map(async (interest) => {
+          const usersWithInterest = await getUsersByInterest(interest)
+
+          const filteredUsersWithInterest = usersWithInterest.filter((user) => {
+            return user !== username
+          })
+
+          return {
+            name: interest,
+            children: filteredUsersWithInterest.map((user) => {
+              return {
+                name: user,
+                children: [],
+              }
+            }),
+          }
+        })
+      ),
+    }
+    return graphData
   } catch (e) {
     console.error(e)
   }

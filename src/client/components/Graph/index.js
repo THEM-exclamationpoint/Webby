@@ -1,9 +1,9 @@
 import React from 'react'
 import * as d3 from 'd3'
 import {useRef, useEffect, useState} from 'react'
+import {_getGraphData} from '../../store/graph/graphData'
 import {setUser} from '../../store/auth/user'
 import {useDispatch, useSelector} from 'react-redux'
-import {getUserInterests} from '../../../firebase/graph'
 
 // Copyright 2022 Observable, Inc.
 // Released under the ISC license.
@@ -137,33 +137,24 @@ function Tree(
   return svg.node()
 }
 
-//TODO: get user's interests and the other users who share that interest from firebase
-
-//TODO: move all firebase interactions to redux
+//TODO: !!! get all data to load on first render !!!
 
 function Graph() {
   const dispatch = useDispatch()
-  let user = useSelector((state) => state.user)
+  const user = useSelector((state) => state.user)
+  const graphData = useSelector((state) => state.graphData)
+
   useEffect(() => {
-    dispatch(setUser())
-  }, [])
-
-  const userInterests = user.interests.map((interest) => {
-    return {
-      name: interest,
-      children: [],
+    async function fetchData() {
+      await dispatch(setUser())
     }
-  })
-
-  const userData = {
-    name: user.name,
-    children: userInterests,
-  }
+    dispatch(_getGraphData(user.uid))
+  }, [])
 
   const web = useRef()
   //firebase data will be dependency for this function so that when it changes, graph re-render
   useEffect(() => {
-    Tree(userData, {
+    Tree(graphData, {
       label: (d) => d.name,
       title: (d, n) =>
         `${n
