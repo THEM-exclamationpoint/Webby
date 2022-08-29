@@ -93,9 +93,18 @@ export async function sendNewMessage(uid, groupId, content) {
       docId = doc.id
     })
     const ref = doc(db,'groups',docId)
-    console.log(ref)
     await updateDoc(ref, {
       members: arrayUnion(uid)
+    })
+  }
+  catch(err){console.error(err)}
+ }
+ export async function newGroup(uids, groupname){
+  try{
+    await addDoc(collection(db, 'groups'), {
+      members: uids,
+      groupname,
+      groupId: (Date.now() + Math.floor(Math.random() * 1000))
     })
   }
   catch(err){console.error(err)}

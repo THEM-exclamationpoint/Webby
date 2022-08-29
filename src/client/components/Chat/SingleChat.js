@@ -11,8 +11,9 @@ import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import Button from '@mui/material/Button'
 
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+
 import {setUser} from '../../store/auth/user'
 import {sentMessage} from '../../store/chat/sendMessage'
 import {getMessagesWithGroup} from '../../../firebase/chat'
@@ -20,28 +21,36 @@ import {setUsers} from '../../store/auth/users'
 import {getFriends} from '../../store/friends'
 import { addChatUsers } from '../../store/chat/chatUsers'
 
-const SingleChat = (props) => {
+const SingleChat = ({group}) => {
   const dispatch = useDispatch()
   let user = useSelector((state) => state.user)
   let users = useSelector((state) => state.users)
   let friends = useSelector((state) => state.friends)
 
+  const scrollRef = useRef(null);
+
+
+
   let [message, setMessage] = useState('')
   let [messages, setMessages] = useState([])
   let [menuOpen, setMenuOpen] = useState(false)
-
-
+  let [anchorEl, setAnchorEl] = useState(null)
 
   useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+  useEffect(() => {
     dispatch(setUser())
-    dispatch(setUsers(props.group.members))
+    dispatch(setUsers(group.members))
     dispatch(getFriends(user.uid))
   }, [])
 
   useEffect(() => {
-    const unsubscribe = getMessagesWithGroup(props.group.groupId, setMessages)
+    const unsubscribe = getMessagesWithGroup(group.groupId, setMessages)
     return unsubscribe
-  }, [props.group.groupId])
+  }, [group.groupId])
 
   function isEnter(e) {
     if (e.key === 'Enter') {
@@ -50,39 +59,44 @@ const SingleChat = (props) => {
     }
   }
   function handleClick() {
-    dispatch(sentMessage(user.uid, props.group.groupId, message))
-  }
+    dispatch(sentMessage(user.uid, group.groupId, message))
+    console.log(message)
+    setMessage('')
 
+  }
   function handleChange(e) {
-    setMessage({
-      message: e.target.value,
-    })
+    setMessage(e.target.value)
   }
   function handleSelect(uid) {
-    dispatch(addChatUsers(uid,user.uid,props.group.groupId))
+    dispatch(addChatUsers(uid, user.uid, group.groupId))
   }
-  function toggleMenu(){
+  function toggleMenu(e){
     setMenuOpen(true)
+    setAnchorEl(e.target)
   }
   let closeMenu = () => {
     setMenuOpen(false);
+    setAnchorEl(null)
 }
   return (
     <Grid onKeyPress={isEnter}>
       <Grid container>
         <Grid item={true} xs={12}>
           <Typography variant="h5" className="header-message" align="center">
-            {props.group.groupname}
+            {group.groupname}
           </Typography>
           <React.Fragment>
           <Button onClick={toggleMenu}>Add Member</Button>
-          <Menu open={menuOpen} onClose={closeMenu}> 
+          <Menu open={menuOpen} onClose={closeMenu} anchorEl={anchorEl}> 
             {friends.map((friend) => {
-              return (
+              if(!(group.members.includes(friend.uid)) ){
+                              return (
                 <MenuItem value={friend} key={friend.uid} onClick={()=>handleSelect(friend.uid)}>
                   {friend.name}
                 </MenuItem>
               )
+              }
+
             })}
           </Menu>
           </React.Fragment>
@@ -96,7 +110,7 @@ const SingleChat = (props) => {
             return curuser.uid === message.fromUser
           })
           return (
-            <ListItem key={i}>
+            <ListItem key={i} ref={scrollRef}>
               <Grid container>
                 <Grid item={true} xs={12}>
                   <ListItemText
@@ -105,7 +119,7 @@ const SingleChat = (props) => {
                   ></ListItemText>
                   <ListItemText
                     align={message.fromUser !== user.uid ? 'left' : 'right'}
-                    primary={message.content.message}
+                    primary={message.content.message ? message.content.message : message.content}
                   ></ListItemText>
                 </Grid>
                 <Grid item={true} xs={12}>
@@ -114,7 +128,7 @@ const SingleChat = (props) => {
                     secondary={
                       message.timeStamp
                         ? `${new Date(message.timeStamp.seconds * 1000)}`
-                        : 'unkown'
+                        : 'unknown'
                     }
                   ></ListItemText>
                 </Grid>
@@ -126,10 +140,14 @@ const SingleChat = (props) => {
       <Divider />
       <Grid container style={{padding: '20px'}}>
         <Grid item={true} xs={11}>
-          <TextField
-            id="outlined-basic-email"
+        <TextField
+            autoFocus
+            margin="dense"
             label="Type Something"
+            value={message}
+            type="text"
             fullWidth
+            variant="standard"
             onChange={handleChange}
           />
         </Grid>
