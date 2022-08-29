@@ -9,3 +9,8 @@
   .navbar {
     background-color: #2c2c54 !important;
   }
+
+.menu a {
+    text-decoration: none !important;
+    color:black
+  }

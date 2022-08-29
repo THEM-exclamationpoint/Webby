@@ -20,6 +20,12 @@ const _logIn = (status) => {
     status,
   }
 }
+const _logOut = (status) => {
+  return {
+    type: LOG_OUT,
+    status,
+  }
+}
 
 const signUp= (status) => {
   return {
