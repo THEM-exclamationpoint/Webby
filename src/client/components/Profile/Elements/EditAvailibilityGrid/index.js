@@ -1,7 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import {useNavigate} from 'react-router-dom'
-import {Link} from 'react-router-dom'
+import React, {useState} from 'react'
 import {
   Accordion,
   AccordionDetails,
@@ -10,24 +7,14 @@ import {
   ButtonGroup,
   Card,
   FormControl,
-  FormGroup,
-  FormControlLabel,
-  FormLabel,
-  MenuItem,
-  Switch,
-  Stack,
-  Paper,
   Box,
-  Typography,
-  Chip,
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
 import NightsStayIcon from '@mui/icons-material/NightsStay'
-import {createTheme, ThemeProvider, styled} from '@mui/material/styles'
-import {deepPurple, pink, cyan} from '@mui/material/colors'
+import {styled} from '@mui/material/styles'
+import {newAvailability, User} from '../../../../../firebase/models/User'
 import './style.css'
-import user from '../../../../store/auth/user'
 
 const Item = styled(Card)(({theme}) => ({
   ...theme.typography.body2,
@@ -47,16 +34,16 @@ const daysOTW = [
   'Sunday',
 ]
 
-export const newAvailability = () => {
-  return daysOTW.map((day, idx) => {
-    return {
-      id: idx,
-      day,
-      am: 'unavailable',
-      pm: 'unavailable',
-    }
-  })
-}
+// export const newAvailability = () => {
+//   return daysOTW.map((day, idx) => {
+//     return {
+//       id: idx,
+//       day,
+//       am: 'unavailable',
+//       pm: 'unavailable',
+//     }
+//   })
+// }
 
 const AvailabilityGrid = (props) => {
   const {setState = (state) => {}, value} = props
@@ -81,7 +68,7 @@ const AvailabilityGrid = (props) => {
     <FormControl
       sx={{
         display: 'flex',
-        p: 1,
+        m: 1,
       }}>
       {availability.map((day, idx) => {
         return (

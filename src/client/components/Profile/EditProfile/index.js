@@ -1,24 +1,16 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
-import {Link} from 'react-router-dom'
 import {
   Button,
   Box,
   TextField,
-  Checkbox,
-  FormControl,
   FormGroup,
   FormControlLabel,
   FormLabel,
-  MenuItem,
   Switch,
   Card,
   Paper,
-  Grid,
-  Divider,
-  Typography,
-  Autocomplete,
   IconButton,
   InputLabel,
   OutlinedInput,
@@ -27,10 +19,9 @@ import {
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import EditAvailabilityGrid, {
-  newAvailability,
-} from '../Elements/EditAvailibilityGrid'
+import EditAvailabilityGrid from '../Elements/EditAvailibilityGrid'
 import MultiSelctorAuto from '../Elements/MultiSelectorAuto'
+import {newAvailability, User} from '../../../../firebase/models/User'
 import './style.css'
 
 export const userModel = (user) => {
@@ -48,7 +39,9 @@ export const userModel = (user) => {
     interests: user.interests || [],
     oldPassword: '',
     newPassword: '',
-    newPasswordConfirm: '',
+    confirmPassword: '',
+    newEmail: '',
+    confirmEmail: '',
   }
 }
 
@@ -62,9 +55,11 @@ const EditProfile = () => {
 
   let [saved, setSaved] = useState(false)
 
-  let [showOldPassword, setShowOldPassword] = useState(false)
-  let [showNewPassword, setShowNewPassword] = useState(false)
-  let [showNewPasswordConfirm, setShowNewPasswordConfirm] = useState(false)
+  let [showPassword, setShowPassword] = useState({
+    old: false,
+    new: false,
+    confirm: false,
+  })
 
   const handleChange = (e) => {
     if (e.target.name === 'remote' || e.target.name === 'local') {
@@ -85,9 +80,16 @@ const EditProfile = () => {
     console.log(userProfile)
   }
 
-  const clickShowPassword = (e) => {}
+  const clickShowPassword = (field) => {
+    setShowPassword({
+      ...showPassword,
+      [field]: !showPassword[field],
+    })
+  }
 
-  const mouseDownShowPassword = (e) => {}
+  const mouseDownShowPassword = (e) => {
+    e.preventDefault()
+  }
 
   return (
     <Paper
@@ -104,9 +106,10 @@ const EditProfile = () => {
         app)
       </h6>
       <form onSubmit={handleSubmit}>
-        <Paper sx={{m: 1, p: 3}}>
+        <Paper sx={{m: 1, p: 2}}>
           <h3>Personal Details</h3>
           <TextField
+            fullWidth
             required
             label="Name"
             type="text"
@@ -117,6 +120,7 @@ const EditProfile = () => {
             value={userProfile.name}
           />
           <MultiSelctorAuto
+            fullWidth
             name="pronouns"
             label="pronouns"
             options={pronounList}
@@ -129,6 +133,7 @@ const EditProfile = () => {
             }}
           />
           <MultiSelctorAuto
+            fullWidth
             name="interests"
             label="interests"
             options={interestList}
@@ -141,8 +146,20 @@ const EditProfile = () => {
               setUserProfile({...userProfile, interests})
             }}
           />
+          <h5>Profile Picture</h5>
+          <TextField
+            fullWidth
+            required
+            label="Image URL"
+            type="url"
+            name="profilePicture"
+            autoComplete="off"
+            helperText="We should make this an uploader"
+            onChange={handleChange}
+            value={userProfile.profilePicture}
+          />
         </Paper>
-        <Paper sx={{m: 1, p: 3}}>
+        <Paper sx={{m: 1, p: 2}}>
           <h3>Search Details</h3>
           <Card sx={{m: 1, p: 3}}>
             <Box>
@@ -208,42 +225,149 @@ const EditProfile = () => {
           />
         </Paper>
         <Card sx={{m: 1, p: 2}}>
-          <Box sx={{m: 2}}>
+          <Box sx={{m: 1}}>
+            <h3>Change Email</h3>
             <TextField
-              required
-              label="Image URL"
-              type="url"
-              name="profilePicture"
+              sx={{m: 1}}
+              fullWidth
+              label="New Email"
+              type="email"
+              name="newEmail"
               autoComplete="off"
-              helperText="We should make this an uploader"
               onChange={handleChange}
-              value={userProfile.profilePicture}
+              value={userProfile.newEmail}
+              error={
+                userProfile.confirmEmail
+                  ? userProfile.confirmEmail === userProfile.newEmail
+                    ? false
+                    : true
+                  : false
+              }
             />
+            <TextField
+              sx={{m: 1}}
+              fullWidth
+              label="Confirm New Email"
+              type="email"
+              name="confirmEmail"
+              autoComplete="off"
+              onChange={handleChange}
+              value={userProfile.confirmEmail}
+              error={
+                userProfile.confirmEmail
+                  ? userProfile.confirmEmail === userProfile.newEmail
+                    ? false
+                    : true
+                  : false
+              }
+            />
+            {userProfile.confirmEmail ? (
+              userProfile.confirmEmail === userProfile.newEmail ? (
+                ''
+              ) : (
+                <h6>Emails must match!</h6>
+              )
+            ) : (
+              ''
+            )}
           </Box>
-
-          <FormControl variant="outlined">
+          <Box
+            sx={{
+              m: 1.5,
+              '& > *': {
+                m: 0.5,
+              },
+            }}>
+            <h3>Change Password</h3>
             <InputLabel htmlFor="oldPassword">Old Password</InputLabel>
             <OutlinedInput
               name="oldPassword"
               id="oldPassword"
-              type={showOldPassword ? 'text' : 'password'}
+              type={showPassword.old ? 'text' : 'password'}
               value={userProfile.oldPassword}
               onChange={handleChange}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
-                    name="show-old-password"
                     aria-label="toggle old password visibility"
-                    onClick={clickShowPassword}
+                    onClick={() => clickShowPassword('old')}
                     onMouseDown={mouseDownShowPassword}
                     edge="end">
-                    {showOldPassword ? <VisibilityOff /> : <Visibility />}
+                    {showPassword.old ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               }
               label="Old Password"
+              notched={false}
             />
-          </FormControl>
+            <InputLabel htmlFor="newPassword">New Password</InputLabel>
+            <OutlinedInput
+              name="newPassword"
+              id="newPassword"
+              type={showPassword.new ? 'text' : 'password'}
+              value={userProfile.newPassword}
+              onChange={handleChange}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle new password visibility"
+                    onClick={() => clickShowPassword('new')}
+                    onMouseDown={mouseDownShowPassword}
+                    edge="end">
+                    {showPassword.new ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="New Password"
+              notched={false}
+              error={
+                userProfile.confirmPassword
+                  ? userProfile.confirmPassword === userProfile.newPassword
+                    ? false
+                    : true
+                  : false
+              }
+            />
+            <InputLabel htmlFor="confirmPassword">
+              Confirm New Password
+            </InputLabel>
+            <OutlinedInput
+              name="confirmPassword"
+              id="confirmPassword"
+              type={showPassword.confirm ? 'text' : 'password'}
+              value={userProfile.confirmPassword}
+              onChange={handleChange}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle confirm password visibility"
+                    onClick={() => clickShowPassword('confirm')}
+                    onMouseDown={mouseDownShowPassword}
+                    edge="end">
+                    {showPassword.confirm ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Confirm New Password"
+              notched={false}
+              error={
+                userProfile.confirmPassword
+                  ? userProfile.confirmPassword === userProfile.newPassword
+                    ? false
+                    : true
+                  : false
+              }
+            />
+            {userProfile.confirmPassword ? (
+              userProfile.confirmPassword === userProfile.newPassword ? (
+                ''
+              ) : (
+                <h6>Passwords must match!</h6>
+              )
+            ) : (
+              ''
+            )}
+          </Box>
         </Card>
         <Button type="submit" variant="contained" sx={{m: 1, p: 1}}>
           SAVE

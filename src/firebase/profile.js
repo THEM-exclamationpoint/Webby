@@ -1,15 +1,21 @@
 import {app, db} from './db'
+import {getUserData, auth} from './auth'
 import {updateProfile, updatePassword, updateEmail} from 'firebase/auth'
 import {
   query,
-  getDoc,
   getDocs,
   collection,
   where,
   addDoc,
-  setDoc,
+  orderBy,
+  serverTimestamp,
+  onSnapshot,
+  doc,
+  updateDoc,
+  arrayUnion,
 } from 'firebase/firestore'
 
-export async function updateUserData(user) {
-  const q = query(collection(db, 'users'), where('uid', '==', 'user.uid'))
+export async function updateUserData() {
+  const user = await getUserData()
+  const q = query(collection(db, 'users'), where('uid', '==', user.uid))
 }
