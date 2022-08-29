@@ -13,10 +13,10 @@ export default function MultiSelctorAuto(props) {
   const {
     options = [],
     label = '',
-    required = false,
-    helperText = null,
+    helperText = '',
     limitSelection = null,
-    defaultValue = null,
+    defaultValue = [],
+    setState = (state) => {},
     id = '',
   } = props
 
@@ -34,6 +34,7 @@ export default function MultiSelctorAuto(props) {
     e.preventDefault()
     if (!limitSelection || val.length <= +limitSelection) {
       setValue(val)
+      setState(val)
     }
   }
   return (
@@ -53,8 +54,8 @@ export default function MultiSelctorAuto(props) {
           {...params}
           label={printLabel}
           helperText={helperText}
+          value={value}
           disabled={limitSelection && value.length === +limitSelection}
-          required={required}
         />
       )}
     />

@@ -47,8 +47,8 @@ const daysOTW = [
   'Sunday',
 ]
 
-const newAvailability = (days) => {
-  return days.map((day, idx) => {
+export const newAvailability = () => {
+  return daysOTW.map((day, idx) => {
     return {
       id: idx,
       day,
@@ -58,15 +58,10 @@ const newAvailability = (days) => {
   })
 }
 
-export const generateAvailability = () => {
-  return newAvailability(daysOTW)
-}
-
 const AvailabilityGrid = (props) => {
-  const {label = '', oldAvailability = null, value} = props
-
+  const {setState = (state) => {}, value} = props
   let [availability, setAvailability] =
-    oldAvailability || useState(newAvailability(daysOTW))
+    useState(value) || useState(newAvailability())
 
   let [expanded, setExpanded] = useState(false)
 
@@ -75,6 +70,7 @@ const AvailabilityGrid = (props) => {
     let newAvailability = [...availability]
     newAvailability[updated.id] = updated
     setAvailability(newAvailability)
+    setState(newAvailability)
   }
 
   const accordionControl = (day) => (e, isExpanded) => {
@@ -85,7 +81,7 @@ const AvailabilityGrid = (props) => {
     <FormControl
       sx={{
         display: 'flex',
-        m: 1,
+        p: 1,
       }}>
       {availability.map((day, idx) => {
         return (
@@ -176,7 +172,7 @@ const AvailabilityGrid = (props) => {
                       color={day.am === 'notice' ? 'warning' : 'secondary'}
                       value={JSON.stringify({...day, am: 'notice'})}
                       onClick={handleClick}>
-                      with notice
+                      plan ahead
                     </Button>
                     <Button
                       color={day.am === 'unavailable' ? 'error' : 'secondary'}
@@ -199,7 +195,7 @@ const AvailabilityGrid = (props) => {
                       color={day.pm === 'notice' ? 'warning' : 'secondary'}
                       value={JSON.stringify({...day, pm: 'notice'})}
                       onClick={handleClick}>
-                      with notice
+                      plan ahead
                     </Button>
                     <Button
                       color={day.pm === 'unavailable' ? 'error' : 'secondary'}

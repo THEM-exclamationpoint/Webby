@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import {
   Button,
+  Box,
   TextField,
   Checkbox,
   FormControl,
@@ -18,10 +19,16 @@ import {
   Divider,
   Typography,
   Autocomplete,
+  IconButton,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
   Slider,
 } from '@mui/material'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import EditAvailabilityGrid, {
-  generateAvailability,
+  newAvailability,
 } from '../Elements/EditAvailibilityGrid'
 import MultiSelctorAuto from '../Elements/MultiSelectorAuto'
 import './style.css'
@@ -29,16 +36,16 @@ import './style.css'
 export const userModel = (user) => {
   return {
     uid: user.uid || '',
-    displayName: user.name || '',
+    name: user.name || '',
     pronouns: user.pronouns || [],
     email: user.email || '',
-    // hangoutPreference: user.preference || '',
-    availability: user.availability || generateAvailability(),
+    remote: user.remote || false,
+    local: user.local || true,
+    availability: user.availability || newAvailability(),
     zipCode: user.zipCode || '',
-    imageUrl: user.imageUrl || '',
-    // range: '',
-    interests: user.interests || [],
     profilePicture: user.profilePicture || '',
+    range: 20,
+    interests: user.interests || [],
     oldPassword: '',
     newPassword: '',
     newPasswordConfirm: '',
@@ -49,22 +56,38 @@ const EditProfile = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  let user = useSelector((state) => state.auth)
+  let user = useSelector((state) => state.user)
 
   let [userProfile, setUserProfile] = useState(userModel(user))
 
   let [saved, setSaved] = useState(false)
 
+  let [showOldPassword, setShowOldPassword] = useState(false)
+  let [showNewPassword, setShowNewPassword] = useState(false)
+  let [showNewPasswordConfirm, setShowNewPasswordConfirm] = useState(false)
+
   const handleChange = (e) => {
-    setUserProfile({
-      ...userProfile,
-      [e.target.name]: e.target.value,
-    })
+    if (e.target.name === 'remote' || e.target.name === 'local') {
+      setUserProfile({
+        ...userProfile,
+        [e.target.name]: e.target.checked,
+      })
+    } else {
+      setUserProfile({
+        ...userProfile,
+        [e.target.name]: e.target.value,
+      })
+    }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    console.log(userProfile)
   }
+
+  const clickShowPassword = (e) => {}
+
+  const mouseDownShowPassword = (e) => {}
 
   return (
     <Paper
@@ -81,90 +104,146 @@ const EditProfile = () => {
         app)
       </h6>
       <form onSubmit={handleSubmit}>
-        <Paper sx={{m: 1, p: 2}}>
+        <Paper sx={{m: 1, p: 3}}>
           <h3>Personal Details</h3>
           <TextField
             required
             label="Name"
             type="text"
-            name="displayName"
+            name="name"
             autoComplete="off"
             helperText="This is the name that will be shown on your profile"
             onChange={handleChange}
-            value={userProfile.displayName}
+            value={userProfile.name}
           />
-          <FormControl></FormControl>
           <MultiSelctorAuto
-            name="pronoun-selector"
+            name="pronouns"
             label="pronouns"
             options={pronounList}
-            required={true}
             helperText="Order will be preserved"
+            value={userProfile.pronouns}
             defaultValue={userProfile.pronouns}
             id="pronoun-selector"
-            onChange={(event, value) => {}}
+            setState={(pronouns) => {
+              setUserProfile({...userProfile, pronouns})
+            }}
           />
           <MultiSelctorAuto
-            name="interest selector"
+            name="interests"
             label="interests"
             options={interestList}
-            required={true}
             helperText="Enter up to 5"
             limitSelection="5"
             value={userProfile.interests}
             defaultValue={userProfile.interests}
             id="interest-selector"
+            setState={(interests) => {
+              setUserProfile({...userProfile, interests})
+            }}
           />
         </Paper>
-        <Paper sx={{m: 1, p: 2}}>
-          <h3>Hangout Details</h3>
-          <Card sx={{m: 1, p: 2}}>
-            <FormGroup>
-              <FormLabel component="legend">Open to:</FormLabel>
-              <FormControlLabel
-                control={<Switch onChange={handleChange} name="remote" />}
-                label="remote"
+        <Paper sx={{m: 1, p: 3}}>
+          <h3>Search Details</h3>
+          <Card sx={{m: 1, p: 3}}>
+            <Box>
+              <FormGroup>
+                <FormLabel component="legend">Open to:</FormLabel>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      onChange={handleChange}
+                      name="remote"
+                      checked={userProfile.remote}
+                    />
+                  }
+                  label="remote"
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      onChange={handleChange}
+                      name="local"
+                      checked={userProfile.local}
+                    />
+                  }
+                  label="local"
+                />
+              </FormGroup>
+            </Box>
+            <h4>Location:</h4>
+            <Box>
+              <TextField
+                required
+                label="ZIP Code"
+                type="text"
+                name="zipCode"
+                autoComplete="off"
+                onChange={handleChange}
+                value={userProfile.zipCode}
               />
-              <FormControlLabel
-                control={<Switch onChange={handleChange} name="local" />}
-                label="local"
+              <FormLabel component="legend">
+                <small>Max range: {userProfile.range} miles</small>
+              </FormLabel>
+              <Slider
+                aria-label="range"
+                name="range"
+                defaultValue={20}
+                min={1}
+                max={100}
+                valueLabelDisplay="auto"
+                onChange={handleChange}
+                value={userProfile.range}
               />
-            </FormGroup>
+            </Box>
           </Card>
-          <Card sx={{m: 1, p: 2}}>
-            <TextField
-              required
-              label="Location"
-              type="text"
-              name="location"
-              autoComplete="off"
-              helperText="Enter zip"
-              onChange={handleChange}
-              value={userProfile.zipCode}
-            />
-            <FormLabel component="legend">Range:</FormLabel>
-            <Slider
-              aria-label="range"
-              defaultValue={25}
-              min={5}
-              max={99}
-              valueLabelDisplay="auto"
-            />
-          </Card>
-          <h5>Set Availability:</h5>
-          <EditAvailabilityGrid />
+          <h3>Set Availability</h3>
+          <EditAvailabilityGrid
+            value={userProfile.availability}
+            setState={(availability) => {
+              setUserProfile({
+                ...userProfile,
+                availability,
+              })
+            }}
+          />
         </Paper>
         <Card sx={{m: 1, p: 2}}>
-          <TextField
-            required
-            label="Image URL"
-            type="text"
-            name="imageUrl"
-            autoComplete="off"
-            helperText="We should make this an uploader"
-            onChange={handleChange}
-            value={userProfile.imageUrl}
-          />
+          <Box sx={{m: 2}}>
+            <TextField
+              required
+              label="Image URL"
+              type="url"
+              name="profilePicture"
+              autoComplete="off"
+              helperText="We should make this an uploader"
+              onChange={handleChange}
+              value={userProfile.profilePicture}
+            />
+          </Box>
+
+          <FormControl variant="outlined">
+            <InputLabel htmlFor="oldPassword">Old Password</InputLabel>
+            <OutlinedInput
+              name="oldPassword"
+              id="oldPassword"
+              type={showOldPassword ? 'text' : 'password'}
+              value={userProfile.oldPassword}
+              onChange={handleChange}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    name="show-old-password"
+                    aria-label="toggle old password visibility"
+                    onClick={clickShowPassword}
+                    onMouseDown={mouseDownShowPassword}
+                    edge="end">
+                    {showOldPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Old Password"
+            />
+          </FormControl>
         </Card>
         <Button type="submit" variant="contained" sx={{m: 1, p: 1}}>
           SAVE
