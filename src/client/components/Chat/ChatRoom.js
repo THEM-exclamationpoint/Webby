@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-// import {makeStyles} from '@mui/styles'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import Divider from '@mui/material/Divider'
 import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography';
+import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
@@ -14,42 +13,51 @@ import Avatar from '@mui/material/Avatar'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import Drawer from '@mui/material/Drawer'
-
+import Dialog from '@mui/material/Dialog';
 import SingleChat from './SingleChat'
-
+import {getFriends} from '../../store/friends'
 import {setUser} from '../../store/auth/user'
 import {getChatUsers} from '../../store/chat/chatUsers'
-
-// const useStyles = makeStyles({
-//   chatSection: {
-//     width: '100%',
-//     height: '80vh',
-//   },
-//   borderRight500: {},
-//   collapse: {
-//     orientation: 'horizontal',
-//   },
-// })
-
+import { NewChat } from './NewChat';
 const Chat = () => {
   const dispatch = useDispatch()
-  // const classes = useStyles()
   let [collapse, setCollapse] = useState(false)
+  let [modalOpen, setModalOpen] = useState(false)
 
   let user = useSelector((state) => state.user)
   let groups = useSelector((state) => state.chatUsers)
-  
+  let friends = useSelector((state) => state.friends)
+  let [selected, setSelected] = useState([])
+
+
+  function onSelect(friend){
+      if(selected.includes(friend)){
+          setSelected(selected.filter(friends => friends !== friend))
+          return false
+      }
+      else {
+        setSelected([...selected,friend])  
+        return true
+      }
+      
+  }
 
   useEffect(() => {
     dispatch(setUser())
     dispatch(getChatUsers())
-
+    dispatch(getFriends(user.uid))
   }, [])
-let [selectedGroup, setSelectedGroup] = useState(groups[0])
+  let [selectedGroup, setSelectedGroup] = useState(groups[0])
+
   function clickMenu() {
     setCollapse(!collapse)
   }
-
+  function modalClose() {
+    setModalOpen(false)
+  }
+  function modalToggle() {
+    setModalOpen(true)
+  }
   return (
     <div>
       <Grid container>
@@ -66,16 +74,14 @@ let [selectedGroup, setSelectedGroup] = useState(groups[0])
           <Grid>
             <ArrowBackIosIcon onClick={clickMenu} />
             <List>
-              <ListItem button key="RemySharp">
+              <ListItem button key="user">
                 <ListItemIcon>
-                  <Avatar alt="Remy Sharp" src={user.profilePicture} />
+                  <Avatar alt="User" src={user.profilePicture} />
                 </ListItemIcon>
                 <ListItemText primary={user.name}></ListItemText>
               </ListItem>
             </List>
             <Divider />
-            {/* search for anyone on your friends list */}
-
             <Grid item={true} xs={12} style={{padding: '10px'}}>
               <TextField
                 id="outlined-basic-email"
@@ -87,7 +93,10 @@ let [selectedGroup, setSelectedGroup] = useState(groups[0])
             <Divider />
             {groups.map((group) => {
               return (
-                <ListItem button key={group.groupId} onClick={()=>setSelectedGroup(group)}>
+                <ListItem
+                  button
+                  key={group.groupId}
+                  onClick={() => setSelectedGroup(group)}>
                   <ListItemIcon></ListItemIcon>
                   <ListItemText primary={group.groupname}>
                     {group.groupname}
@@ -97,15 +106,18 @@ let [selectedGroup, setSelectedGroup] = useState(groups[0])
               )
             })}
             <List>
-              <ListItem button key="NewChat">
+              <ListItem button key="NewChat" onClick={modalToggle}>
                 <ListItemText primary="New Chat">New Chat</ListItemText>
               </ListItem>
             </List>
+            <Dialog open={modalOpen} onClose={modalClose}>
+            <NewChat friends={friends} user={user}/>
+            </Dialog>
           </Grid>
         </Drawer>
-        {/* single chat component, should change as the state changes when you click on a different chat */}
-       { selectedGroup && <SingleChat group={selectedGroup}/>}
+        {selectedGroup && <SingleChat group={selectedGroup} />}
       </Grid>
+
     </div>
   )
 }

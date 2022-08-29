@@ -114,7 +114,7 @@ const SingleChat = (props) => {
                     secondary={
                       message.timeStamp
                         ? `${new Date(message.timeStamp.seconds * 1000)}`
-                        : 'unkown'
+                        : 'unknown'
                     }
                   ></ListItemText>
                 </Grid>
