@@ -1,3 +1,4 @@
+
 import {app, db} from './db'
 import {
   GoogleAuthProvider,
@@ -24,7 +25,6 @@ export const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
 
 
-
 export async function getUserData() {
   const user = auth.currentUser
   if (!user) return null
@@ -36,6 +36,7 @@ export async function getUserData() {
   })
   return returnUser
 }
+
 export const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider)
@@ -49,7 +50,6 @@ export const signInWithGoogle = async () => {
         authProvider: 'google',
         email: user.email,
         profilePicture: user.photoURL
-
       })
     }
   } catch (err) {

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { setUser } from '../../store/auth/user';
 import { logIn, logInGoogle } from '../../store/auth';
 import { Button, TextField } from '@mui/material';
