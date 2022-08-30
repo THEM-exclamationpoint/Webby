@@ -1,0 +1,25 @@
+.signup-component .signup-form{
+    display:flex;
+    flex-direction: column;
+}
+.signup-component .form-field {
+    margin-bottom: 5px
+}
+.signup-component{
+    text-align: center;
+}
+.login-container {
+    text-align: center;
+}
+.login-container h1 {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+.login-container button {
+    background-color: #ddddff;
+    color: black;
+}
+.signup-component button {
+    background-color: #ddddff;
+    color: black;
+}
