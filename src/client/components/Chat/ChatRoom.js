@@ -37,6 +37,7 @@ const Chat = () => {
     dispatch(getChatUsers())
     dispatch(getFriends(user.uid))
   }, [])
+  
   let [selectedGroup, setSelectedGroup] = useState(groups[0])
 
   function clickMenu() {

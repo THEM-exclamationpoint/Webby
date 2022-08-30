@@ -7,6 +7,9 @@ import {setUser} from '../../store/auth/user'
 import {useDispatch, useSelector} from 'react-redux'
 import {useState, useEffect} from 'react'
 import Avatar from '@mui/material/Avatar'
+
+import { Link } from 'react-router-dom'
+
 export const FriendsList = () => {
   const dispatch = useDispatch()
   let friends = useSelector((state) => state.friends)
@@ -14,26 +17,29 @@ export const FriendsList = () => {
 
   useEffect(() => {
     dispatch(setUser())
+  }, []) 
+  
+  useEffect(() => {
     dispatch(getFriends(user.uid))
-  }, [])
+  }, [user.uid]) 
 
 
-  return (
+  return (     
     <div className="friends-list">
-      Friends:
       <List>
-        {friends.map(friend => {
-            return(
-            
-                <ListItem button key={friend.uid}>   
-                 <ListItemIcon>
+        {user && friends.map((friend) => {
+          return (
+            <ListItem button key={friend.uid} component={Link} to={`/users/${friend.uid}`}>
+              <ListItemIcon>
                 <Avatar alt="User" src={friend.profilePicture} />
               </ListItemIcon>
-                <ListItemText>{friend.name}</ListItemText>
-              </ListItem>
-            )
+              <ListItemText>{friend.name}</ListItemText>
+            </ListItem>
+          )
         })}
       </List>
     </div>
   )
 }
+
+

@@ -7,6 +7,7 @@ import {
   addDoc,
   orderBy,
 } from 'firebase/firestore'
+import { getUserData } from './auth'
 
 export async function getUsersFriends(uid){
     const q = query(collection(db, 'junction_user_user'), where('friends','array-contains',uid))
@@ -22,13 +23,13 @@ export async function getUsersFriends(uid){
         friendIds.push(friendId)
     })
 
-    let friends = [];
-    friendIds.forEach(async id => {
+    return Promise.all(friendIds.map(async id => {
         const friendQ = query(collection(db, 'users'),where('uid', '==',id))
         let docs = await getDocs(friendQ)
+        let friends =[]
         docs.forEach(doc => {
             friends.push(doc.data())
         })
-    })
-    return friends
+        return friends[0]
+    }))
 }

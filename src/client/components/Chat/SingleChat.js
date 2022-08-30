@@ -29,8 +29,6 @@ const SingleChat = ({group}) => {
 
   const scrollRef = useRef(null);
 
-
-
   let [message, setMessage] = useState('')
   let [messages, setMessages] = useState([])
   let [menuOpen, setMenuOpen] = useState(false)
