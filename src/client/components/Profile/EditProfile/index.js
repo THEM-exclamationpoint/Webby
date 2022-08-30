@@ -51,7 +51,7 @@ const EditProfile = () => {
 
   let user = useSelector((state) => state.user)
 
-  let [userProfile, setUserProfile] = useState(userModel(user))
+  let [userProfile, setUserProfile] = useState(new User(user))
 
   let [saved, setSaved] = useState(false)
 
@@ -73,6 +73,7 @@ const EditProfile = () => {
         [e.target.name]: e.target.value,
       })
     }
+    console.log(userProfile)
   }
 
   const handleSubmit = async (e) => {
