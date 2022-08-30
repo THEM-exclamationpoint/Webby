@@ -17,6 +17,7 @@ import Drawer from '@mui/material/Drawer'
 import Dialog from '@mui/material/Dialog';
 
 import SingleChat from './SingleChat'
+import './style.css'
 
 import {getFriends} from '../../store/friends'
 import {setUser} from '../../store/auth/user'
@@ -51,7 +52,7 @@ const Chat = () => {
   }
   
   return (
-    <div>
+    <div className='chat-component'>
       <Grid container>
         <Grid item={true} xs={12}>
           <Typography variant="h5" className="header-message">

@@ -1,0 +1,18 @@
+.homepage {
+    justify-content: center;
+    text-align: center !important;
+    /* font-family: 'Lato', sans-serif; */
+ 
+}
+
+.homepage h1 {
+    font-size:medium;
+       color:#951A4D
+}
+.homepage button {
+    background-color: #ddddff;
+    color: black;
+}
+.homepage small {
+    opacity: 50%;
+}
