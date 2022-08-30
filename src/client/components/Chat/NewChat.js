@@ -51,6 +51,7 @@ export const NewChat = ({friends,user}) => {
             fullWidth
             variant="standard"
             onChange={handleChange}
+            required
           />
       <DialogContentText>Friends</DialogContentText>
 

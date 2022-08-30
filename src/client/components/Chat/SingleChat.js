@@ -19,7 +19,7 @@ import {sentMessage} from '../../store/chat/sendMessage'
 import {getMessagesWithGroup} from '../../../firebase/chat'
 import {setUsers} from '../../store/auth/users'
 import {getFriends} from '../../store/friends'
-import { addChatUsers } from '../../store/chat/chatUsers'
+import {addChatUsers} from '../../store/chat/chatUsers'
 
 const SingleChat = ({group}) => {
   const dispatch = useDispatch()
@@ -27,18 +27,20 @@ const SingleChat = ({group}) => {
   let users = useSelector((state) => state.users)
   let friends = useSelector((state) => state.friends)
 
-  const scrollRef = useRef(null);
+  const scrollRef = useRef(null)
 
   let [message, setMessage] = useState('')
   let [messages, setMessages] = useState([])
   let [menuOpen, setMenuOpen] = useState(false)
+  let [menuOpen2, setMenuOpen2] = useState(false)
   let [anchorEl, setAnchorEl] = useState(null)
+  let [anchorEl2, setAnchorEl2] = useState(null)
 
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+      scrollRef.current.scrollIntoView({behavior: 'smooth'})
     }
-  }, [messages]);
+  }, [messages])
   useEffect(() => {
     dispatch(setUser())
     dispatch(setUsers(group.members))
@@ -60,7 +62,6 @@ const SingleChat = ({group}) => {
     dispatch(sentMessage(user.uid, group.groupId, message))
     console.log(message)
     setMessage('')
-
   }
   function handleChange(e) {
     setMessage(e.target.value)
@@ -68,14 +69,23 @@ const SingleChat = ({group}) => {
   function handleSelect(uid) {
     dispatch(addChatUsers(uid, user.uid, group.groupId))
   }
-  function toggleMenu(e){
+  function toggleMenu(e) {
     setMenuOpen(true)
     setAnchorEl(e.target)
   }
   let closeMenu = () => {
-    setMenuOpen(false);
+    setMenuOpen(false)
     setAnchorEl(null)
-}
+  }
+
+  function toggleMenu2(e) {
+    setMenuOpen2(true)
+    setAnchorEl2(e.target)
+  }
+  let closeMenu2 = () => {
+    setMenuOpen2(false)
+    setAnchorEl2(null)
+  }
   return (
     <Grid onKeyPress={isEnter}>
       <Grid container>
@@ -84,51 +94,67 @@ const SingleChat = ({group}) => {
             {group.groupname}
           </Typography>
           <React.Fragment>
-          <Button onClick={toggleMenu}>Add Member</Button>
-          <Menu open={menuOpen} onClose={closeMenu} anchorEl={anchorEl}> 
-            {friends.map((friend) => {
-              if(!(group.members.includes(friend.uid)) ){
-                              return (
-                <MenuItem value={friend} key={friend.uid} onClick={()=>handleSelect(friend.uid)}>
-                  {friend.name}
-                </MenuItem>
-              )
-              }
-
-            })}
-          </Menu>
+            <Button onClick={toggleMenu2}>Add Member</Button>
+            <Menu open={menuOpen2} onClose={closeMenu2} anchorEl={anchorEl2}>
+              {friends.map((friend) => {
+                if (!group.members.includes(friend.uid)) {
+                  return (
+                    <MenuItem
+                      value={friend}
+                      key={friend.uid}
+                      onClick={() => handleSelect(friend.uid)}>
+                      {friend.name}
+                    </MenuItem>
+                  )
+                }
+              })}
+            </Menu>
+          </React.Fragment>
+          <React.Fragment>
+            <Button onClick={toggleMenu} align="right">
+              Members
+            </Button>
+            <Menu open={menuOpen} onClose={closeMenu} anchorEl={anchorEl}>
+              {users.map((user) => {
+                {
+                  return (
+                    <MenuItem value={user} key={user.uid}>
+                      {user.name}
+                    </MenuItem>
+                  )
+                }
+              })}
+            </Menu>
           </React.Fragment>
         </Grid>
       </Grid>
-      <List width="100%" height="70vh"  style={{
-       maxHeight: 300, overflow: 'auto'
-      }}>
+      <List
+        height="70vh"
+        style={{
+          maxHeight: 300,
+          overflow: 'auto',
+        }}>
         {messages.map((message, i) => {
           let from = users.find((curuser) => {
             return curuser.uid === message.fromUser
           })
+          let date = new Date(message.timeStamp.seconds * 1000)
+          let splitted = String(date).split(' ').slice(0, 5).join(' ')
           return (
             <ListItem key={i} ref={scrollRef}>
               <Grid container>
                 <Grid item={true} xs={12}>
                   <ListItemText
                     align={message.fromUser !== user.uid ? 'left' : 'right'}
-                    secondary={from && from.name}
-                  ></ListItemText>
+                    secondary={from && from.name}></ListItemText>
                   <ListItemText
                     align={message.fromUser !== user.uid ? 'left' : 'right'}
-                    primary={message.content.message ? message.content.message : message.content}
-                  ></ListItemText>
+                    primary={message.content}></ListItemText>
                 </Grid>
                 <Grid item={true} xs={12}>
                   <ListItemText
                     align={message.fromUser !== user.uid ? 'left' : 'right'}
-                    secondary={
-                      message.timeStamp
-                        ? `${new Date(message.timeStamp.seconds * 1000)}`
-                        : 'unknown'
-                    }
-                  ></ListItemText>
+                    secondary={splitted}></ListItemText>
                 </Grid>
               </Grid>
             </ListItem>
@@ -138,7 +164,7 @@ const SingleChat = ({group}) => {
       <Divider />
       <Grid container style={{padding: '20px'}}>
         <Grid item={true} xs={11}>
-        <TextField
+          <TextField
             autoFocus
             margin="dense"
             label="Type Something"

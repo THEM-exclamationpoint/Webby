@@ -45,8 +45,8 @@ export const logIn = (email,password) => {
 }
 export const logInGoogle = () => {
   return async (dispatch) => {
-    await signInWithGoogle()
-    dispatch(_logIn(true))
+    let isNew = await signInWithGoogle()
+    dispatch(_logIn(isNew))
   }
 }
 export const logOutUser = () => {
