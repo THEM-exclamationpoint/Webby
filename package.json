@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "homepage": "https://webby-social.heroku.com",
   "private": true,
+  "type": "module",
   "engines": {
     "npm": ">=7.0.0",
     "node": "16.x"
@@ -56,6 +57,7 @@
     ]
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.4.0",
     "gh-pages": "^4.0.0"
   }
 }
