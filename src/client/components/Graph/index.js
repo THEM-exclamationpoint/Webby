@@ -1,67 +1,9 @@
 import React from 'react'
 import * as d3 from 'd3'
 import {useRef, useEffect, useState} from 'react'
-
-const testData = {
-  name: 'Davi',
-  children: [
-    {
-      name: 'Climbing',
-      children: [
-        {name: 'Wondo', children: []},
-        {name: 'Kale', children: []},
-        {name: 'Eric', children: []},
-        {name: 'Colleen', children: []},
-      ],
-    },
-    {
-      name: 'Dancing',
-      children: [
-        {name: 'Kayla', children: []},
-        {name: 'Andi', children: []},
-        {name: 'Beacon', children: []},
-        {name: 'BeLove', children: []},
-        {name: 'Steph', children: []},
-      ],
-    },
-    {
-      name: 'Cooking',
-      children: [
-        {name: 'Kayla', children: []},
-        {name: 'Wondo', children: []},
-        {name: 'Joshi', children: []},
-      ],
-    },
-    {
-      name: 'Fire spinning',
-      children: [
-        {name: 'Beacon', children: []},
-        {name: 'Kimchee', children: []},
-        {name: 'BeLove', children: []},
-        {name: 'Wondo', children: []},
-        {name: 'Kayla', children: []},
-        {name: 'Colleen', children: []},
-        {name: 'Juan', children: []},
-        {name: 'Joshi', children: []},
-        {name: 'Iva', children: []},
-        {name: 'Doc', children: []},
-        {name: 'Mike', children: []},
-        {name: 'Olive', children: []},
-        {name: 'PJ', children: []},
-      ],
-    },
-    {
-      name: 'Art',
-      children: [
-        {name: 'Kayla', children: []},
-        {name: 'Andi', children: []},
-        {name: 'Kimchee', children: []},
-        {name: 'Amanda', children: []},
-        {name: 'Tina', children: []},
-      ],
-    },
-  ],
-}
+import {_getGraphData} from '../../store/graph/graphData'
+import {setUser} from '../../store/auth/user'
+import {useDispatch, useSelector} from 'react-redux'
 
 // Copyright 2022 Observable, Inc.
 // Released under the ISC license.
@@ -195,15 +137,24 @@ function Tree(
   return svg.node()
 }
 
-//TODO: get current user, user's interests, and the other users who share that interest from firebase
-
-//TODO: move all firebase interactions to redux
+//TODO: !!! get all data to load on first render !!!
 
 function Graph() {
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.user)
+  const graphData = useSelector((state) => state.graphData)
+
+  useEffect(() => {
+    async function fetchData() {
+      await dispatch(setUser())
+    }
+    dispatch(_getGraphData(user.uid))
+  }, [])
+
   const web = useRef()
   //firebase data will be dependency for this function so that when it changes, graph re-render
   useEffect(() => {
-    Tree(testData, {
+    Tree(graphData, {
       label: (d) => d.name,
       title: (d, n) =>
         `${n
