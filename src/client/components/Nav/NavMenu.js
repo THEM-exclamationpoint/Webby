@@ -34,7 +34,7 @@ export default function TemporaryDrawer() {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}>
       <List>
-        {['Home', 'Friends', 'Settings'].map((text, index) => (
+        {['Friends', 'Settings'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton component={Link} to={`/${text}`}>
               <ListItemText primary={text} />
@@ -43,7 +43,7 @@ export default function TemporaryDrawer() {
         ))}
         <ListItem disablePadding>
           <ListItemButton component={Link} to='/graph' >
-            <ListItemText primary="Network"/>
+            <ListItemText primary="Web"/>
           </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
