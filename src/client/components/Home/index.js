@@ -13,6 +13,8 @@ const Home = () => {
     <div>
       <h1> Welcome, {user.name}!</h1>
       <Link to="/graph">Graph</Link>
+      <Link to="/chatroom">Chat</Link>
+      <Link to="/editprofile">EditProfile</Link>
     </div>
   )
 }

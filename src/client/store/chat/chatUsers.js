@@ -1,5 +1,7 @@
 import {
     getListOfGroups,
+    addToGroup,
+    newGroup
   } from '../../../firebase/chat'
   
   
@@ -23,6 +25,20 @@ import {
    */
   export const getChatUsers = (uid) => {
     return async (dispatch) => {
+      let users = await getListOfGroups(uid)
+      dispatch(setChatUsers(users))
+    }
+  }
+  export const addChatUsers = (uid1,uid2,groupId) => {
+    return async (dispatch) => {
+      await addToGroup(uid1,groupId)
+      let users = await getListOfGroups(uid2)
+      dispatch(setChatUsers(users))
+    }
+  }
+  export const addNewChat = (uids,groupname,uid) => {
+    return async (dispatch) => {
+      await newGroup(uids,groupname)
       let users = await getListOfGroups(uid)
       dispatch(setChatUsers(users))
     }

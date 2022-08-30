@@ -5,16 +5,24 @@ import Signup from './Auth/Sign-up';
 import EditProfile from './Profile/EditProfile';
 import Chat from './Chat/ChatRoom'
 import Graph from './Graph'
+import {useState,useEffect} from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import {setUser} from '../store/auth/user'
 
 function WebbyRoutes () {
+let dispatch = useDispatch()
+let user = useSelector(state => state.user)
+useEffect(()=>{
+  dispatch(setUser())
+},[])
     return (
         <Routes>
-        <Route exact path="/home" element={<Home/>} />  
+        <Route exact path="/home" element={user ? <Home/> : <LogIn/>} />  
         <Route exact path="/" element={<LogIn/>} />
         <Route exact path="/register" element={<Signup/>} />
-        <Route exact path="/editprofile" element={<EditProfile/>} />
-        <Route exact path="/chatroom" element={<Chat/>} />
-      <Route exact path="/graph" element={<Graph />} />
+        <Route exact path="/editprofile" element={user ? <EditProfile/> : <LogIn/>} />
+        <Route exact path="/chatroom" element={user ? <Chat/> : <LogIn/>}  />
+      <Route exact path="/graph" element={user  ? <Graph /> : <LogIn />} />
     </Routes>
   )
 }
