@@ -8,6 +8,7 @@ import Graph from './Graph'
 import {useState,useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import {setUser} from '../store/auth/user'
+import AppSettings from './Settings';
 
 function WebbyRoutes () {
 let dispatch = useDispatch()
@@ -22,7 +23,8 @@ useEffect(()=>{
         <Route exact path="/register" element={<Signup/>} />
         <Route exact path="/editprofile" element={user ? <EditProfile/> : <LogIn/>} />
         <Route exact path="/chatroom" element={user ? <Chat/> : <LogIn/>}  />
-      <Route exact path="/graph" element={user  ? <Graph /> : <LogIn />} />
+        <Route exact path="/settings" element={<AppSettings/>} />
+        <Route exact path="/graph" element={user  ? <Graph /> : <LogIn />} />
     </Routes>
   )
 }

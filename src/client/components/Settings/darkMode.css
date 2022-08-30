@@ -1,0 +1,12 @@
+.LightTheme {
+    background-color: "white"
+}
+
+.DarkTheme {
+    background-color: "282c36"
+}
+
+/* .themes {
+    light: LightTheme,
+    dark: DarkTheme
+} */

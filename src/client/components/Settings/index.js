@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Switch from '@mui/material/Switch';
 import { Divider } from '@mui/material';
 import Radio from '@mui/material/Radio';
@@ -6,17 +6,34 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import './darkMode.css'
+
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 export default function AppSettings() {
+
+    const [theme, setTheme] = useState('light')
+
+    function changeTheme() {
+        if (theme === "LightTheme") {
+            setTheme("DarkTheme")
+        } else {
+            setTheme("LightTheme")
+        }
+    }
+
+render () 
+
+
   return (
     <div>
     Settings:
         <Divider />
     App Theme:
         <br />
-      Light/Dark: <Switch {...label} />
+      Light/Dark: 
+        <Switch onClick={changeTheme} {...label} />            
         <br />
        High Contrast: <Switch {...label} />
        <Divider />
