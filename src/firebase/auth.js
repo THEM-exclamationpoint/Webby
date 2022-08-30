@@ -8,6 +8,8 @@ import {
   sendPasswordResetEmail,
   signOut,
   onAuthStateChanged,
+  setPersistence,
+  browserSessionPersistence, 
 } from 'firebase/auth'
 import {
   query,
@@ -18,9 +20,10 @@ import {
   getDoc,
 } from 'firebase/firestore'
 
-
 export const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
+
+
 
 export async function getUserData() {
   const user = auth.currentUser
@@ -32,8 +35,7 @@ export async function getUserData() {
     returnUser = doc.data()
   })
   return returnUser
-
-
+}
 export const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider)

@@ -1,67 +1,10 @@
 import React from 'react'
 import * as d3 from 'd3'
 import {useRef, useEffect, useState} from 'react'
-
-const testData = {
-  name: 'Davi',
-  children: [
-    {
-      name: 'Climbing',
-      children: [
-        {name: 'Wondo', children: []},
-        {name: 'Kale', children: []},
-        {name: 'Eric', children: []},
-        {name: 'Colleen', children: []},
-      ],
-    },
-    {
-      name: 'Dancing',
-      children: [
-        {name: 'Kayla', children: []},
-        {name: 'Andi', children: []},
-        {name: 'Beacon', children: []},
-        {name: 'BeLove', children: []},
-        {name: 'Steph', children: []},
-      ],
-    },
-    {
-      name: 'Cooking',
-      children: [
-        {name: 'Kayla', children: []},
-        {name: 'Wondo', children: []},
-        {name: 'Joshi', children: []},
-      ],
-    },
-    {
-      name: 'Fire spinning',
-      children: [
-        {name: 'Beacon', children: []},
-        {name: 'Kimchee', children: []},
-        {name: 'BeLove', children: []},
-        {name: 'Wondo', children: []},
-        {name: 'Kayla', children: []},
-        {name: 'Colleen', children: []},
-        {name: 'Juan', children: []},
-        {name: 'Joshi', children: []},
-        {name: 'Iva', children: []},
-        {name: 'Doc', children: []},
-        {name: 'Mike', children: []},
-        {name: 'Olive', children: []},
-        {name: 'PJ', children: []},
-      ],
-    },
-    {
-      name: 'Art',
-      children: [
-        {name: 'Kayla', children: []},
-        {name: 'Andi', children: []},
-        {name: 'Kimchee', children: []},
-        {name: 'Amanda', children: []},
-        {name: 'Tina', children: []},
-      ],
-    },
-  ],
-}
+import {_getGraphData} from '../../store/graph/graphData'
+import {setUser} from '../../store/auth/user'
+import {useDispatch, useSelector} from 'react-redux'
+import './style.css'
 
 // Copyright 2022 Observable, Inc.
 // Released under the ISC license.
@@ -96,14 +39,14 @@ function Tree(
     ) / 2, // outer radius
     r = 3, // radius of nodes
     padding = 1, // horizontal padding for first and last column
-    fill = '#999', // fill for nodes
+    fill = '#028090', // fill for nodes
     fillOpacity, // fill opacity for nodes
-    stroke = '#555', // stroke for links
+    stroke = '#028090', // stroke for links
     strokeWidth = 1.5, // stroke width for links
     strokeOpacity = 0.4, // stroke opacity for links
     strokeLinejoin, // stroke line join for links
     strokeLinecap, // stroke line cap for links
-    halo = '#fff', // color of label halo
+    halo = '#fcf7f8', // color of label halo
     haloWidth = 3, // padding around the labels
     svg = d3.create('svg'),
   } = {}
@@ -121,7 +64,7 @@ function Tree(
 
   // Sort the nodes.
   if (sort != null) root.sort(sort)
-
+  //
   // Compute labels and titles.
   const descendants = root.descendants()
   const L = label == null ? null : descendants.map((d) => label(d.data, d))
@@ -137,7 +80,8 @@ function Tree(
     .attr('height', height)
     .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
     .attr('font-family', 'sans-serif')
-    .attr('font-size', 10)
+    .attr('font-size', 20)
+    .attr('fill', '#028090')
 
   svg
     .append('g')
@@ -195,15 +139,25 @@ function Tree(
   return svg.node()
 }
 
-//TODO: get current user, user's interests, and the other users who share that interest from firebase
-
-//TODO: move all firebase interactions to redux
+//TODO: !!! get all data to load on first render !!!
 
 function Graph() {
-  const web = useRef()
-  //firebase data will be dependency for this function so that when it changes, graph re-render
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.user)
+  const graphData = useSelector((state) => state.graphData)
+
   useEffect(() => {
-    Tree(testData, {
+    dispatch(setUser())
+  }, [])
+
+  useEffect(() => {
+    if (user.uid) dispatch(_getGraphData(user.uid))
+  }, [user.uid])
+
+  const web = useRef()
+
+  useEffect(() => {
+    Tree(graphData, {
       label: (d) => d.name,
       title: (d, n) =>
         `${n
@@ -220,9 +174,9 @@ function Graph() {
       margin: 100,
       svg: d3.select(web.current),
     })
-  }, [])
+  }, [graphData])
 
-  return <svg ref={web}></svg>
+  return <svg className="graph" ref={web}></svg>
 }
 
 export default Graph

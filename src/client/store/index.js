@@ -5,12 +5,20 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import auth from './auth'
 import user from './auth/user'
 import chatUsers from './chat/chatUsers'
-import messages from './chat'
+import graphData from './graph/graphData'
+import sendMessage from './chat/sendMessage'
+import users from './auth/users'
+import friends from './friends'
+
 const reducer = combineReducers({
   auth,
   user,
   chatUsers,
-  messages,
+  // messages,
+  graphData,
+  sendMessage,
+  users,
+  friends,
 })
 
 const middleware = composeWithDevTools(

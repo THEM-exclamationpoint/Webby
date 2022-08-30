@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { setUser } from '../../store/auth/user';
 import { logIn, logInGoogle } from '../../store/auth';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 
 const LogIn = () => {
     const dispatch = useDispatch();
@@ -52,28 +51,28 @@ const LogIn = () => {
     };
 
     return (
-      <div className="LogIn container">
+      <div className="login-container">
         <section>
           <h1>Sign In</h1>
           <form onSubmit={handleSubmit}>
-            <label htmlFor="username">Username:</label>
-            <input
-              type="text"
-              name="username"
-              autoComplete="off"
-              required
-              onChange={handleChange}
-            />
-  
-            <label htmlFor="password">Password:</label>
-            <input
-              name="password"
-              type="password"
-              id="password"
-              required
-              onChange={handleChange}
-            />
-            <button type="submit">Sign In</button>
+             <TextField
+            onChange={handleChange}
+            className="form-field"
+            name="username"
+            label="username"
+            type="text"
+            required
+          />
+          <div>
+             <TextField
+            onChange={handleChange}
+            className="form-field"
+            name="password"
+            label="password"
+            type="password"
+            required
+          /></div>
+            <Button type="submit">Sign In</Button>
           </form>
 
   <Button type='button' onClick={handleSubmitGoogle}>Sign in with Google</Button>
@@ -82,7 +81,7 @@ const LogIn = () => {
             Need an Account?
             <br />
             <div className="line">
-              <Link to="/register">Sign Up</Link>
+              <Link to="/register"><Button>Sign Up</Button></Link>
             </div>
           </div>
         </section>
