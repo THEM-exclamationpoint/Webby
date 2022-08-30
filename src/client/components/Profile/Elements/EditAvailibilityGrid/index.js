@@ -24,27 +24,6 @@ const Item = styled(Card)(({theme}) => ({
   color: theme.palette.text.secondary,
 }))
 
-const daysOTW = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
-]
-
-// export const newAvailability = () => {
-//   return daysOTW.map((day, idx) => {
-//     return {
-//       id: idx,
-//       day,
-//       am: 'unavailable',
-//       pm: 'unavailable',
-//     }
-//   })
-// }
-
 const AvailabilityGrid = (props) => {
   const {setState = (state) => {}, value} = props
   let [availability, setAvailability] =
