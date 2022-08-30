@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore'
 import {auth} from './auth.js'
 import {db} from './db.js'
-//import {faker} from '@faker-js/faker'
+import {faker} from '@faker-js/faker'
 
 function randomPronouns() {
   //40% of the user base uses he/they or she/they
@@ -132,11 +132,12 @@ const allInterests = [
   'Metalworking',
   'Model building',
   'Modeling',
+  'Modular synthesizers',
   'Music',
   'Needlepoint',
   'Origami',
   'Painting',
-  'Performance',
+  'Performance art',
   'Photography',
   'Pilates',
   'Playing musical instruments',
@@ -224,53 +225,64 @@ const seedInterests = async function () {
   }
 }
 
-const randomInterests = function (numberOfInterests = 5) {
-  //TODO: make references to real interests
+const seedUsers = async function (usersToSeed = 1) {
+  for (let i = 0; i < usersToSeed; i++) {
+    const email = faker.internet.email()
+    const password = faker.internet.password()
+    const name = faker.name.firstName()
+    const pronouns = randomPronouns()
+    const profilePicture = 'https://i.imgur.com/dDvuTRg.png'
+    const zipCode = faker.address.zipCode()
+    const res = await createUserWithEmailAndPassword(auth, email, password)
+    const uid = res.user.uid
+    await addDoc(collection(db, 'users'), {
+      authProvider: 'local',
+      uid,
+      email,
+      password,
+      name,
+      pronouns,
+      profilePicture,
+      zipCode,
+    })
 
+    seedUserInterestJunctions(res.user.uid)
+
+    signOut(auth)
+  }
+  return
+}
+
+const randomInterestIds = function (numberOfInterests = 5) {
   let userInterests = []
 
   while (userInterests.length < numberOfInterests) {
-    let randomInterest =
-      allInterests[Math.floor(Math.random() * allInterests.length)]
+    let randomIndex = Math.floor(Math.random() * allInterests.length)
+
+    let randomInterest = allInterests[randomIndex]
 
     if (!userInterests.includes(randomInterest))
-      userInterests.push(randomInterest)
+      userInterests.push(String(randomIndex))
   }
   return userInterests
 }
 
-// const seedUsers = async function (usersToSeed = 10) {
-//   for (let i = 0; i < usersToSeed; i++) {
-//     const email = faker.internet.email()
-//     const password = faker.internet.password()
-//     const name = faker.name.firstName()
-//     const pronouns = randomPronouns()
-//     const interests = randomInterests()
-//     const profilePicture = 'https://i.imgur.com/dDvuTRg.png'
-//     const zipCode = faker.address.zipCode()
+const seedUserInterestJunctions = function (uid, numberOfInterests = 5) {
+  const interestIds = randomInterestIds(numberOfInterests)
 
-//     const res = await createUserWithEmailAndPassword(auth, email, password)
-//     const uid = res.user.uid
-//     await addDoc(collection(db, 'users'), {
-//       authProvider: 'local',
-//       uid,
-//       email,
-//       password,
-//       name,
-//       pronouns,
-//       interests,
-//       profilePicture,
-//       zipCode,
-//     })
-
-//     signOut(auth)
-//   }
-//   return
-// }
+  Promise.all(
+    interestIds.map(async (interestId) => {
+      await addDoc(collection(db, 'junction_user_interest'), {
+        uid,
+        interestId,
+      })
+    })
+  )
+}
 
 const seedDatabase = async function () {
   await seedInterests()
-  //seedUsers()
+  seedUsers(100)
 }
 
-seedDatabase()
+//seedDatabase()
