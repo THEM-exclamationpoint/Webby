@@ -4,6 +4,7 @@ import {useRef, useEffect, useState} from 'react'
 import {_getGraphData} from '../../store/graph/graphData'
 import {setUser} from '../../store/auth/user'
 import {useDispatch, useSelector} from 'react-redux'
+import './style.css'
 
 // Copyright 2022 Observable, Inc.
 // Released under the ISC license.
@@ -38,14 +39,14 @@ function Tree(
     ) / 2, // outer radius
     r = 3, // radius of nodes
     padding = 1, // horizontal padding for first and last column
-    fill = '#999', // fill for nodes
+    fill = '#028090', // fill for nodes
     fillOpacity, // fill opacity for nodes
-    stroke = '#555', // stroke for links
+    stroke = '#028090', // stroke for links
     strokeWidth = 1.5, // stroke width for links
     strokeOpacity = 0.4, // stroke opacity for links
     strokeLinejoin, // stroke line join for links
     strokeLinecap, // stroke line cap for links
-    halo = '#fff', // color of label halo
+    halo = '#fcf7f8', // color of label halo
     haloWidth = 3, // padding around the labels
     svg = d3.create('svg'),
   } = {}
@@ -63,7 +64,7 @@ function Tree(
 
   // Sort the nodes.
   if (sort != null) root.sort(sort)
-
+  //
   // Compute labels and titles.
   const descendants = root.descendants()
   const L = label == null ? null : descendants.map((d) => label(d.data, d))
@@ -79,7 +80,8 @@ function Tree(
     .attr('height', height)
     .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
     .attr('font-family', 'sans-serif')
-    .attr('font-size', 10)
+    .attr('font-size', 20)
+    .attr('fill', '#028090')
 
   svg
     .append('g')
@@ -145,14 +147,15 @@ function Graph() {
   const graphData = useSelector((state) => state.graphData)
 
   useEffect(() => {
-    async function fetchData() {
-      await dispatch(setUser())
-    }
-    dispatch(_getGraphData(user.uid))
+    dispatch(setUser())
   }, [])
 
+  useEffect(() => {
+    if (user.uid) dispatch(_getGraphData(user.uid))
+  }, [user.uid])
+
   const web = useRef()
-  //firebase data will be dependency for this function so that when it changes, graph re-render
+
   useEffect(() => {
     Tree(graphData, {
       label: (d) => d.name,
@@ -171,9 +174,9 @@ function Graph() {
       margin: 100,
       svg: d3.select(web.current),
     })
-  }, [])
+  }, [graphData])
 
-  return <svg ref={web}></svg>
+  return <svg className="graph" ref={web}></svg>
 }
 
 export default Graph
