@@ -19,14 +19,14 @@ const setFriends = (friends) => {
  * THUNK CREATORS
  */
 export const getFriends = (uid) => {
-  try {
     return async (dispatch) => {
+      try {
       let friends = await getUsersFriends(uid)
-      dispatch(setFriends(friends))
+      dispatch(setFriends(friends))}
+      catch(err){
+        console.error(err)
+      }
     }
-  } catch (err) {
-    console.error(err)
-  }
 }
 
 /**
