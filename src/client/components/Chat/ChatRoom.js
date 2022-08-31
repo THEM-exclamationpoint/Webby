@@ -28,6 +28,7 @@ const Chat = () => {
   const dispatch = useDispatch()
   let [collapse, setCollapse] = useState(false)
   let [modalOpen, setModalOpen] = useState(false)
+  let [search, setSearch] = useState('')
 
   let user = useSelector((state) => state.user)
   let groups = useSelector((state) => state.chatUsers)
@@ -50,6 +51,18 @@ const Chat = () => {
   function modalToggle() {
     setModalOpen(true)
   }
+  function handleChange (e){
+    setSearch(e.target.value)
+  }
+  const filteredData = groups.filter(group => {
+    let input = search.toLowerCase()
+    if(input === ''){
+      return group
+    }
+    else {
+      return group.groupname.toLowerCase().includes(input)
+    }
+  })
   
   return (
     <div className='chat-component'>
@@ -77,14 +90,16 @@ const Chat = () => {
             <Divider />
             <Grid item={true} xs={12} style={{padding: '10px'}}>
               <TextField
+              onChange={handleChange}
                 id="outlined-basic-email"
                 label="Search"
                 variant="outlined"
+                value={search}
                 fullWidth
               />
             </Grid>
             <Divider />
-            {groups.map((group) => {
+            {filteredData.map((group) => {
               return (
                 <ListItem
                   button

@@ -19,7 +19,7 @@ export default function Signup() {
 
   useEffect(() => {
     if (success) {
-      navigate('/preferences');
+      navigate('/editprofile');
     }
   });
 
