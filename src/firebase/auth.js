@@ -39,6 +39,7 @@ export async function getUserData() {
 
 export const signInWithGoogle = async () => {
   try {
+    let isNew = false
     const res = await signInWithPopup(auth, googleProvider)
     const user = res.user
     const q = query(collection(db, 'users'), where('uid', '==', user.uid))
@@ -51,7 +52,9 @@ export const signInWithGoogle = async () => {
         email: user.email,
         profilePicture: user.photoURL
       })
+      isNew = true
     }
+    return isNew
   } catch (err) {
     console.error(err)
     alert(err.message)

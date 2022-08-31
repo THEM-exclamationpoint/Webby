@@ -1,7 +1,7 @@
 import {app, db} from './db'
 import {query, getDocs, collection, where} from 'firebase/firestore'
 
-async function getInterestsOfUser(userId) {
+export async function getInterestsOfUser(userId) {
   try {
     const q = query(
       collection(db, 'junction_user_interest'),

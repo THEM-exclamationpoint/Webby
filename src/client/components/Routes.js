@@ -7,8 +7,9 @@ import Chat from './Chat/ChatRoom'
 import Graph from './Graph'
 import {useState, useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {setUser} from '../store/auth/user'
+import User, {setUser} from '../store/auth/user'
 import {FriendsList} from './Friends'
+import UserProfile from './Profile/UserProfile'
 
 import UserInteractionsMenu from './UserInteractionsMenu'
 
@@ -41,6 +42,7 @@ function WebbyRoutes() {
         path="/Friends"
         element={user ? <FriendsList /> : <LogIn />}
       />
+      <Route path="/users/:uid" element={user ? <UserProfile /> : <LogIn />} />
     </Routes>
   )
 }

@@ -9,7 +9,7 @@ const LogIn = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    let user = useSelector((state) => state.auth);
+    let isNew = useSelector((state) => state.auth);
   
     let [userInfo, setUserInfo] = useState({
       username: '',
@@ -17,7 +17,6 @@ const LogIn = () => {
     });
   
     let [success, setSuccess] = useState(false);
-  
     useEffect(() => {
       if (success) {
         navigate('/home');
@@ -44,8 +43,13 @@ const LogIn = () => {
     const handleSubmitGoogle = async(e) => {
       e.preventDefault();
        await dispatch(logInGoogle())
-
-       setSuccess(true)
+       if(isNew){
+        navigate('/editprofile')
+       }
+       else {
+        setSuccess(true)
+       }
+       
 
        dispatch(setUser())
     };
