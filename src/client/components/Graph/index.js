@@ -69,9 +69,9 @@ function Tree(
   const L = label == null ? null : descendants.map((d) => label(d.data, d))
 
   // Compute the layout.
-  tree()
+  tree() //Davi's notes: d3.tree() creates a new tidy tree layout
     .size([2 * Math.PI, radius])
-    .separation(separation)(root)
+    .separation(separation)(root) //Davi's notes: sets separation between nodes
 
   svg
     .attr('viewBox', [-marginLeft - radius, -marginTop - radius, width, height])
