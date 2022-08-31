@@ -11,8 +11,6 @@ import User, {setUser} from '../store/auth/user'
 import {FriendsList} from './Friends'
 import UserProfile from './Profile/UserProfile'
 
-import UserInteractionsMenu from './UserInteractionsMenu'
-
 function WebbyRoutes() {
   let dispatch = useDispatch()
   let user = useSelector((state) => state.user)
@@ -21,12 +19,6 @@ function WebbyRoutes() {
   }, [])
   return (
     <Routes>
-      <Route
-        exact
-        path="/userinteractions"
-        element={<UserInteractionsMenu />}
-      />
-
       <Route exact path="/home" element={user ? <Home /> : <LogIn />} />
       <Route exact path="/" element={<LogIn />} />
       <Route exact path="/register" element={<Signup />} />
