@@ -39,7 +39,7 @@ const Home = () => {
             <ListItemText align="center">My Web</ListItemText>
           </ListItem>
           <ListItem button component={Link} to="/chatroom">
-            <ListItemText align="center">Chats</ListItemText>
+            <ListItemText align="center">Messages</ListItemText>
           </ListItem>
           <ListItem button component={Link} to={`/users/${user.uid}`}>
             <ListItemText align="center">My Profile</ListItemText>
@@ -51,7 +51,7 @@ const Home = () => {
         <List>
           {interests.map((interest) => {
             return (
-              <ListItem>
+              <ListItem key={interest}>
                 <ListItemText align="center">{interest}</ListItemText>
               </ListItem>
             )

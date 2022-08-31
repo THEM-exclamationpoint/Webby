@@ -6,7 +6,7 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import MenuIcon from '@mui/icons-material/Menu'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 export default function TemporaryDrawer() {
   const [state, setState] = React.useState({
@@ -34,21 +34,24 @@ export default function TemporaryDrawer() {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}>
       <List>
-        {['Friends', 'Settings'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton component={Link} to={`/${text}`}>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
         <ListItem disablePadding>
-          <ListItemButton component={Link} to='/graph' >
-            <ListItemText primary="Web"/>
+          <ListItemButton component={Link} to="/graph">
+            <ListItemText primary="Web" />
           </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-          <ListItemButton component={Link} to='/chatroom' >
-            <ListItemText primary="Inbox" />
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to="/friends">
+            <ListItemText primary="Friends" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to="/chatroom">
+            <ListItemText primary="Messages" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to="/settings">
+            <ListItemText primary="Settings" />
           </ListItemButton>
         </ListItem>
       </List>

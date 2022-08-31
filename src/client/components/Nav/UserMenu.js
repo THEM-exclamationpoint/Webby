@@ -1,4 +1,5 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -6,13 +7,29 @@ import Fade from '@mui/material/Fade';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Link, useNavigate } from 'react-router-dom';
 import { logOutUser } from '../../store/auth';
-import { useDispatch } from 'react-redux';
+import { setUser } from '../../store/auth/user';
 
 export default function FadeMenu() {
   const dispatch = useDispatch()
   const navigate = useNavigate();
-
+let[isLoggedIn, setIsLoggedIn] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null);
+  let user = useSelector(state => state.user)
+
+  useEffect(()=>{
+    dispatch(setUser())
+
+  },[])
+
+  useEffect(()=>{
+    if(user){
+      setIsLoggedIn(true)
+    }
+    else {
+      setIsLoggedIn(false)
+    }
+  },[user])
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -22,8 +39,10 @@ export default function FadeMenu() {
   };
 const handleLogout = () => {
   dispatch(logOutUser())
+  setIsLoggedIn(false)
   navigate('/')
 }
+
   return (
     <div className='profile-options'>
     <MoreIcon         
@@ -43,8 +62,14 @@ const handleLogout = () => {
         TransitionComponent={Fade}
         className= 'menu'
       >
-       <Link to='/editprofile'><MenuItem onClick={handleClose}>My account</MenuItem></Link>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        {isLoggedIn ? 
+        <div>
+        <Link to='/editprofile'><MenuItem onClick={handleClose}>My account</MenuItem></Link>
+
+        <MenuItem onClick={handleLogout}>Logout</MenuItem></div>
+         :
+       <Link to='/'> <MenuItem>Login</MenuItem> </Link>}
+      
       </Menu>
     </div>
   );
