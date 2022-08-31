@@ -7,21 +7,20 @@ import {
   TextField,
   Typography,
   Avatar,
-  Fab,
-  FormGroup,
-  FormControlLabel,
-  FormLabel,
   Switch,
   Card,
   Paper,
   IconButton,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
   Slider,
 } from '@mui/material'
+import {PersonAdd, PeopleAlt, PersonRemove, Pending} from '@mui/icons-material'
+import {
+  getUserProfile,
+  getUserFriends,
+  getUserInterests,
+} from '../../../store/profile'
+import {getUserData, auth} from '../../../../firebase/auth'
 import {User} from '../../../../firebase/models/User'
-import {getUserProfile} from '../../../store/profile'
 import './style.css'
 import {border} from '@mui/system'
 
@@ -31,9 +30,13 @@ const UserProfile = (props) => {
   const {uid} = useParams()
   const profile = useSelector((state) => state.profile)
 
+  const {user, friends, interests} = profile
+
   useEffect(() => {
     dispatch(getUserProfile(uid))
-  }, [uid])
+    dispatch(getUserInterests(uid))
+    dispatch(getUserFriends(uid))
+  }, [])
 
   return (
     <div className="user-profile-block">
@@ -54,18 +57,20 @@ const UserProfile = (props) => {
             justifyContent: 'center',
           }}>
           <Avatar
-            alt={profile.name}
-            src={profile.profilePicture}
+            alt={user.name}
+            src={user.profilePicture}
             sx={{
+              m: 1,
               width: 150,
               height: 150,
-              border: '6px double #028090',
+              border: '4px double #028090',
             }}
           />
-          <Typography variant="h3">{profile.name}</Typography>
+          <Typography sx={{m: 1}} variant="h3">
+            {user.name}
+          </Typography>
         </Paper>
-        <div>params {uid}</div>
-        <div>profile {profile.uid}</div>
+        <Paper></Paper>
       </Paper>
     </div>
   )
