@@ -119,7 +119,6 @@ function Tree(
     .attr('fill', (d) => (d.children ? stroke : fill))
     .attr('r', r)
 
-  console.log(title)
   if (title != null) node.append('title').text((d) => title(d.data, d))
 
   if (L) {
