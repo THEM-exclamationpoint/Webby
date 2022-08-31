@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import FadeMenu from './UserMenu';
 import TemporaryDrawer from './NavMenu';
-import './style.css'
+// import './style.css'
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: 'flex-start',

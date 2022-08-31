@@ -19,11 +19,8 @@
     "firebase": "^9.9.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-<<<<<<< HEAD
     "react-icons": "^4.4.0",
-=======
     "react-hook-form": "^7.34.2",
->>>>>>> a42d1d1ff77f0cf69d9ffdc7731a4062c78bf931
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",

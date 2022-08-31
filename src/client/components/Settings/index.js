@@ -6,14 +6,14 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import './darkMode.css'
+
 
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 export default function AppSettings() {
 
-    const [theme, setTheme] = useState('light')
+    const [theme, setTheme] = useState('LightTheme')
 
     function changeTheme() {
         if (theme === "LightTheme") {
@@ -22,9 +22,6 @@ export default function AppSettings() {
             setTheme("LightTheme")
         }
     }
-
-render () 
-
 
   return (
     <div>
