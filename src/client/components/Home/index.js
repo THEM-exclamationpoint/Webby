@@ -38,12 +38,15 @@ const Home = () => {
           <ListItem button component={Link} to="/graph">
             <ListItemText align="center">My Web</ListItemText>
           </ListItem>
-          <ListItem button component={Link} to="/chat">
+          <ListItem button component={Link} to="/chatroom">
             <ListItemText align="center">Chats</ListItemText>
+          </ListItem>
+          <ListItem button component={Link} to={`/users/${user.uid}`}>
+            <ListItemText align="center">My Profile</ListItemText>
           </ListItem>
         </List>
       </div>
-      <Card variant="outlined" >
+      <Card variant="outlined">
         <CardHeader title="My Interests" />
         <List>
           {interests.map((interest) => {

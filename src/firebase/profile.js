@@ -15,7 +15,14 @@ import {
   arrayUnion,
 } from 'firebase/firestore'
 
-export async function updateUserData() {
-  const user = await getUserData()
-  const q = query(collection(db, 'users'), where('uid', '==', user.uid))
+export async function getUserById(uid) {
+  try {
+    const q = query(collection(db, 'users'), where('uid', '==', uid))
+    const docs = await getDocs(q)
+    let user
+    docs.forEach((doc) => (user = doc.data()))
+    return user
+  } catch (e) {
+    console.error(e)
+  }
 }

@@ -18,6 +18,7 @@ export default function MultiSelctorAuto(props) {
     defaultValue = [],
     setState = (state) => {},
     id = '',
+    fullWidth = false,
   } = props
 
   const printLabel = label
@@ -39,6 +40,7 @@ export default function MultiSelctorAuto(props) {
   }
   return (
     <Autocomplete
+      fullWidth={fullWidth}
       freeSolo
       multiple
       id={id}

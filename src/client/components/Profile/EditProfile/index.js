@@ -29,7 +29,7 @@ import {
   updateProfile,
   updatePassword,
   updateEmail,
-} from '../../../store/profile'
+} from '../../../store/profile/editProfile'
 import './style.css'
 
 const EditProfile = () => {
@@ -131,10 +131,16 @@ const EditProfile = () => {
               m: 1,
             },
           }}>
-          <Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              '& > *': {
+                m: 1,
+              },
+            }}>
             <h3>Personal Details</h3>
             <TextField
-              fullWidth
               required
               label="Name"
               type="text"
@@ -144,7 +150,6 @@ const EditProfile = () => {
               value={userProfile.name}
             />
             <MultiSelctorAuto
-              fullWidth
               name="pronouns"
               label="pronouns"
               options={pronounList}
@@ -159,7 +164,6 @@ const EditProfile = () => {
               }}
             />
             <MultiSelctorAuto
-              fullWidth
               name="interests"
               label="interests"
               options={interestList}
@@ -176,7 +180,6 @@ const EditProfile = () => {
             />
             <h5>Profile Picture</h5>
             <TextField
-              fullWidth
               required
               label="Image URL"
               type="url"

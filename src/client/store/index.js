@@ -10,6 +10,7 @@ import sendMessage from './chat/sendMessage'
 import users from './auth/users'
 import friends from './friends'
 import interests from './interests'
+import editProfile from './profile/editProfile'
 import profile from './profile'
 
 const reducer = combineReducers({
@@ -21,6 +22,7 @@ const reducer = combineReducers({
   users,
   friends,
   interests,
+  editProfile,
   profile,
 })
 
