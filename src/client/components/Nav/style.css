@@ -2,12 +2,12 @@
     background-color: #64b6ac !important;
   } */
   
-  .NavBarCustom .nav-logo {
+  /* .NavBarCustom .nav-logo {
     max-height: 3rem;
-  }
+  } */
   
   .navbar {
-    background-color: #2c2c54 !important;
+    background-color:#A799B7 !important;
   }
 
 .menu a {
@@ -16,4 +16,8 @@
   }
   .menu .brand {
     color:#FCF7F8
+  }
+
+  .webby {
+    max-width: 12vh;
   }

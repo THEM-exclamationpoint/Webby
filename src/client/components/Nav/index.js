@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -10,17 +9,37 @@ import FadeMenu from './UserMenu';
 import TemporaryDrawer from './NavMenu';
 import './style.css'
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useDispatch,useSelector } from 'react-redux';
+import { setUser } from '../../store/auth/user';
+import {ReactComponent as Webby} from '../../../Spider.svg'
+
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  alignItems: 'flex-start',
+   alignItems: 'center',
   paddingTop: theme.spacing(1),
   paddingBottom: theme.spacing(2),
-  // Override media queries injected by theme.mixins.toolbar
-  '@media all': {
-    minHeight: 50,
-  },
+
 }));
 
 export default function ProminentAppBar() {
+  let dispatch = useDispatch()
+let user = useSelector(state => state.user)
+
+let [isOff, setIsOff] = useState(null)
+
+useEffect(()=>{
+  dispatch(setUser())
+},[])
+
+useEffect(()=>{
+  if(user){
+    setIsOff(false)
+  }
+  else {
+    setIsOff(true)
+  }
+},[user])
+
   return (
     <Box sx={{ flexGrow: 1 }} className='menu'>
       <AppBar position="static" className='navbar'>
@@ -31,19 +50,22 @@ export default function ProminentAppBar() {
             color="inherit"
             aria-label="open drawer"
             sx={{ mr: 2 }}
+            disabled={isOff}
           >
             <TemporaryDrawer/>
           </IconButton>
+
           <Typography
             variant="h5"
             noWrap
             component={Link}
             to='/home'
             className='brand'
-            sx={{ flexGrow: 1, alignSelf: 'flex-end' }}
+            sx={{ flexGrow: 1, alignSelf: 'center' }}
           >
             WEBBY
           </Typography>
+          <Webby  className='webby'/>
           <IconButton
             size="large"
             aria-label="display more actions"
