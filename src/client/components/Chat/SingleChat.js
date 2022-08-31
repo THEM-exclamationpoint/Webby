@@ -62,7 +62,6 @@ const SingleChat = ({group}) => {
   }
   function handleClick() {
     dispatch(sentMessage(user.uid, group.groupId, message))
-    console.log(message)
     setMessage('')
   }
   function handleChange(e) {
@@ -140,7 +139,7 @@ const SingleChat = ({group}) => {
           let from = users.find((curuser) => {
             return curuser.uid === message.fromUser
           })
-          let date = new Date(message.timeStamp.seconds * 1000)
+          let date = message.timeStamp ? new Date(message.timeStamp.seconds * 1000) : new Date()
           let splitted = String(date).split(' ').slice(0, 5).join(' ')
           return (
             <ListItem key={i} ref={scrollRef}>
