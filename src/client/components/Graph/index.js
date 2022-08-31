@@ -5,7 +5,6 @@ import {_getGraphData} from '../../store/graph/graphData'
 import {setUser} from '../../store/auth/user'
 import {useDispatch, useSelector} from 'react-redux'
 import './style.css'
-// import UserInteractionsMenu from '../UserInteractionsMenu'
 
 // Copyright 2022 Observable, Inc.
 // Released under the ISC license.
@@ -108,7 +107,8 @@ function Tree(
     .data(root.descendants())
     .join('a')
     .attr('xlink:href', link == null ? null : (d) => link(d.data, d))
-    .attr('target', link == null ? null : linkTarget)
+    //The following line causes links to open in a new tab. We disabled this.
+    //.attr('target', link == null ? null : linkTarget)
     .attr(
       'transform',
       (d) => `rotate(${(d.x * 180) / Math.PI - 90}) translate(${d.y},0)`
@@ -181,8 +181,6 @@ function Graph() {
   return (
     <>
       <svg className="graph" ref={web}></svg>
-
-      {/* <UserInteractionsMenu username={'Davi'} interest={'Rock climbing'} /> */}
     </>
   )
 }
