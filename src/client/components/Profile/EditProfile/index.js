@@ -5,6 +5,7 @@ import {
   Button,
   Box,
   TextField,
+  Fab,
   FormGroup,
   FormControlLabel,
   FormLabel,
@@ -19,66 +20,79 @@ import {
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import SendIcon from '@mui/icons-material/Send'
+import CheckIcon from '@mui/icons-material/Check'
 import EditAvailabilityGrid from '../Elements/EditAvailibilityGrid'
 import MultiSelctorAuto from '../Elements/MultiSelectorAuto'
-import {newAvailability, User} from '../../../../firebase/models/User'
+import {User} from '../../../../firebase/models/User'
+import {
+  updateProfile,
+  updatePassword,
+  updateEmail,
+} from '../../../store/profile'
 import './style.css'
 
-export const userModel = (user) => {
-  return {
-    uid: user.uid || '',
-    name: user.name || '',
-    pronouns: user.pronouns || [],
-    email: user.email || '',
-    remote: user.remote || false,
-    local: user.local || true,
-    availability: user.availability || newAvailability(),
-    zipCode: user.zipCode || '',
-    profilePicture: user.profilePicture || '',
-    range: 20,
-    interests: user.interests || [],
-    oldPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-    newEmail: '',
-    confirmEmail: '',
-  }
-}
-
 const EditProfile = () => {
-  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   let user = useSelector((state) => state.user)
 
   let [userProfile, setUserProfile] = useState(new User(user))
 
+  let [newPassword, setNewPassword] = useState({
+    new: '',
+    confirm: '',
+  })
+  let [newEmail, setNewEmail] = useState({
+    new: '',
+    confirm: '',
+  })
+
   let [saved, setSaved] = useState(false)
 
   let [showPassword, setShowPassword] = useState({
-    old: false,
     new: false,
     confirm: false,
   })
 
   const handleChange = (e) => {
+    setSaved(false)
     if (e.target.name === 'remote' || e.target.name === 'local') {
-      setUserProfile({
-        ...userProfile,
-        [e.target.name]: e.target.checked,
-      })
+      userProfile[e.target.name] = e.target.checked
+      setUserProfile(new User(userProfile))
     } else {
-      setUserProfile({
-        ...userProfile,
-        [e.target.name]: e.target.value,
-      })
+      userProfile[e.target.name] = e.target.value
+      setUserProfile(new User(userProfile))
     }
-    console.log(userProfile)
   }
 
-  const handleSubmit = async (e) => {
+  const changeEmailPassword = (e) => {
+    const {name, value} = e.target
+    setSaved(false)
+    if (name === 'newEmail') {
+      setNewEmail({...newEmail, new: value})
+    } else if (name === 'confirmEmail') {
+      setNewEmail({...newEmail, confirm: value})
+    }
+
+    if (name === 'newPassword') {
+      setNewPassword({...newPassword, new: value})
+    } else if (name === 'confirmPassword') {
+      setNewPassword({...newPassword, confirm: value})
+    }
+  }
+
+  const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(userProfile)
+    if (newPassword.new && newPassword.new === newPassword.confirm) {
+      dispatch(updatePassword(newPassword))
+    }
+    if (newEmail.new && newEmail.new === newEmail.confirm) {
+      dispatch(updateEmail(newEmail))
+    }
+    dispatch(updateProfile(userProfile))
+    setSaved(true)
   }
 
   const clickShowPassword = (field) => {
@@ -107,58 +121,72 @@ const EditProfile = () => {
         app)
       </h6>
       <form onSubmit={handleSubmit}>
-        <Paper sx={{m: 1, p: 2}}>
-          <h3>Personal Details</h3>
-          <TextField
-            fullWidth
-            required
-            label="Name"
-            type="text"
-            name="name"
-            autoComplete="off"
-            helperText="This is the name that will be shown on your profile"
-            onChange={handleChange}
-            value={userProfile.name}
-          />
-          <MultiSelctorAuto
-            fullWidth
-            name="pronouns"
-            label="pronouns"
-            options={pronounList}
-            helperText="Order will be preserved"
-            value={userProfile.pronouns}
-            defaultValue={userProfile.pronouns}
-            id="pronoun-selector"
-            setState={(pronouns) => {
-              setUserProfile({...userProfile, pronouns})
-            }}
-          />
-          <MultiSelctorAuto
-            fullWidth
-            name="interests"
-            label="interests"
-            options={interestList}
-            helperText="Enter up to 5"
-            limitSelection="5"
-            value={userProfile.interests}
-            defaultValue={userProfile.interests}
-            id="interest-selector"
-            setState={(interests) => {
-              setUserProfile({...userProfile, interests})
-            }}
-          />
-          <h5>Profile Picture</h5>
-          <TextField
-            fullWidth
-            required
-            label="Image URL"
-            type="url"
-            name="profilePicture"
-            autoComplete="off"
-            helperText="We should make this an uploader"
-            onChange={handleChange}
-            value={userProfile.profilePicture}
-          />
+        <Paper
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            m: 1,
+            p: 2,
+            '& > *': {
+              m: 1,
+            },
+          }}>
+          <Box>
+            <h3>Personal Details</h3>
+            <TextField
+              fullWidth
+              required
+              label="Name"
+              type="text"
+              name="name"
+              helperText="This is the name that will be shown on your profile"
+              onChange={handleChange}
+              value={userProfile.name}
+            />
+            <MultiSelctorAuto
+              fullWidth
+              name="pronouns"
+              label="pronouns"
+              options={pronounList}
+              helperText="Order will be preserved"
+              value={userProfile.pronouns}
+              defaultValue={userProfile.pronouns}
+              id="pronoun-selector"
+              setState={(pronouns) => {
+                setSaved(false)
+                userProfile.pronouns = [...pronouns]
+                setUserProfile(new User(userProfile))
+              }}
+            />
+            <MultiSelctorAuto
+              fullWidth
+              name="interests"
+              label="interests"
+              options={interestList}
+              helperText="Enter up to 5"
+              limitSelection="5"
+              value={userProfile.interests}
+              defaultValue={userProfile.interests}
+              id="interest-selector"
+              setState={(interests) => {
+                setSaved(false)
+                userProfile.interests = [...interests]
+                setUserProfile(new User(userProfile))
+              }}
+            />
+            <h5>Profile Picture</h5>
+            <TextField
+              fullWidth
+              required
+              label="Image URL"
+              type="url"
+              name="profilePicture"
+              autoComplete="off"
+              helperText="We should make this an uploader"
+              onChange={handleChange}
+              value={userProfile.profilePicture}
+            />
+          </Box>
         </Paper>
         <Paper sx={{m: 1, p: 2}}>
           <h3>Search Details</h3>
@@ -174,7 +202,7 @@ const EditProfile = () => {
                       checked={userProfile.remote}
                     />
                   }
-                  label="remote"
+                  label="Remote"
                 />
                 <FormControlLabel
                   control={
@@ -184,7 +212,7 @@ const EditProfile = () => {
                       checked={userProfile.local}
                     />
                   }
-                  label="local"
+                  label="Local"
                 />
               </FormGroup>
             </Box>
@@ -195,7 +223,6 @@ const EditProfile = () => {
                 label="ZIP Code"
                 type="text"
                 name="zipCode"
-                autoComplete="off"
                 onChange={handleChange}
                 value={userProfile.zipCode}
               />
@@ -218,52 +245,61 @@ const EditProfile = () => {
           <EditAvailabilityGrid
             value={userProfile.availability}
             setState={(availability) => {
-              setUserProfile({
-                ...userProfile,
-                availability,
-              })
+              setSaved(false)
+              userProfile.availability = [...availability]
+              setUserProfile(new User(userProfile))
             }}
           />
         </Paper>
-        <Card sx={{m: 1, p: 2}}>
-          <Box sx={{m: 1}}>
+        <Card
+          sx={{
+            m: 1,
+            p: 2,
+            display: 'flex',
+            flexDirection: 'column',
+          }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              p: 1,
+              '& > *': {
+                m: 1,
+              },
+            }}>
             <h3>Change Email</h3>
             <TextField
-              sx={{m: 1}}
-              fullWidth
               label="New Email"
               type="email"
               name="newEmail"
               autoComplete="off"
-              onChange={handleChange}
-              value={userProfile.newEmail}
+              onChange={changeEmailPassword}
+              value={newEmail.new}
               error={
-                userProfile.confirmEmail
-                  ? userProfile.confirmEmail === userProfile.newEmail
+                newEmail.confirm
+                  ? newEmail.confirm === newEmail.new
                     ? false
                     : true
                   : false
               }
             />
             <TextField
-              sx={{m: 1}}
-              fullWidth
               label="Confirm New Email"
               type="email"
               name="confirmEmail"
               autoComplete="off"
-              onChange={handleChange}
-              value={userProfile.confirmEmail}
+              onChange={changeEmailPassword}
+              value={newEmail.confirm}
               error={
-                userProfile.confirmEmail
-                  ? userProfile.confirmEmail === userProfile.newEmail
+                newEmail.confirm
+                  ? newEmail.confirm === newEmail.new
                     ? false
                     : true
                   : false
               }
             />
-            {userProfile.confirmEmail ? (
-              userProfile.confirmEmail === userProfile.newEmail ? (
+            {newEmail.confirm ? (
+              newEmail.confirm === newEmail.new ? (
                 ''
               ) : (
                 <h6>Emails must match!</h6>
@@ -280,34 +316,14 @@ const EditProfile = () => {
               },
             }}>
             <h3>Change Password</h3>
-            <InputLabel htmlFor="oldPassword">Old Password</InputLabel>
-            <OutlinedInput
-              name="oldPassword"
-              id="oldPassword"
-              type={showPassword.old ? 'text' : 'password'}
-              value={userProfile.oldPassword}
-              onChange={handleChange}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle old password visibility"
-                    onClick={() => clickShowPassword('old')}
-                    onMouseDown={mouseDownShowPassword}
-                    edge="end">
-                    {showPassword.old ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Old Password"
-              notched={false}
-            />
             <InputLabel htmlFor="newPassword">New Password</InputLabel>
             <OutlinedInput
+              autoComplete={'off'}
               name="newPassword"
               id="newPassword"
               type={showPassword.new ? 'text' : 'password'}
-              value={userProfile.newPassword}
-              onChange={handleChange}
+              value={newPassword.new}
+              onChange={changeEmailPassword}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -322,8 +338,8 @@ const EditProfile = () => {
               label="New Password"
               notched={false}
               error={
-                userProfile.confirmPassword
-                  ? userProfile.confirmPassword === userProfile.newPassword
+                newPassword.confirm
+                  ? newPassword.confirm === newPassword.new
                     ? false
                     : true
                   : false
@@ -333,11 +349,12 @@ const EditProfile = () => {
               Confirm New Password
             </InputLabel>
             <OutlinedInput
+              autoComplete={'off'}
               name="confirmPassword"
               id="confirmPassword"
               type={showPassword.confirm ? 'text' : 'password'}
-              value={userProfile.confirmPassword}
-              onChange={handleChange}
+              value={newPassword.confirm}
+              onChange={changeEmailPassword}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -352,15 +369,15 @@ const EditProfile = () => {
               label="Confirm New Password"
               notched={false}
               error={
-                userProfile.confirmPassword
-                  ? userProfile.confirmPassword === userProfile.newPassword
+                newPassword.confirm
+                  ? newPassword.confirm === newPassword.new
                     ? false
                     : true
                   : false
               }
             />
-            {userProfile.confirmPassword ? (
-              userProfile.confirmPassword === userProfile.newPassword ? (
+            {newPassword.confirm ? (
+              newPassword.confirm === newPassword.new ? (
                 ''
               ) : (
                 <h6>Passwords must match!</h6>
@@ -370,9 +387,22 @@ const EditProfile = () => {
             )}
           </Box>
         </Card>
-        <Button type="submit" variant="contained" sx={{m: 1, p: 1}}>
-          SAVE
-        </Button>
+        <Fab
+          disabled={saved ? true : false}
+          color="primary"
+          type="submit"
+          sx={{
+            position: 'fixed',
+            width: '80px',
+            height: '80px',
+            top: 'auto',
+            bottom: 25,
+            right: 25,
+            left: 'auto',
+            m: 0,
+          }}>
+          {saved ? <CheckIcon /> : <SendIcon />}
+        </Fab>
       </form>
     </Paper>
   )
