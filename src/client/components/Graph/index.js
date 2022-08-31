@@ -42,12 +42,12 @@ function Tree(
     fill = '#028090', // fill for nodes
     fillOpacity, // fill opacity for nodes
     stroke = '#028090', // stroke for links
-    strokeWidth = 1.5, // stroke width for links
+    strokeWidth = 2, // stroke width for links
     strokeOpacity = 0.4, // stroke opacity for links
     strokeLinejoin, // stroke line join for links
     strokeLinecap, // stroke line cap for links
     halo = '#fcf7f8', // color of label halo
-    haloWidth = 3, // padding around the labels
+    haloWidth = 10, // padding around the labels
     svg = d3.create('svg'),
   } = {}
 ) {
@@ -64,7 +64,6 @@ function Tree(
 
   // Sort the nodes.
   if (sort != null) root.sort(sort)
-  //
   // Compute labels and titles.
   const descendants = root.descendants()
   const L = label == null ? null : descendants.map((d) => label(d.data, d))
@@ -108,13 +107,13 @@ function Tree(
     .data(root.descendants())
     .join('a')
     .attr('xlink:href', link == null ? null : (d) => link(d.data, d))
-    .attr('target', link == null ? null : linkTarget)
+    //The following line causes links to open in a new tab. We disabled this.
+    //.attr('target', link == null ? null : linkTarget)
     .attr(
       'transform',
       (d) => `rotate(${(d.x * 180) / Math.PI - 90}) translate(${d.y},0)`
     )
 
-  //TODO: Change color based on data, possibly here:
   node
     .append('circle')
     .attr('fill', (d) => (d.children ? stroke : fill))
@@ -122,7 +121,7 @@ function Tree(
 
   if (title != null) node.append('title').text((d) => title(d.data, d))
 
-  if (L)
+  if (L) {
     node
       .append('text')
       .attr('transform', (d) => `rotate(${d.x >= Math.PI ? 180 : 0})`)
@@ -135,11 +134,15 @@ function Tree(
       .attr('stroke', halo)
       .attr('stroke-width', haloWidth)
       .text((d, i) => L[i])
+  }
+  d3.select('svg')
+    .selectAll('g')
+    .selectAll('a')
+    .selectAll('text')
+    .attr('font-size', 50)
 
   return svg.node()
 }
-
-//TODO: !!! get all data to load on first render !!!
 
 function Graph() {
   const dispatch = useDispatch()
@@ -165,10 +168,9 @@ function Graph() {
           .reverse()
           .map((d) => d.data.name)
           .join('.')}`, // hover text
-
-      // // 'link' was from the example from the d3 library. We don't want these to be the links, but I'm saving this commented out so that we can see the syntax later when we go to add our own links:
-
-      // link: (d, n) => `https://github.com/prefuse/Flare/${n.children ? "tree" : "blob"}/master/flare/src/${n.ancestors().reverse().map(d => d.data.name).join("/")}${n.children ? "" : ".as"}`,
+      link: (d, n) => {
+        if (n.depth === 2) return `/users/${d.uid}`
+      },
       width: 1152,
       height: 1152,
       margin: 100,
@@ -176,7 +178,11 @@ function Graph() {
     })
   }, [graphData])
 
-  return <svg className="graph" ref={web}></svg>
+  return (
+    <>
+      <svg className="graph" ref={web}></svg>
+    </>
+  )
 }
 
 export default Graph
