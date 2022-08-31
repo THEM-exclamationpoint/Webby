@@ -31,6 +31,7 @@ const SingleChat = ({group}) => {
 
   let [message, setMessage] = useState('')
   let [messages, setMessages] = useState([])
+
   let [menuOpen, setMenuOpen] = useState(false)
   let [menuOpen2, setMenuOpen2] = useState(false)
   let [anchorEl, setAnchorEl] = useState(null)
@@ -41,6 +42,7 @@ const SingleChat = ({group}) => {
       scrollRef.current.scrollIntoView({behavior: 'smooth'})
     }
   }, [messages])
+  
   useEffect(() => {
     dispatch(setUser())
     dispatch(setUsers(group.members))
@@ -115,7 +117,7 @@ const SingleChat = ({group}) => {
               Members
             </Button>
             <Menu open={menuOpen} onClose={closeMenu} anchorEl={anchorEl}>
-              {users.map((user) => {
+              {users && users.map((user) => {
                 {
                   return (
                     <MenuItem value={user} key={user.uid}>

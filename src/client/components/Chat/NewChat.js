@@ -17,6 +17,7 @@ export const NewChat = ({friends,user}) => {
 
   let [selected, setSelected] = useState([])
   let [name, setName] = useState('')
+  let [validate, setValidate] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -35,22 +36,27 @@ export const NewChat = ({friends,user}) => {
   }
 
   function submitNewGroup (){
-    let uids = selected.map(friend => friend.uid)
+    if(name !== ''){
+          let uids = selected.map(friend => friend.uid)
     let newMembers = [...uids, user.uid]
     dispatch(addNewChat(newMembers,name,user.uid))
+    } else {
+      setValidate(true)
+    }
+
   }
   return (
     <DialogContent>
               <TextField
             autoFocus
             margin="dense"
-            id="name"
             label="Group Name"
             value={name}
             type="text"
             fullWidth
             variant="standard"
             onChange={handleChange}
+            error={validate}
             required
           />
       <DialogContentText>Friends</DialogContentText>
@@ -82,7 +88,7 @@ export const NewChat = ({friends,user}) => {
           })}
         </List>
       </Box>
-      <Button onClick={submitNewGroup}>Make Group</Button>
+      <DialogActions><Button onClick={submitNewGroup}>Make Group</Button></DialogActions>
     </DialogContent>
   )
 }
