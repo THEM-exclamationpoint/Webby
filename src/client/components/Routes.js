@@ -5,36 +5,34 @@ import Signup from './Auth/Sign-up'
 import EditProfile from './Profile/EditProfile'
 import Chat from './Chat/ChatRoom'
 import Graph from './Graph'
-import {useState, useEffect} from 'react'
+import {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import User, {setUser} from '../store/auth/user'
 import {FriendsList} from './Friends'
 import UserProfile from './Profile/UserProfile'
+import {auth} from '../../firebase/auth'
+
 
 function WebbyRoutes() {
   let dispatch = useDispatch()
   let user = useSelector((state) => state.user)
   useEffect(() => {
-    dispatch(setUser())
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        dispatch(setUser())
+      }
+    })
   }, [])
   return (
     <Routes>
-      <Route exact path="/home" element={user ? <Home /> : <LogIn />} />
+      <Route exact path="/home" element={user && <Home />} />
       <Route exact path="/" element={<LogIn />} />
       <Route exact path="/register" element={<Signup />} />
-      <Route
-        exact
-        path="/editprofile"
-        element={user ? <EditProfile /> : <LogIn />}
-      />
-      <Route exact path="/chatroom" element={user ? <Chat /> : <LogIn />} />
-      <Route exact path="/graph" element={user ? <Graph /> : <LogIn />} />
-      <Route
-        exact
-        path="/Friends"
-        element={user ? <FriendsList /> : <LogIn />}
-      />
-      <Route path="/users/:uid" element={user ? <UserProfile /> : <LogIn />} />
+      <Route exact path="/editprofile" element={user && <EditProfile />} />
+      <Route exact path="/chatroom" element={user && <Chat />} />
+      <Route exact path="/graph" element={user && <Graph />} />
+      <Route exact path="/Friends" element={user && <FriendsList />} />
+      <Route path="/users/:uid" element={user && <UserProfile />} />
     </Routes>
   )
 }
