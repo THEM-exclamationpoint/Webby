@@ -31,7 +31,8 @@ export const getUserProfile = (uid) => {
   return async (dispatch) => {
     try {
       const user = await getUserById(uid)
-      dispatch(fetchUserProfile(user))
+      const util = new User(user)
+      dispatch(fetchUserProfile(util.toProfile()))
     } catch (err) {
       console.error(err)
     }

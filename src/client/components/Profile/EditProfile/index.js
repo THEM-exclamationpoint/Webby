@@ -125,7 +125,7 @@ const EditProfile = () => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            m: 1,
+            m: 2,
             p: 2,
             '& > *': {
               m: 1,
@@ -133,9 +133,11 @@ const EditProfile = () => {
           }}>
           <Box
             sx={{
+              m: 1,
               display: 'flex',
               flexDirection: 'column',
               '& > *': {
+                display: 'flex',
                 m: 1,
               },
             }}>
@@ -191,7 +193,7 @@ const EditProfile = () => {
             />
           </Box>
         </Paper>
-        <Paper sx={{m: 1, p: 2}}>
+        <Paper sx={{m: 2, p: 2}}>
           <h3>Search Details</h3>
           <Card sx={{m: 1, p: 3}}>
             <Box>
@@ -256,7 +258,7 @@ const EditProfile = () => {
         </Paper>
         <Card
           sx={{
-            m: 1,
+            m: 2,
             p: 2,
             display: 'flex',
             flexDirection: 'column',

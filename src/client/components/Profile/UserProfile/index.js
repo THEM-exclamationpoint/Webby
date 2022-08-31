@@ -13,7 +13,13 @@ import {
   IconButton,
   Slider,
 } from '@mui/material'
-import {PersonAdd, PeopleAlt, PersonRemove, Pending} from '@mui/icons-material'
+import {
+  PersonAdd,
+  PeopleAlt,
+  PersonRemove,
+  Pending,
+  ChatBubbleRounded,
+} from '@mui/icons-material'
 import {
   getUserProfile,
   getUserFriends,
@@ -28,8 +34,8 @@ const UserProfile = (props) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const {uid} = useParams()
+  const {currentUser} = auth
   const profile = useSelector((state) => state.profile)
-
   const {user, friends, interests} = profile
 
   useEffect(() => {
@@ -66,9 +72,26 @@ const UserProfile = (props) => {
               border: '4px double #028090',
             }}
           />
-          <Typography sx={{m: 1}} variant="h3">
-            {user.name}
+          <Typography variant="h3">{user.name}</Typography>
+          <Typography variant="subtitle1">
+            {user.pronouns
+              ? user.pronouns.map((pronoun, idx) => {
+                  return (
+                    <span key={pronoun}>
+                      {idx ? '|| ' : ' '}
+                      {pronoun}{' '}
+                    </span>
+                  )
+                })
+              : ''}
           </Typography>
+          <Box>
+            <PersonAdd />
+            <PersonRemove />
+            <PeopleAlt />
+            <Pending />
+            <ChatBubbleRounded />
+          </Box>
         </Paper>
         <Paper></Paper>
       </Paper>
