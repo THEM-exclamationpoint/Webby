@@ -77,7 +77,7 @@ export class User {
     return await getInterestsOfUser(this.uid)
   }
 
-  toFirestore() {
+  toProfile() {
     return {
       uid: this.uid,
       name: this.name,
@@ -108,7 +108,7 @@ export class User {
         docId = doc.id
       })
       const ref = doc(db, 'users', docId)
-      await updateDoc(ref, this.toFirestore())
+      await updateDoc(ref, this.toProfile())
 
       return await getUserData()
     } catch (err) {
