@@ -17,6 +17,7 @@ import Drawer from '@mui/material/Drawer'
 import Dialog from '@mui/material/Dialog';
 
 import SingleChat from './SingleChat'
+import './style.css'
 
 import {getFriends} from '../../store/friends'
 import {setUser} from '../../store/auth/user'
@@ -27,6 +28,7 @@ const Chat = () => {
   const dispatch = useDispatch()
   let [collapse, setCollapse] = useState(false)
   let [modalOpen, setModalOpen] = useState(false)
+  let [search, setSearch] = useState('')
 
   let user = useSelector((state) => state.user)
   let groups = useSelector((state) => state.chatUsers)
@@ -49,9 +51,21 @@ const Chat = () => {
   function modalToggle() {
     setModalOpen(true)
   }
+  function handleChange (e){
+    setSearch(e.target.value)
+  }
+  const filteredData = groups.filter(group => {
+    let input = search.toLowerCase()
+    if(input === ''){
+      return group
+    }
+    else {
+      return group.groupname.toLowerCase().includes(input)
+    }
+  })
   
   return (
-    <div>
+    <div className='chat-component'>
       <Grid container>
         <Grid item={true} xs={12}>
           <Typography variant="h5" className="header-message">
@@ -76,14 +90,16 @@ const Chat = () => {
             <Divider />
             <Grid item={true} xs={12} style={{padding: '10px'}}>
               <TextField
+              onChange={handleChange}
                 id="outlined-basic-email"
                 label="Search"
                 variant="outlined"
+                value={search}
                 fullWidth
               />
             </Grid>
             <Divider />
-            {groups.map((group) => {
+            {filteredData.map((group) => {
               return (
                 <ListItem
                   button

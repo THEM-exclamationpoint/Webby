@@ -43,7 +43,6 @@ const handleLogout = () => {
         TransitionComponent={Fade}
         className= 'menu'
       >
-      <MenuItem onClick={handleClose}>Profile</MenuItem>
        <Link to='/editprofile'><MenuItem onClick={handleClose}>My account</MenuItem></Link>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>

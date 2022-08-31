@@ -10,6 +10,7 @@ import FadeMenu from './UserMenu';
 import TemporaryDrawer from './NavMenu';
 // import './style.css'
 
+import { Link } from 'react-router-dom';
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: 'flex-start',
   paddingTop: theme.spacing(1),
@@ -22,7 +23,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 export default function ProminentAppBar() {
   return (
-    <Box sx={{ flexGrow: 1 }} >
+    <Box sx={{ flexGrow: 1 }} className='menu'>
       <AppBar position="static" className='navbar'>
         <StyledToolbar>
           <IconButton
@@ -32,20 +33,18 @@ export default function ProminentAppBar() {
             aria-label="open drawer"
             sx={{ mr: 2 }}
           >
-            {/* <MenuIcon /> */}
             <TemporaryDrawer/>
           </IconButton>
           <Typography
             variant="h5"
             noWrap
-            component="div"
+            component={Link}
+            to='/home'
+            className='brand'
             sx={{ flexGrow: 1, alignSelf: 'flex-end' }}
           >
             WEBBY
           </Typography>
-          {/* <IconButton size="large" aria-label="search" color="inherit">
-            <SearchIcon />
-          </IconButton> */}
           <IconButton
             size="large"
             aria-label="display more actions"

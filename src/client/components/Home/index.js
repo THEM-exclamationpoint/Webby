@@ -1,20 +1,60 @@
+import Divider from '@mui/material/Divider'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemText from '@mui/material/ListItemText'
+import Card from '@mui/material/Card'
+import CardHeader from '@mui/material/CardHeader'
+import CardContent from '@mui/material/CardContent'
+
 import {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {setUser} from '../../store/auth/user'
 import {Link} from 'react-router-dom'
+
+import {setUserInterests} from '../../store/interests'
+import './style.css'
+
 const Home = () => {
   const dispatch = useDispatch()
   let user = useSelector((state) => state.user)
+  let interests = useSelector((state) => state.interests)
+
   useEffect(() => {
     dispatch(setUser())
-  }, [dispatch])
+  }, [])
+  useEffect(() => {
+    dispatch(setUserInterests(user.uid))
+  }, [user.uid])
 
   return (
-    <div>
-      <h1> Welcome, {user.name}!</h1>
-      <Link to="/graph">Graph</Link>
-      <Link to="/chatroom">Chat</Link>
-      <Link to="/editprofile">EditProfile</Link>
+    <div className="homepage">
+      <h1> Welcome, {user.name}</h1>
+      <small>Build communities!</small>
+      <Divider />
+      <div>
+        <List>
+          <ListItem button component={Link} to="/graph">
+            <ListItemText align="center">My Web</ListItemText>
+          </ListItem>
+          <ListItem button component={Link} to="/chat">
+            <ListItemText align="center">Chats</ListItemText>
+          </ListItem>
+        </List>
+      </div>
+      <Card variant="outlined" >
+        <CardHeader title="My Interests" />
+        <List>
+          {interests.map((interest) => {
+            return (
+              <ListItem>
+                <ListItemText align="center">{interest}</ListItemText>
+              </ListItem>
+            )
+          })}
+        </List>
+      </Card>
     </div>
   )
 }

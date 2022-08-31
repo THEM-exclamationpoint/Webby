@@ -9,16 +9,19 @@ import graphData from './graph/graphData'
 import sendMessage from './chat/sendMessage'
 import users from './auth/users'
 import friends from './friends'
+import interests from './interests'
+import profile from './profile'
 
 const reducer = combineReducers({
   auth,
   user,
   chatUsers,
-  // messages,
   graphData,
   sendMessage,
   users,
   friends,
+  interests,
+  profile,
 })
 
 const middleware = composeWithDevTools(

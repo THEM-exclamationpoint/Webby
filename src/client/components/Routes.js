@@ -9,7 +9,9 @@ import {useState, useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {setUser} from '../store/auth/user'
 import AppSettings from './Settings';
+import User, {setUser} from '../store/auth/user'
 import {FriendsList} from './Friends'
+import UserProfile from './Profile/UserProfile'
 
 function WebbyRoutes() {
   let dispatch = useDispatch()
@@ -35,6 +37,7 @@ function WebbyRoutes() {
         path="/Friends"
         element={user ? <FriendsList /> : <LogIn />}
       />
+      <Route path="/users/:uid" element={user ? <UserProfile /> : <LogIn />} />
     </Routes>
   )
 }
