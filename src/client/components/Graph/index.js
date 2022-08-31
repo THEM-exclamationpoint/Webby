@@ -169,7 +169,7 @@ function Graph() {
           .map((d) => d.data.name)
           .join('.')}`, // hover text
       link: (d, n) => {
-        if (n.depth === 2) return `/user/${d.uid}`
+        if (n.depth === 2) return `/users/${d.uid}`
       },
       width: 1152,
       height: 1152,
