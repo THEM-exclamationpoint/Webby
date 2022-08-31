@@ -5,7 +5,7 @@ import {_getGraphData} from '../../store/graph/graphData'
 import {setUser} from '../../store/auth/user'
 import {useDispatch, useSelector} from 'react-redux'
 import './style.css'
-import UserInteractionsMenu from '../UserInteractionsMenu'
+// import UserInteractionsMenu from '../UserInteractionsMenu'
 
 // Copyright 2022 Observable, Inc.
 // Released under the ISC license.
@@ -65,7 +65,6 @@ function Tree(
 
   // Sort the nodes.
   if (sort != null) root.sort(sort)
-  //
   // Compute labels and titles.
   const descendants = root.descendants()
   const L = label == null ? null : descendants.map((d) => label(d.data, d))
@@ -170,7 +169,7 @@ function Graph() {
           .map((d) => d.data.name)
           .join('.')}`, // hover text
       link: (d, n) => {
-        if (d.children.length === 0) return `/userInteractions`
+        if (n.depth === 2) return `/user/${d.uid}`
       },
       width: 1152,
       height: 1152,
@@ -182,7 +181,8 @@ function Graph() {
   return (
     <>
       <svg className="graph" ref={web}></svg>
-      <UserInteractionsMenu username={'Davi'} interest={'Rock climbing'} />
+
+      {/* <UserInteractionsMenu username={'Davi'} interest={'Rock climbing'} /> */}
     </>
   )
 }

@@ -7,6 +7,8 @@ import {Link} from 'react-router-dom'
 
 //TODO: Change "add friend" to read "remove friend", if user already has that friend
 
+//TODO: Prevent link from opening in new tab
+
 const UserInteractionsMenu = function (props) {
   return (
     <div className="userInteractionsMenu">
