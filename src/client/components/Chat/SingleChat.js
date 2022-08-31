@@ -45,11 +45,11 @@ const SingleChat = ({group}) => {
   
   useEffect(() => {
     dispatch(setUser())
-    dispatch(setUsers(group.members))
     dispatch(getFriends(user.uid))
   }, [])
 
   useEffect(() => {
+    dispatch(setUsers(group.members))
     const unsubscribe = getMessagesWithGroup(group.groupId, setMessages)
     return unsubscribe
   }, [group.groupId])
