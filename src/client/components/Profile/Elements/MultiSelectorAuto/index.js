@@ -44,9 +44,7 @@ export default function MultiSelectorAuto(props) {
       options={options.sort()}
       value={value}
       getOptionDisabled={(option) =>
-        !isNaN(+limitSelection) && value.length === +limitSelection
-          ? true
-          : false
+        limitSelection && value.length === +limitSelection ? true : false
       }
       filterSelectedOptions
       onChange={(event, value) => handleChange(event, value)}
