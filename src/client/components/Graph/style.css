@@ -1,3 +1,9 @@
 .graph{
-    background-color: #fcf7f8
+    background-color: #fcf7f8;
+}
+
+.graph-wrapper{
+    display: flex;
+    background-color: #fcf7f8;
+    justify-content: center
 }

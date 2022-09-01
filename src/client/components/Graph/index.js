@@ -12,10 +12,6 @@ import './style.css'
 function Tree(
   data,
   {
-    // data is either tabular (array of objects) or hierarchy (nested objects)
-    path, // as an alternative to id and parentId, returns an array identifier, imputing internal nodes
-    id = Array.isArray(data) ? (d) => d.id : null, // if tabular data, given a d in data, returns a unique identifier (string)
-    parentId = Array.isArray(data) ? (d) => d.parentId : null, // if tabular data, given a node d, returns its parent’s identifier
     children, // if hierarchical data, given a d in data, returns its children
     tree = d3.tree, // layout algorithm (typically d3.tree or d3.cluster)
     separation = tree === d3.tree
@@ -39,9 +35,9 @@ function Tree(
     ) / 2, // outer radius
     r = 3, // radius of nodes
     padding = 1, // horizontal padding for first and last column
-    fill = '#028090', // fill for nodes
+    fill = '#A799B7', // fill for nodes
     fillOpacity, // fill opacity for nodes
-    stroke = '#028090', // stroke for links
+    stroke = '#A799B7', // stroke for links
     strokeWidth = 2, // stroke width for links
     strokeOpacity = 0.4, // stroke opacity for links
     strokeLinejoin, // stroke line join for links
@@ -51,16 +47,9 @@ function Tree(
     svg = d3.create('svg'),
   } = {}
 ) {
-  // If id and parentId options are specified, or the path option, use d3.stratify
-  // to convert tabular data to a hierarchy; otherwise we assume that the data is
-  // specified as an object {children} with nested objects (a.k.a. the “flare.json”
-  // format), and use d3.hierarchy.
-  const root =
-    path != null
-      ? d3.stratify().path(path)(data)
-      : id != null || parentId != null
-      ? d3.stratify().id(id).parentId(parentId)(data)
-      : d3.hierarchy(data, children)
+  svg.html('') //clears the svg so that duplicates are not made on re-render
+
+  const root = d3.hierarchy(data, children)
 
   // Sort the nodes.
   if (sort != null) root.sort(sort)
@@ -68,23 +57,24 @@ function Tree(
   const descendants = root.descendants()
   const L = label == null ? null : descendants.map((d) => label(d.data, d))
 
-  // Compute the layout.
-  tree() //Davi's notes: d3.tree() creates a new tidy tree layout
-    .size([2 * Math.PI, radius])
-    .separation(separation)(root) //Davi's notes: sets separation between nodes
+  // Compute the layout:
 
-  svg
+  tree() //d3.tree() creates a new tidy tree layout
+    .size([2 * Math.PI, radius])
+    .separation(separation)(root) //sets separation between nodes
+
+  svg //'.attr' gets or sets an attribute
     .attr('viewBox', [-marginLeft - radius, -marginTop - radius, width, height])
     .attr('width', width)
     .attr('height', height)
     .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
     .attr('font-family', 'sans-serif')
     .attr('font-size', 20)
-    .attr('fill', '#028090')
+    .attr('fill', '#028090') //colors the text
 
   svg
-    .append('g')
-    .attr('fill', 'none')
+    .append('g') //appends a g element to the svg. g element is used to group svg shapes together
+    .attr('fill', 'none') //prevents paths from filling in solid
     .attr('stroke', stroke)
     .attr('stroke-opacity', strokeOpacity)
     .attr('stroke-linecap', strokeLinecap)
@@ -92,7 +82,7 @@ function Tree(
     .attr('stroke-width', strokeWidth)
     .selectAll('path')
     .data(root.links())
-    .join('path')
+    .join('path') //adds a path between each node
     .attr(
       'd',
       d3
@@ -103,7 +93,7 @@ function Tree(
 
   const node = svg
     .append('g')
-    .selectAll('a')
+    .selectAll('a') //selects all 'a' elements (links)
     .data(root.descendants())
     .join('a')
     .attr('xlink:href', link == null ? null : (d) => link(d.data, d))
@@ -113,15 +103,17 @@ function Tree(
       'transform',
       (d) => `rotate(${(d.x * 180) / Math.PI - 90}) translate(${d.y},0)`
     )
+    .attr('fill', '#028090') //by adding this line, links, whether or not clicked, stay the same color (#028090) as the rest of the test
 
   node
-    .append('circle')
+    .append('circle') //adds a circle at each node
     .attr('fill', (d) => (d.children ? stroke : fill))
     .attr('r', r)
 
   if (title != null) node.append('title').text((d) => title(d.data, d))
 
   if (L) {
+    //an array of labels
     node
       .append('text')
       .attr('transform', (d) => `rotate(${d.x >= Math.PI ? 180 : 0})`)
@@ -135,11 +127,26 @@ function Tree(
       .attr('stroke-width', haloWidth)
       .text((d, i) => L[i])
   }
-  d3.select('svg')
+
+  //selecting the current user
+  svg
     .selectAll('g')
     .selectAll('a')
-    .selectAll('text')
-    .attr('font-size', 50)
+    .filter((node) => node.data.name === L[0])
+    .attr('fill', '#2C2C54')
+
+  //selecting other users
+  svg
+    .selectAll('g')
+    .selectAll('a')
+    .filter((node) => node.depth === 1)
+
+  //selecting interests
+  svg
+    .selectAll('g')
+    .selectAll('a')
+    .filter((node) => node.depth === 2)
+    .attr('fill', '#2C2C54')
 
   return svg.node()
 }
@@ -161,13 +168,13 @@ function Graph() {
 
   useEffect(() => {
     Tree(graphData, {
+      screenReader: true,
       label: (d) => d.name,
-      title: (d, n) =>
-        `${n
-          .ancestors()
-          .reverse()
-          .map((d) => d.data.name)
-          .join('.')}`, // hover text
+      title: (d) => {
+        if (d.children && d.children.length === 0)
+          //checks to see if a node is another user (having no children), and if so, make a hover message over link to profile
+          return `View ${d.name}'s profile`
+      },
       link: (d, n) => {
         if (n.depth === 2) return `/users/${d.uid}`
       },
@@ -179,9 +186,9 @@ function Graph() {
   }, [graphData])
 
   return (
-    <>
+    <div className="graph-wrapper">
       <svg className="graph" ref={web}></svg>
-    </>
+    </div>
   )
 }
 
