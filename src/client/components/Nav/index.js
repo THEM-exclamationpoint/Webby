@@ -12,7 +12,7 @@ import {Link} from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {setUser} from '../../store/auth/user'
-import {ReactComponent as Webby} from '../../../Spider.svg'
+import {ReactComponent as Webby} from '../../../Spider-light.svg'
 
 const StyledToolbar = styled(Toolbar)(({theme}) => ({
   alignItems: 'center',
