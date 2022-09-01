@@ -26,7 +26,7 @@ import { NewChat } from './NewChat';
 
 const Chat = () => {
   const dispatch = useDispatch()
-  let [collapse, setCollapse] = useState(false)
+  let [collapse, setCollapse] = useState(true)
   let [modalOpen, setModalOpen] = useState(false)
   let [search, setSearch] = useState('')
 
@@ -100,13 +100,14 @@ const Chat = () => {
             </Grid>
             <Divider />
             {filteredData.map((group) => {
-              return (
+              let name = typeof(group.groupname) === 'string' ? group.groupname : group.groupname[0] === user.name ? group.groupname[1]  : group.groupname[0] 
+                    return (
                 <ListItem
                   button
                   key={group.groupId}
                   onClick={() => setSelectedGroup(group)}>
-                  <ListItemText primary={group.groupname}>
-                    {group.groupname}
+                  <ListItemText primary={name}>
+                    {name}
                   </ListItemText>
                   <ListItemText align="right"></ListItemText>
                 </ListItem>
@@ -122,7 +123,7 @@ const Chat = () => {
             </Dialog>
           </Grid>
         </Drawer>
-        {selectedGroup && <SingleChat group={selectedGroup} />}
+        {selectedGroup && <SingleChat group={selectedGroup} groupname={name}/>}
       </Grid>
 
     </div>

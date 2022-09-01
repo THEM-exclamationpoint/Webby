@@ -13,7 +13,7 @@ import interests from './interests'
 import editProfile from './profile/editProfile'
 import profile from './profile'
 import friendJunctions from './friends/junctions'
-
+import sendDM from './chat/sendDm'
 const reducer = combineReducers({
   auth,
   user,
@@ -25,7 +25,8 @@ const reducer = combineReducers({
   interests,
   editProfile,
   profile,
-  friendJunctions
+  friendJunctions,
+  sendDM
 })
 
 const middleware = composeWithDevTools(

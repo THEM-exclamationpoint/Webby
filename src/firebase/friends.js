@@ -55,7 +55,7 @@ export async function getFriendJunctions(uid){
 export async function addFriend(uid1,uid2){
   await addDoc(collection(db,'junction_user_user'), {
     friends: [uid1,uid2],
-    id: (Date.now() + Math.floor(Math.random() * 10000))
+    id: Date.now() + Math.random().toString(36).slice(2)
   })
 }
 export async function removeFriend(id){

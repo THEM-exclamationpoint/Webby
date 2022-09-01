@@ -19,7 +19,8 @@ export async function getListOfGroups() {
     const user = auth.currentUser
     const q = query(
       collection(db, 'groups'),
-      where('members', 'array-contains', user.uid)
+      where('members', 'array-contains', user.uid),
+      orderBy('created', 'asc')
     )
     const docs = await getDocs(q)
     if (docs) {
@@ -40,7 +41,7 @@ export function getMessagesWithGroup(groupId, callback) {
     const q = query(
       collection(db, 'messages'),
       where('toGroup', '==', groupId),
-      orderBy('timeStamp', 'asc')
+      orderBy('timeStamp', 'desc')
     )
     const messages = onSnapshot(
       q,
@@ -99,13 +100,46 @@ export async function sendNewMessage(uid, groupId, content) {
   }
   catch(err){console.error(err)}
  }
+
  export async function newGroup(uids, groupname){
   try{
     await addDoc(collection(db, 'groups'), {
       members: uids,
       groupname,
-      groupId: (Date.now() + Math.floor(Math.random() * 1000))
+      groupId: Date.now() + Math.random().toString(36).slice(2),
+      created: Date.now()
     })
   }
   catch(err){console.error(err)}
+ }
+
+
+ export async function newDm (uid1,uid2,name1,name2,content) {
+  let  q = query(collection(db,'groups'), where('members', 'array-contains', uid1))
+  let docs = await getDocs(q)
+  let groups = []
+  docs.forEach(doc => {
+    groups.push(doc.data())
+  })
+  console.log(groups)
+  let both = groups.filter(group => group.members.includes(uid2))
+  console.log(both)
+ let one = both.filter(group => group.isDm)
+ if(one.length !== 0){
+  console.log(one)
+  await sendNewMessage(uid1,one[0].groupId,content)
+  return one.groupId
+ }
+ else {
+  let id = Date.now() + Math.random().toString(36).slice(2)
+  await addDoc(collection(db, 'groups'), {
+    members: [uid1,uid2],
+    groupname: [name1,name2],
+    groupId: id,
+    isDm: true,
+    created: Date.now()
+  })
+  await sendNewMessage(uid1,id,content)
+  return id
+ }
  }
