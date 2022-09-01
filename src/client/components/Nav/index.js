@@ -55,7 +55,14 @@ export default function ProminentAppBar() {
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            sx={{mr: 2}}
+            sx={{
+              mr: 2,
+              width: 50,
+              height: 50,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'baseline',
+            }}
             disabled={isOff}>
             <TemporaryDrawer />
           </IconButton>
@@ -71,6 +78,14 @@ export default function ProminentAppBar() {
           </Typography>
           <Webby className="webby" />
           <IconButton
+            sx={{
+              ml: 2,
+              width: 50,
+              height: 50,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'baseline',
+            }}
             size="large"
             aria-label="display more actions"
             edge="end"
