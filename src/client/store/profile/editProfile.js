@@ -73,7 +73,7 @@ export const updateEmail = (user, email) => {
 export const fetchAllInterests = () => {
   return async (dispatch) => {
     const interests = await getAllInterests()
-    dispatch(setAllInterests(interests.map((item) => item.interest)))
+    dispatch(setAllInterests(await interests.map((item) => item.interest)))
   }
 }
 

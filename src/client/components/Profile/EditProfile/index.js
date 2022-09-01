@@ -42,9 +42,15 @@ const EditProfile = (props) => {
 
   const {firstVisit = false} = props
 
-  let {user, interests} = useSelector((state) => state.editProfile)
+  let user = useSelector((state) => state.user)
+  let {user: editUser, interests} = useSelector((state) => state.editProfile)
 
   let [userProfile, setUserProfile] = useState(new User(user))
+
+  if (!userProfile.interests.length && editUser.interests.length) {
+    userProfile.interests = [...editUser.interests]
+    setUserProfile(new User(userProfile))
+  }
 
   let [newPassword, setNewPassword] = useState({
     new: '',
