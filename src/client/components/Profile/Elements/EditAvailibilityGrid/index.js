@@ -7,6 +7,7 @@ import {
   ButtonGroup,
   Card,
   FormControl,
+  Typography,
   Box,
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -65,16 +66,16 @@ const AvailabilityGrid = (props) => {
               id={`${day.day}-header`}
               sx={{
                 display: 'flex',
-                alignContent: 'center',
+                alignItems: 'center',
                 justifyContent: 'space-between',
               }}>
               <Box
                 sx={{
                   width: '60%',
                   display: 'flex',
-                  alignContent: 'center',
+                  alignItems: 'center',
                 }}>
-                <h3> {day.day} </h3>
+                <Typography variant="h6"> {day.day} </Typography>
               </Box>
               <Box
                 sx={{
@@ -122,25 +123,36 @@ const AvailabilityGrid = (props) => {
                   justifyContent: 'center',
                   '& > *': {
                     m: 1,
-                    p: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
                   },
                 }}>
                 <Item key={`${day.day}-am`}>
-                  <h3>DAY</h3>
+                  <Typography sx={{m: 1.5}} variant="h6">
+                    DAY
+                  </Typography>
                   <ButtonGroup orientation="vertical">
                     <Button
+                      variant={
+                        day.am === 'available' ? 'contained' : 'outlined'
+                      }
                       color={day.am === 'available' ? 'success' : 'secondary'}
                       value={JSON.stringify({...day, am: 'available'})}
                       onClick={handleClick}>
                       available
                     </Button>
                     <Button
+                      variant={day.am === 'notice' ? 'contained' : 'outlined'}
                       color={day.am === 'notice' ? 'warning' : 'secondary'}
                       value={JSON.stringify({...day, am: 'notice'})}
                       onClick={handleClick}>
                       plan ahead
                     </Button>
                     <Button
+                      variant={
+                        day.am === 'unavailable' ? 'contained' : 'outlined'
+                      }
                       color={day.am === 'unavailable' ? 'error' : 'secondary'}
                       value={JSON.stringify({...day, am: 'unavailable'})}
                       onClick={handleClick}>
@@ -149,21 +161,30 @@ const AvailabilityGrid = (props) => {
                   </ButtonGroup>
                 </Item>
                 <Item key={`${day.day}-pm`}>
-                  <h3>NIGHT</h3>
+                  <Typography sx={{m: 1.5}} variant="h6">
+                    NIGHT
+                  </Typography>
                   <ButtonGroup orientation="vertical">
                     <Button
+                      variant={
+                        day.pm === 'available' ? 'contained' : 'outlined'
+                      }
                       color={day.pm === 'available' ? 'success' : 'secondary'}
                       value={JSON.stringify({...day, pm: 'available'})}
                       onClick={handleClick}>
                       available
                     </Button>
                     <Button
+                      variant={day.pm === 'notice' ? 'contained' : 'outlined'}
                       color={day.pm === 'notice' ? 'warning' : 'secondary'}
                       value={JSON.stringify({...day, pm: 'notice'})}
                       onClick={handleClick}>
                       plan ahead
                     </Button>
                     <Button
+                      variant={
+                        day.pm === 'unavailable' ? 'contained' : 'outlined'
+                      }
                       color={day.pm === 'unavailable' ? 'error' : 'secondary'}
                       value={JSON.stringify({...day, pm: 'unavailable'})}
                       onClick={handleClick}>
