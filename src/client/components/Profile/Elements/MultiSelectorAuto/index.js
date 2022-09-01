@@ -40,6 +40,7 @@ export default function MultiSelctorAuto(props) {
   }
   return (
     <Autocomplete
+      aria-label={`${printLabel} entry field`}
       fullWidth={fullWidth}
       freeSolo
       multiple
