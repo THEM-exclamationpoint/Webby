@@ -143,7 +143,8 @@ export class User {
         if (jdocs) {
           for (let jdoc of jdocs.docs) {
             if (!interestIds.includes(jdoc.data().interestId)) {
-              await deleteDoc(jdoc)
+              const jref = doc(db, 'junction_user_interest', jdoc.id)
+              await deleteDoc(jref)
             } else {
               interestIds = interestIds.filter(
                 (item) => item !== jdoc.data().interestId

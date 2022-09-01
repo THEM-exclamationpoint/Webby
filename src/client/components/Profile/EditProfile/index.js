@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useRoutes} from 'react-router-dom'
 import {
   Button,
   Box,
@@ -45,12 +45,9 @@ const EditProfile = (props) => {
   let user = useSelector((state) => state.user)
   let {user: editUser, interests} = useSelector((state) => state.editProfile)
 
-  let [userProfile, setUserProfile] = useState(new User(user))
-
-  if (!userProfile.interests.length && editUser.interests.length) {
-    userProfile.interests = [...editUser.interests]
-    setUserProfile(new User(userProfile))
-  }
+  let [userProfile, setUserProfile] = useState(
+    new User({...user, interests: [...editUser.interests]})
+  )
 
   let [newPassword, setNewPassword] = useState({
     new: '',
@@ -69,9 +66,14 @@ const EditProfile = (props) => {
   })
 
   useEffect(() => {
-    dispatch(fetchMyInterests())
     dispatch(fetchAllInterests())
+    dispatch(fetchMyInterests())
   }, [])
+
+  useEffect(() => {
+    userProfile.interests = [...editUser.interests]
+    setUserProfile(userProfile)
+  }, [editUser.interests])
 
   const handleChange = (e) => {
     setSaved(false)
