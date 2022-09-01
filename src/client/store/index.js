@@ -12,6 +12,7 @@ import friends from './friends'
 import interests from './interests'
 import editProfile from './profile/editProfile'
 import profile from './profile'
+import friendJunctions from './friends/junctions'
 
 const reducer = combineReducers({
   auth,
@@ -24,6 +25,7 @@ const reducer = combineReducers({
   interests,
   editProfile,
   profile,
+  friendJunctions
 })
 
 const middleware = composeWithDevTools(

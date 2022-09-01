@@ -1,9 +1,10 @@
-import {getUsersFriends} from '../../../firebase/friends'
+import {getUsersFriends, addFriend, removeFriend} from '../../../firebase/friends'
 
 /**
  * ACTION TYPES
  */
 const GET_FRIENDS = 'GET_FRIENDS'
+const ADD_FRIEND = 'ADD_FRIEND'
 
 /**
  * ACTION CREATORS
