@@ -18,6 +18,9 @@ import {
   doc,
   updateDoc,
   getDocs,
+  setDoc,
+  addDoc,
+  deleteDoc,
 } from 'firebase/firestore'
 
 const DAYSOTW = [
@@ -44,25 +47,25 @@ export const newAvailability = () => {
 export class User {
   constructor(user) {
     //utility
-    this.uid = user.uid || ''
-
+    this.uid = user && user.uid ? user.uid : ''
     //profile data
-    this.name = user.name || ''
-    this.pronouns = user.pronouns ? [...user.pronouns] : [] // array of strings
-    this.remote = user.remote || false
-    this.local = user.local || false
-    this.availability = user.availability
-      ? user.availability
-          .map((day) => {
-            return {...day}
-          })
-          .sort((a, b) => a.id - b.id)
-      : newAvailability()
-    this.location = user.location || ''
-    this.zipCode = user.zipCode || ''
-    this.profilePicture = user.profilePicture || ''
-    this.range = user.range || 20
-    this.interests = user.interests ? [...user.interests] : [] // array of strings
+    this.name = user && user.name ? user.name : ''
+    this.pronouns = user && user.pronouns ? [...user.pronouns] : [] // array of strings
+    this.remote = user && user.remote ? user.remote : false
+    this.local = user && user.local ? user.local : false
+    this.availability =
+      user && user.availability
+        ? user.availability
+            .map((day) => {
+              return {...day}
+            })
+            .sort((a, b) => a.id - b.id)
+        : newAvailability()
+    this.location = user && user.location ? user.location : ''
+    this.zipCode = user && user.zipCode ? user.zipCode : ''
+    this.profilePicture = user && user.profilePicture ? user.profilePicture : ''
+    this.range = user && user.range ? user.range : 20
+    this.interests = user && user.interests ? [...user.interests] : []
   }
 
   async myFriends() {
@@ -93,23 +96,69 @@ export class User {
       zipCode: this.zipCode,
       profilePicture: this.profilePicture,
       range: this.range,
-      interests: [...this.interests],
     }
   }
 
   async updateMyProfile() {
     try {
+      // update user entry
       let user = auth.currentUser
-      // if (!user || user.uid !== this.uid) return
-      let q = query(collection(db, 'users'), where('uid', '==', this.uid))
-      const docs = await getDocs(q)
-      let docId
-      docs.forEach((doc) => {
-        docId = doc.id
+      if (!user || user.uid !== this.uid) return
+      let uq = query(collection(db, 'users'), where('uid', '==', this.uid))
+      const udocs = await getDocs(uq)
+      let udocId
+      udocs.forEach((doc) => {
+        udocId = doc.id
       })
-      const ref = doc(db, 'users', docId)
+      const ref = doc(db, 'users', udocId)
       await updateDoc(ref, this.toProfile())
 
+      if (this.interests.length) {
+        let interestIds = []
+        for (let item of this.interests) {
+          let iq = query(
+            collection(db, 'interests'),
+            where('interest', '==', item)
+          )
+          let data
+          let idocs = await getDocs(iq)
+          if (!idocs.docs.length) {
+            data = {
+              interest: item,
+              interestId: Date.now() + Math.floor(Math.random() * 10000),
+            }
+            await addDoc(collection(db, 'interests'), data)
+          } else {
+            idocs.forEach((idoc) => (data = idoc.data()))
+          }
+          interestIds.push(data.interestId)
+        }
+
+        let jq = query(
+          collection(db, 'junction_user_interest'),
+          where('uid', '==', this.uid)
+        )
+
+        let jdocs = await getDocs(jq)
+        if (jdocs) {
+          for (let jdoc of jdocs.docs) {
+            if (!interestIds.includes(jdoc.data().interestId)) {
+              await deleteDoc(jdoc)
+            } else {
+              interestIds = interestIds.filter(
+                (item) => item !== jdoc.data().interestId
+              )
+            }
+          }
+        }
+
+        for (let id of interestIds) {
+          await addDoc(collection(db, 'junction_user_interest'), {
+            interestId: id,
+            uid: this.uid,
+          })
+        }
+      }
       return await getUserData()
     } catch (err) {
       console.error(err)

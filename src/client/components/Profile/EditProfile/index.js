@@ -1,9 +1,10 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 import {
   Button,
   Box,
+  Divider,
   TextField,
   Fab,
   FormGroup,
@@ -17,26 +18,31 @@ import {
   OutlinedInput,
   InputAdornment,
   Slider,
+  Typography,
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import SendIcon from '@mui/icons-material/Send'
 import CheckIcon from '@mui/icons-material/Check'
 import EditAvailabilityGrid from '../Elements/EditAvailibilityGrid'
-import MultiSelctorAuto from '../Elements/MultiSelectorAuto'
+import MultiSelectorAuto from '../Elements/MultiSelectorAuto'
 import {User} from '../../../../firebase/models/User'
 import {
   updateProfile,
   updatePassword,
   updateEmail,
+  fetchMyInterests,
 } from '../../../store/profile/editProfile'
+import {fetchAllInterests} from '../../../store/profile/editProfile'
 import './style.css'
 
-const EditProfile = () => {
+const EditProfile = (props) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  let user = useSelector((state) => state.user)
+  const {firstVisit = false} = props
+
+  let {user, interests} = useSelector((state) => state.editProfile)
 
   let [userProfile, setUserProfile] = useState(new User(user))
 
@@ -55,6 +61,11 @@ const EditProfile = () => {
     new: false,
     confirm: false,
   })
+
+  useEffect(() => {
+    dispatch(fetchMyInterests())
+    dispatch(fetchAllInterests())
+  }, [])
 
   const handleChange = (e) => {
     setSaved(false)
@@ -86,13 +97,16 @@ const EditProfile = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (newPassword.new && newPassword.new === newPassword.confirm) {
-      dispatch(updatePassword(newPassword))
+      dispatch(updatePassword(userProfile, newPassword))
     }
     if (newEmail.new && newEmail.new === newEmail.confirm) {
-      dispatch(updateEmail(newEmail))
+      dispatch(updateEmail(userProfile, newEmail))
     }
     dispatch(updateProfile(userProfile))
     setSaved(true)
+    if (firstVisit) {
+      navigate(`../users/${userProfile.uid}`, {replace: true})
+    }
   }
 
   const clickShowPassword = (field) => {
@@ -110,34 +124,42 @@ const EditProfile = () => {
     <Paper
       sx={{
         m: 1,
-        p: 1,
+        p: 2,
         display: 'flex',
         flexDirection: 'column',
+        gap: 1,
       }}>
-      <h1>Edit Profile</h1>
-      <h3>Tell us a little about yourself...</h3>
-      <h6>
-        (your personal information will only be shared with other users of this
-        app)
-      </h6>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 1,
+          mt: 2,
+        }}>
+        <Typography variant="h4">Edit Profile</Typography>
+        <Typography variant="subtitle1">
+          Tell us a little about yourself...
+        </Typography>
+      </Box>
       <form onSubmit={handleSubmit}>
         <Paper
           sx={{
             display: 'flex',
             flexDirection: 'column',
             m: 2,
+            p: 3,
           }}>
           <Box
             sx={{
-              m: 2,
+              gap: 2,
               display: 'flex',
               flexDirection: 'column',
               '& > *': {
                 display: 'flex',
-                m: 1,
               },
             }}>
-            <h3>Personal Details</h3>
+            <Typography variant="h5">Personal Details:</Typography>
             <TextField
               required
               aria-label="name entry field"
@@ -148,7 +170,7 @@ const EditProfile = () => {
               onChange={handleChange}
               value={userProfile.name}
             />
-            <MultiSelctorAuto
+            <MultiSelectorAuto
               name="pronouns"
               label="pronouns"
               options={pronounList}
@@ -162,22 +184,24 @@ const EditProfile = () => {
                 setUserProfile(new User(userProfile))
               }}
             />
-            <MultiSelctorAuto
+            <MultiSelectorAuto
               name="interests"
               label="interests"
-              options={interestList}
+              options={interests}
               helperText="Enter up to 5"
               limitSelection="5"
               value={userProfile.interests}
               defaultValue={userProfile.interests}
               id="interest-selector"
-              setState={(interests) => {
+              setState={(userInterests) => {
                 setSaved(false)
-                userProfile.interests = [...interests]
+                userProfile.interests = [...userInterests]
                 setUserProfile(new User(userProfile))
               }}
             />
-            <h5>Profile Picture</h5>
+
+            <Divider />
+            <Typography variant="h6">Profile Picture:</Typography>
             <TextField
               required
               label="Image URL"
@@ -191,8 +215,15 @@ const EditProfile = () => {
           </Box>
         </Paper>
         <Paper sx={{m: 2, p: 2}}>
-          <h3>Search Details</h3>
-          <Card sx={{m: 1, p: 3}}>
+          <Typography variant="h5">Search Details:</Typography>
+          <Paper
+            sx={{
+              m: 1,
+              p: 3,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+            }}>
             <Box>
               <FormGroup>
                 <FormLabel component="legend">Open to:</FormLabel>
@@ -218,10 +249,18 @@ const EditProfile = () => {
                 />
               </FormGroup>
             </Box>
-            <h4>Location:</h4>
-            <Box>
+
+            <Divider />
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1,
+              }}>
+              <Typography variant="h6">Location:</Typography>
               <TextField
                 required
+                aria-label="zip code field"
                 label="ZIP Code"
                 type="text"
                 name="zipCode"
@@ -232,7 +271,7 @@ const EditProfile = () => {
                 <small>Max range: {userProfile.range} miles</small>
               </FormLabel>
               <Slider
-                aria-label="range"
+                aria-label="range slider"
                 name="range"
                 defaultValue={20}
                 min={1}
@@ -242,21 +281,25 @@ const EditProfile = () => {
                 value={userProfile.range}
               />
             </Box>
-          </Card>
-          <h3>Set Availability</h3>
-          <EditAvailabilityGrid
-            value={userProfile.availability}
-            setState={(availability) => {
-              setSaved(false)
-              userProfile.availability = [...availability]
-              setUserProfile(new User(userProfile))
-            }}
-          />
+          </Paper>
+          <Divider sx={{m: 2}} />
+          <Box sx={{display: 'flex', flexDirection: 'column', gap: 1}}>
+            <Typography variant="h5">Set Availability:</Typography>
+            <EditAvailabilityGrid
+              value={userProfile.availability}
+              setState={(availability) => {
+                setSaved(false)
+                userProfile.availability = [...availability]
+                setUserProfile(new User(userProfile))
+              }}
+            />
+          </Box>
         </Paper>
         <Card
           sx={{
             m: 2,
             p: 2,
+            gap: 2,
             display: 'flex',
             flexDirection: 'column',
           }}>
@@ -264,12 +307,12 @@ const EditProfile = () => {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              p: 1,
+              gap: 1,
               '& > *': {
-                m: 1,
+                m: 0.5,
               },
             }}>
-            <h3>Change Email</h3>
+            <Typography variant="h5">Change Email</Typography>
             <TextField
               label="New Email"
               type="email"
@@ -310,14 +353,15 @@ const EditProfile = () => {
               ''
             )}
           </Box>
+          <Divider sx={{m: 1}} />
           <Box
             sx={{
-              m: 1.5,
+              gap: 1,
               '& > *': {
                 m: 0.5,
               },
             }}>
-            <h3>Change Password</h3>
+            <Typography variant="h5">Change Password</Typography>
             <InputLabel htmlFor="newPassword">New Password</InputLabel>
             <OutlinedInput
               autoComplete={'off'}
@@ -425,14 +469,4 @@ const pronounList = [
   've/ver',
   'e/em',
   'it/its',
-]
-
-const interestList = [
-  'thing0',
-  'thing1',
-  'thing2',
-  'thing3',
-  'thing4',
-  'thing5',
-  'thing6',
 ]

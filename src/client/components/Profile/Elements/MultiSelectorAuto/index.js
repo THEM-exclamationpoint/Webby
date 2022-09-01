@@ -1,15 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import {useNavigate} from 'react-router-dom'
-import {Link} from 'react-router-dom'
-import Chip from '@mui/material/Chip'
-import Autocomplete from '@mui/material/Autocomplete'
+import Autocomplete, {createFilterOptions} from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
-import Stack from '@mui/material/Stack'
-import {limit} from 'firebase/firestore'
 import './style.css'
 
-export default function MultiSelctorAuto(props) {
+const filter = createFilterOptions()
+
+export default function MultiSelectorAuto(props) {
   const {
     options = [],
     label = '',
@@ -48,7 +44,9 @@ export default function MultiSelctorAuto(props) {
       options={options.sort()}
       value={value}
       getOptionDisabled={(option) =>
-        limitSelection && value.length === +limitSelection ? true : false
+        !isNaN(+limitSelection) && value.length === +limitSelection
+          ? true
+          : false
       }
       filterSelectedOptions
       onChange={(event, value) => handleChange(event, value)}

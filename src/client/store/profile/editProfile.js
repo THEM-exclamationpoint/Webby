@@ -1,9 +1,14 @@
+import {auth} from '../../../firebase/auth'
 import {User} from '../../../firebase/models/User'
-import {getUserData} from '../../../firebase/auth'
+import {getUserById} from '../../../firebase/profile'
+import {getAllInterests} from '../../../firebase/profile'
 
 const UPDATE_PROFILE = 'UPDATE_PROFILE'
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
 const UPDATE_EMAIL = 'UPDATE_EMAIL'
+
+const GET_ALL_INTERESTS = 'GET_ALL_INTERESTS'
+const GET_MY_INTERESTS = 'GET_MY_INTERESTS'
 
 const _updateProfile = (user) => {
   return {
@@ -21,6 +26,21 @@ const _updatePassword = () => {
 const _updateEmail = () => {
   return {
     type: UPDATE_EMAIL,
+  }
+}
+
+const setAllInterests = (interests) => {
+  return {
+    type: GET_ALL_INTERESTS,
+    interests,
+  }
+}
+
+const setMyInterests = (user, interests) => {
+  return {
+    type: GET_MY_INTERESTS,
+    user,
+    interests,
   }
 }
 
@@ -50,14 +70,51 @@ export const updateEmail = (user, email) => {
   }
 }
 
-export default function (state = new User(getUserData()), action) {
+export const fetchAllInterests = () => {
+  return async (dispatch) => {
+    const interests = await getAllInterests()
+    dispatch(setAllInterests(interests.map((item) => item.interest)))
+  }
+}
+
+export const fetchMyInterests = () => {
+  return async (dispatch) => {
+    try {
+      const user = auth.currentUser
+      const util = new User(user)
+      const interests = await util.myInterests()
+      dispatch(setMyInterests(user, interests))
+    } catch (err) {
+      console.error(err)
+    }
+  }
+}
+
+function initState() {
+  return {
+    user: new User(auth.currentUser),
+    interests: [],
+  }
+}
+
+export default function (state = initState(), action) {
+  let updState = {...state}
   switch (action.type) {
+    case GET_MY_INTERESTS:
+      let updUser = {...action.user}
+      updUser.interests = [...action.interests]
+      updState.user = new User(updUser)
+      return updState
+    case GET_ALL_INTERESTS:
+      updState.interests = [...action.interests]
+      return updState
     case UPDATE_EMAIL:
       return state
     case UPDATE_PASSWORD:
       return state
     case UPDATE_PROFILE:
-      return new User(action.user)
+      updState.user = new User(action.user)
+      return updState
     default:
       return state
   }

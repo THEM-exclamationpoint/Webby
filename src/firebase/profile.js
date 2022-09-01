@@ -26,3 +26,14 @@ export async function getUserById(uid) {
     console.error(e)
   }
 }
+
+export async function getAllInterests() {
+  try {
+    let interests = []
+    const docs = await getDocs(collection(db, 'interests'))
+    docs.forEach((doc) => interests.push(doc.data()))
+    return interests
+  } catch (e) {
+    console.error(e)
+  }
+}
