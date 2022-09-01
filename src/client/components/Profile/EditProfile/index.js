@@ -49,7 +49,7 @@ const EditProfile = () => {
     confirm: '',
   })
 
-  let [saved, setSaved] = useState(false)
+  let [saved, setSaved] = useState(true)
 
   let [showPassword, setShowPassword] = useState({
     new: false,
@@ -126,14 +126,10 @@ const EditProfile = () => {
             display: 'flex',
             flexDirection: 'column',
             m: 2,
-            p: 2,
-            '& > *': {
-              m: 1,
-            },
           }}>
           <Box
             sx={{
-              m: 1,
+              m: 2,
               display: 'flex',
               flexDirection: 'column',
               '& > *': {
@@ -144,6 +140,7 @@ const EditProfile = () => {
             <h3>Personal Details</h3>
             <TextField
               required
+              aria-label="name entry field"
               label="Name"
               type="text"
               name="name"
