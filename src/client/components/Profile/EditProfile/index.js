@@ -66,8 +66,8 @@ const EditProfile = (props) => {
   })
 
   useEffect(() => {
-    dispatch(fetchMyInterests())
     dispatch(fetchAllInterests())
+    dispatch(fetchMyInterests())
   }, [])
 
   useEffect(() => {
