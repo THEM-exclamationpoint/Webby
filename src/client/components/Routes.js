@@ -23,7 +23,6 @@ function WebbyRoutes() {
     })
   }, [])
   return (
-    //dev
     <Routes>
       <Route exact path="/home" element={user && <Home />} />
       <Route exact path="/" element={<LogIn />} />
