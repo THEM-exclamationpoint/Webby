@@ -35,6 +35,9 @@ const Home = () => {
       <Divider />
       <div>
         <List>
+          <ListItem button component={Link} to="/editprofile">
+            <ListItemText align="center">Add/Edit my interests</ListItemText>
+          </ListItem>
           <ListItem button component={Link} to="/graph">
             <ListItemText align="center">My Web</ListItemText>
           </ListItem>

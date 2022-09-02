@@ -41,7 +41,7 @@ export function getMessagesWithGroup(groupId, callback) {
     const q = query(
       collection(db, 'messages'),
       where('toGroup', '==', groupId),
-      orderBy('timeStamp', 'desc')
+      orderBy('timeStamp', 'asc')
     )
     const messages = onSnapshot(
       q,
