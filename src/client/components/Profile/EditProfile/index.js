@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {useNavigate, useRoutes} from 'react-router-dom'
+import interestList from './interestList'
 import {
   Button,
   Box,
@@ -46,7 +47,8 @@ const EditProfile = (props) => {
 
   let user = useSelector((state) => state.user)
   let myInterests = useSelector((state) => state.interests)
-  let {interests} = useSelector((state) => state.editProfile)
+  let interests = interestList
+  // let {interests} = useSelector((state) => state.editProfile)
 
   let [userProfile, setUserProfile] = useState(
     new User({...user, interests: [...myInterests]})
@@ -70,7 +72,7 @@ const EditProfile = (props) => {
 
   useEffect(() => {
     dispatch(setUser())
-    dispatch(fetchAllInterests())
+    // dispatch(fetchAllInterests())
     dispatch(setUserInterests(user.uid))
   }, [])
 
