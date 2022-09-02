@@ -12,7 +12,6 @@ import {FriendsList} from './Friends'
 import UserProfile from './Profile/UserProfile'
 import {auth} from '../../firebase/auth'
 
-
 function WebbyRoutes() {
   let dispatch = useDispatch()
   let user = useSelector((state) => state.user)

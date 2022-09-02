@@ -32,6 +32,7 @@ import {
   updatePassword,
   updateEmail,
 } from '../../../store/profile/editProfile'
+import {setUser} from '../../../store/auth/user'
 import {fetchAllInterests} from '../../../store/profile/editProfile'
 import {setUserInterests} from '../../../store/interests'
 import CountrySelect from '../Elements/CountrySelect'
@@ -68,6 +69,7 @@ const EditProfile = (props) => {
   })
 
   useEffect(() => {
+    dispatch(setUser())
     dispatch(fetchAllInterests())
     dispatch(setUserInterests(user.uid))
   }, [])
