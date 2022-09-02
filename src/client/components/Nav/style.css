@@ -1,11 +1,4 @@
-/* .NavBarCustom {
-    background-color: #64b6ac !important;
-  } */
-  
-  /* .NavBarCustom .nav-logo {
-    max-height: 3rem;
-  } */
-  
+
   .navbar {
     background-color:#2C2C54 !important;
   }
@@ -20,4 +13,9 @@
 
   .webby {
     max-width: 12vh;
+  }
+
+  .searched-user a {
+    text-decoration: none;
+    color:black
   }
