@@ -1,5 +1,6 @@
 import React from 'react'
 import * as d3 from 'd3'
+import {useNavigate} from 'react-router-dom'
 import {useRef, useEffect, useState} from 'react'
 import {_getGraphData} from '../../store/graph/graphData'
 import {setUser} from '../../store/auth/user'
@@ -45,6 +46,7 @@ function Tree(
     halo = '#fcf7f8', // color of label halo
     haloWidth = 10, // padding around the labels
     svg = d3.create('svg'),
+    clickHandler,
   } = {}
 ) {
   svg.html('') //clears the svg so that duplicates are not made on re-render
@@ -96,7 +98,7 @@ function Tree(
     .selectAll('a') //selects all 'a' elements (links)
     .data(root.descendants())
     .join('a')
-    .attr('xlink:href', link == null ? null : (d) => link(d.data, d))
+    // .attr('xlink:href', link == null ? null : (d) => link(d.data, d))
     //The following line causes links to open in a new tab. We disabled this.
     //.attr('target', link == null ? null : linkTarget)
     .attr(
@@ -109,6 +111,15 @@ function Tree(
     .append('circle') //adds a circle at each node
     .attr('fill', (d) => (d.children ? stroke : fill))
     .attr('r', r)
+
+  //interactivity
+  {
+    clickHandler
+      ? node.on('click', (e, d) =>
+          d.depth === 2 ? clickHandler(e, d.data) : {}
+        )
+      : node.attr('xlink:href', link == null ? null : (d) => link(d.data, d))
+  }
 
   if (title != null) node.append('title').text((d) => title(d.data, d))
 
@@ -152,6 +163,7 @@ function Tree(
 }
 
 function Graph() {
+  const nav = useNavigate()
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
   const graphData = useSelector((state) => state.graphData)
@@ -175,8 +187,11 @@ function Graph() {
           //checks to see if a node is another user (having no children), and if so, make a hover message over link to profile
           return `View ${d.name}'s profile`
       },
-      link: (d, n) => {
-        if (n.depth === 2) return `/users/${d.uid}`
+      // link: (d, n) => {
+      //   if (n.depth === 2) return `/users/${d.uid}`
+      // },
+      clickHandler: (e, d) => {
+        nav(`../users/${d.uid}`)
       },
       width: 1152,
       height: 1152,
