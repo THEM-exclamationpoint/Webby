@@ -65,7 +65,7 @@ export const NewChat = ({friends,user}) => {
         <List>
           {friends.map((friend) => {
             return (
-              <ListItemButton onClick={() => onSelect(friend)}>
+              <ListItemButton onClick={() => onSelect(friend)} key={friend}>
                 <ListItemIcon>
                   <Avatar alt="User" src={friend.profilePicture} />
                 </ListItemIcon>
@@ -78,7 +78,7 @@ export const NewChat = ({friends,user}) => {
         <List>
           {selected.map((friend) => {
             return (
-              <ListItemButton onClick={() => onSelect(friend)}>
+              <ListItemButton onClick={() => onSelect(friend)} key={friend}>
                 <ListItemIcon>
                   <Avatar alt="User" src={friend.profilePicture} />
                 </ListItemIcon>

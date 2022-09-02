@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-
+import { Link } from 'react-router-dom'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import Divider from '@mui/material/Divider'
@@ -79,13 +79,13 @@ const Chat = () => {
         <Drawer anchor="left" open={collapse}>
           <Grid>
             <ArrowBackIosIcon onClick={clickMenu} />
-            <List>
-              <ListItem button key="user">
+            <List className='user'>
+              <Link to={`/users/${user.uid}`}><ListItem button key="user">
                 <ListItemIcon>
                   <Avatar alt="User" src={user.profilePicture} />
                 </ListItemIcon>
                 <ListItemText primary={user.name}></ListItemText>
-              </ListItem>
+              </ListItem></Link>
             </List>
             <Divider />
             <Grid item={true} xs={12} style={{padding: '10px'}}>

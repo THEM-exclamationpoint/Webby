@@ -71,3 +71,16 @@ export async function removeFriend(id){
   }
   catch(err){console.error(err)}
 }
+
+export async function getAllUsers(){
+  try {
+    const q = query(collection(db,'users'))
+    const docs = await getDocs(q)
+    let users = []
+    docs.forEach(doc => {
+      users.push(doc.data())
+    })
+    return users
+  }
+  catch(err){return console.error(err)}
+}
