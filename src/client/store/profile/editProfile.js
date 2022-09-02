@@ -8,7 +8,6 @@ const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
 const UPDATE_EMAIL = 'UPDATE_EMAIL'
 
 const GET_ALL_INTERESTS = 'GET_ALL_INTERESTS'
-const GET_MY_INTERESTS = 'GET_MY_INTERESTS'
 
 const _updateProfile = (user) => {
   return {
@@ -32,14 +31,6 @@ const _updateEmail = () => {
 const setAllInterests = (interests) => {
   return {
     type: GET_ALL_INTERESTS,
-    interests,
-  }
-}
-
-const setMyInterests = (user, interests) => {
-  return {
-    type: GET_MY_INTERESTS,
-    user,
     interests,
   }
 }
@@ -77,19 +68,6 @@ export const fetchAllInterests = () => {
   }
 }
 
-export const fetchMyInterests = () => {
-  return async (dispatch) => {
-    try {
-      const user = auth.currentUser
-      const util = new User(user)
-      const interests = await util.myInterests()
-      dispatch(setMyInterests(user, interests))
-    } catch (err) {
-      console.error(err)
-    }
-  }
-}
-
 function initState() {
   return {
     user: new User(auth.currentUser),
@@ -100,11 +78,6 @@ function initState() {
 export default function (state = initState(), action) {
   let updState = {...state}
   switch (action.type) {
-    case GET_MY_INTERESTS:
-      let updUser = {...action.user}
-      updUser.interests = [...action.interests]
-      updState.user = new User(updUser)
-      return updState
     case GET_ALL_INTERESTS:
       updState.interests = [...action.interests]
       return updState

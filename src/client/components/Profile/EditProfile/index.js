@@ -31,9 +31,10 @@ import {
   updateProfile,
   updatePassword,
   updateEmail,
-  fetchMyInterests,
 } from '../../../store/profile/editProfile'
 import {fetchAllInterests} from '../../../store/profile/editProfile'
+import {setUserInterests} from '../../../store/interests'
+import CountrySelect from '../Elements/CountrySelect'
 import './style.css'
 
 const EditProfile = (props) => {
@@ -43,10 +44,11 @@ const EditProfile = (props) => {
   const {firstVisit = false} = props
 
   let user = useSelector((state) => state.user)
-  let {user: editUser, interests} = useSelector((state) => state.editProfile)
+  let myInterests = useSelector((state) => state.interests)
+  let {interests} = useSelector((state) => state.editProfile)
 
   let [userProfile, setUserProfile] = useState(
-    new User({...user, interests: [...editUser.interests]})
+    new User({...user, interests: [...myInterests]})
   )
 
   let [newPassword, setNewPassword] = useState({
@@ -67,13 +69,8 @@ const EditProfile = (props) => {
 
   useEffect(() => {
     dispatch(fetchAllInterests())
-    dispatch(fetchMyInterests())
+    dispatch(setUserInterests(user.uid))
   }, [])
-
-  useEffect(() => {
-    userProfile.interests = [...editUser.interests]
-    setUserProfile(userProfile)
-  }, [editUser.interests])
 
   const handleChange = (e) => {
     setSaved(false)
@@ -126,6 +123,15 @@ const EditProfile = (props) => {
 
   const mouseDownShowPassword = (e) => {
     e.preventDefault()
+  }
+
+  const getLocation = (e) => {
+    setSaved(false)
+    navigator.geolocation.getCurrentPosition((position) => {
+      userProfile.location.latitude = position.coords.latitude
+      userProfile.location.longitude = position.coords.longitude
+      setUserProfile(new User(userProfile))
+    })
   }
 
   return (
@@ -216,7 +222,7 @@ const EditProfile = (props) => {
               type="url"
               name="profilePicture"
               autoComplete="off"
-              helperText="We should make this an uploader"
+              helperText="You look beautiful ;)"
               onChange={handleChange}
               value={userProfile.profilePicture}
             />
@@ -266,14 +272,55 @@ const EditProfile = (props) => {
                 gap: 1,
               }}>
               <Typography variant="h6">Location:</Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  '& > *': {
+                    m: 0.25,
+                  },
+                }}>
+                {navigator.geolocation ? (
+                  <Button
+                    onClick={getLocation}
+                    variant={
+                      userProfile.location.latitude ? 'text' : 'contained'
+                    }>
+                    GET LOCATION
+                    {userProfile.location.latitude ? <CheckIcon /> : ''}
+                  </Button>
+                ) : (
+                  'Location not supported'
+                )}
+                <Typography variant="subtitle1">
+                  Lat:{' '}
+                  {userProfile.location.latitude
+                    ? userProfile.location.latitude
+                    : ''}
+                </Typography>
+                <Typography variant="subtitle1">
+                  Lon:{' '}
+                  {userProfile.location.longitude
+                    ? userProfile.location.longitude
+                    : ''}
+                </Typography>
+              </Box>
+              <Divider sx={{m: 2}} />
               <TextField
-                required
                 aria-label="zip code field"
                 label="ZIP Code"
                 type="text"
                 name="zipCode"
                 onChange={handleChange}
                 value={userProfile.zipCode}
+              />
+              <CountrySelect
+                value={userProfile.country}
+                setState={(country) => {
+                  setSaved(false)
+                  userProfile.country = country
+                  setUserProfile(new User(userProfile))
+                }}
               />
               <FormLabel component="legend">
                 <small>Max range: {userProfile.range} miles</small>

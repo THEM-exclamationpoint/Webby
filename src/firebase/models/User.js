@@ -3,6 +3,7 @@ import {auth, getUserData} from '../auth'
 import {getUsersFriends} from '../friends'
 import {getListOfGroups} from '../chat'
 import {getInterestsOfUser} from '../graph'
+import {zipToCoordinates} from '../location'
 import {
   EmailAuthProvider,
   updatePassword,
@@ -61,8 +62,10 @@ export class User {
             })
             .sort((a, b) => a.id - b.id)
         : newAvailability()
-    this.location = user && user.location ? user.location : ''
+    this.location =
+      user && user.location ? user.location : {latitude: null, longitude: null}
     this.zipCode = user && user.zipCode ? user.zipCode : ''
+    this.country = user && user.country ? user.country : null
     this.profilePicture = user && user.profilePicture ? user.profilePicture : ''
     this.range = user && user.range ? user.range : 20
     this.interests = user && user.interests ? [...user.interests] : []
@@ -80,7 +83,11 @@ export class User {
     return await getInterestsOfUser(this.uid)
   }
 
-  toProfile() {
+  async toProfile() {
+    if (!this.location.latitude && this.location.zipCode) {
+      let geocoded = await zipToCoordinates(this.zipCode, this.country)
+      if (geocoded) this.location = {...geocoded}
+    }
     return {
       uid: this.uid,
       name: this.name,
@@ -92,8 +99,9 @@ export class User {
         .map((day) => {
           return {...day}
         }),
-      location: this.location,
+      location: {...this.location},
       zipCode: this.zipCode,
+      country: this.country,
       profilePicture: this.profilePicture,
       range: this.range,
     }
@@ -111,7 +119,7 @@ export class User {
         udocId = doc.id
       })
       const ref = doc(db, 'users', udocId)
-      await updateDoc(ref, this.toProfile())
+      await updateDoc(ref, await this.toProfile())
 
       if (this.interests.length) {
         let interestIds = []
