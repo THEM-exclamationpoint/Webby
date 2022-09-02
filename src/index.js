@@ -15,7 +15,7 @@ root.render(
     {/* DEV */}
     <Router history={history} basename="/">
       {/* GH Pages */}
-      {/* <Router history={history} basename="/webby"> */}
+      {/* <Router history={history} basename="/Webby"> */}
       <App />
     </Router>
   </Provider>
