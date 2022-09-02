@@ -12,7 +12,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   // <React.StrictMode>
   <Provider store={store}>
-    <Router history={history}>
+    {/* DEV */}
+    <Router history={history} basename="/">
+      {/* GH Pages */}
+      {/* <Router history={history} basename="/webby"> */}
       <App />
     </Router>
   </Provider>
