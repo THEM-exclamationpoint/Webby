@@ -62,7 +62,7 @@ export default function ProminentAppBar() {
               height: 50,
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'baseline',
+              alignItems: 'center',
             }}
             disabled={isOff}>
             <TemporaryDrawer />
