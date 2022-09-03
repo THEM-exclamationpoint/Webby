@@ -85,7 +85,7 @@ export default function ProminentAppBar() {
               height: 50,
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'baseline',
+              alignItems: 'center',
             }}
             size="large"
             aria-label="display more actions"
