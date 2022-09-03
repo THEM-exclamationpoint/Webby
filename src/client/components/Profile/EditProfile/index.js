@@ -36,6 +36,11 @@ import {
 import {setUser} from '../../../store/auth/user'
 import {fetchAllInterests} from '../../../store/profile/editProfile'
 import {setUserInterests} from '../../../store/interests'
+import {
+  getUserProfile,
+  getUserFriends,
+  getUserInterests,
+} from '../../../store/profile'
 import CountrySelect from '../Elements/CountrySelect'
 import './style.css'
 
@@ -71,9 +76,9 @@ const EditProfile = (props) => {
   })
 
   useEffect(() => {
+    dispatch(setUserInterests(user.uid))
     dispatch(setUser())
     // dispatch(fetchAllInterests())
-    dispatch(setUserInterests(user.uid))
   }, [])
 
   const handleChange = (e) => {
@@ -113,7 +118,7 @@ const EditProfile = (props) => {
     }
     dispatch(updateProfile(userProfile))
     setSaved(true)
-    navigate(`../users/${userProfile.uid}`, {replace: true})
+    navigate(`../users/${userProfile.uid}`)
   }
 
   const clickShowPassword = (field) => {
@@ -209,7 +214,7 @@ const EditProfile = (props) => {
               helperText="Enter up to 5"
               limitSelection="5"
               value={userProfile.interests}
-              defaultValue={userProfile.interests}
+              defaultValue={myInterests}
               id="interest-selector"
               setState={(userInterests) => {
                 setSaved(false)

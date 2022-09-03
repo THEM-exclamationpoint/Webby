@@ -111,18 +111,26 @@ const Chat = () => {
                 <ListItem
                   button
                   key={group.groupId}
-                  onClick={() => setSelectedGroup(group)}>
+                  onClick={() => {
+                    setSelectedGroup(group)
+                    setCollapse()
+                  }}>
                   <ListItemText primary={name}>{name}</ListItemText>
                   <ListItemText align="right"></ListItemText>
                 </ListItem>
               )
             })}
             <List>
-              <ListItem button key="NewChat" onClick={modalToggle}>
+              <ListItem
+                button
+                key="NewChat"
+                onClick={() => {
+                  modalToggle()
+                }}>
                 <ListItemText primary="New Chat">New Chat</ListItemText>
               </ListItem>
             </List>
-            <Dialog open={modalOpen} onClose={modalClose}>
+            <Dialog open={modalOpen} onClose={modalClose} sx={{zIndex: 999999}}>
               <NewChat friends={friends} user={user} />
             </Dialog>
           </Grid>

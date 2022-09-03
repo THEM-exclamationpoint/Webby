@@ -1,5 +1,4 @@
-
-  .navbar {
+.navbar {
     background-color:#2C2C54 !important;
   }
 
@@ -12,7 +11,6 @@
   }
 
   .webby {
-    max-width: 12vh;
   }
 
   .searched-user a {

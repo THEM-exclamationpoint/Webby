@@ -11,6 +11,7 @@ import User, {setUser} from '../store/auth/user'
 import {FriendsList} from './Friends'
 import UserProfile from './Profile/UserProfile'
 import {auth} from '../../firebase/auth'
+import './style.css'
 
 function WebbyRoutes() {
   let dispatch = useDispatch()
@@ -23,16 +24,18 @@ function WebbyRoutes() {
     })
   }, [])
   return (
-    <Routes>
-      <Route exact path="/home" element={user && <Home />} />
-      <Route exact path="/" element={<LogIn />} />
-      <Route exact path="/register" element={<Signup />} />
-      <Route exact path="/editprofile" element={user && <EditProfile />} />
-      <Route exact path="/chatroom" element={user && <Chat />} />
-      <Route exact path="/graph" element={user && <Graph />} />
-      <Route exact path="/Friends" element={user && <FriendsList />} />
-      <Route path="/users/:uid" element={user && <UserProfile />} />
-    </Routes>
+    <div className="content">
+      <Routes>
+        <Route exact path="/home" element={user && <Home />} />
+        <Route exact path="/" element={<LogIn />} />
+        <Route exact path="/register" element={<Signup />} />
+        <Route exact path="/editprofile" element={user && <EditProfile />} />
+        <Route exact path="/chatroom" element={user && <Chat />} />
+        <Route exact path="/graph" element={user && <Graph />} />
+        <Route exact path="/Friends" element={user && <FriendsList />} />
+        <Route path="/users/:uid" element={user && <UserProfile />} />
+      </Routes>
+    </div>
   )
 }
 
