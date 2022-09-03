@@ -126,7 +126,6 @@ const Chat = () => {
                 key="NewChat"
                 onClick={() => {
                   modalToggle()
-                  setCollapse()
                 }}>
                 <ListItemText primary="New Chat">New Chat</ListItemText>
               </ListItem>
