@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import Divider from '@mui/material/Divider'
@@ -14,7 +14,7 @@ import Avatar from '@mui/material/Avatar'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import Drawer from '@mui/material/Drawer'
-import Dialog from '@mui/material/Dialog';
+import Dialog from '@mui/material/Dialog'
 
 import SingleChat from './SingleChat'
 import './style.css'
@@ -22,7 +22,7 @@ import './style.css'
 import {getFriends} from '../../store/friends'
 import {setUser} from '../../store/auth/user'
 import {getChatUsers} from '../../store/chat/chatUsers'
-import { NewChat } from './NewChat';
+import {NewChat} from './NewChat'
 
 const Chat = () => {
   const dispatch = useDispatch()
@@ -39,7 +39,7 @@ const Chat = () => {
     dispatch(getChatUsers())
     dispatch(getFriends(user.uid))
   }, [])
-  
+
   let [selectedGroup, setSelectedGroup] = useState(groups[0])
 
   function clickMenu() {
@@ -51,21 +51,20 @@ const Chat = () => {
   function modalToggle() {
     setModalOpen(true)
   }
-  function handleChange (e){
+  function handleChange(e) {
     setSearch(e.target.value)
   }
-  const filteredData = groups.filter(group => {
+  const filteredData = groups.filter((group) => {
     let input = search.toLowerCase()
-    if(input === ''){
+    if (input === '') {
       return group
-    }
-    else {
+    } else {
       return group.groupname.toLowerCase().includes(input)
     }
   })
-  
+
   return (
-    <div className='chat-component'>
+    <div className="chat-component">
       <Grid container>
         <Grid item={true} xs={12}>
           <Typography variant="h5" className="header-message">
@@ -76,21 +75,23 @@ const Chat = () => {
       </Grid>
 
       <Grid container component={Paper}>
-        <Drawer anchor="left" open={collapse}>
+        <Drawer sx={{zIndex: 99999}} anchor="left" open={collapse}>
           <Grid>
             <ArrowBackIosIcon onClick={clickMenu} />
-            <List className='user'>
-              <Link to={`/users/${user.uid}`}><ListItem button key="user">
-                <ListItemIcon>
-                  <Avatar alt="User" src={user.profilePicture} />
-                </ListItemIcon>
-                <ListItemText primary={user.name}></ListItemText>
-              </ListItem></Link>
+            <List className="user">
+              <Link to={`/users/${user.uid}`}>
+                <ListItem button key="user">
+                  <ListItemIcon>
+                    <Avatar alt="User" src={user.profilePicture} />
+                  </ListItemIcon>
+                  <ListItemText primary={user.name}></ListItemText>
+                </ListItem>
+              </Link>
             </List>
             <Divider />
             <Grid item={true} xs={12} style={{padding: '10px'}}>
               <TextField
-              onChange={handleChange}
+                onChange={handleChange}
                 id="outlined-basic-email"
                 label="Search"
                 variant="outlined"
@@ -100,15 +101,18 @@ const Chat = () => {
             </Grid>
             <Divider />
             {filteredData.map((group) => {
-              let name = typeof(group.groupname) === 'string' ? group.groupname : group.groupname[0] === user.name ? group.groupname[1]  : group.groupname[0] 
-                    return (
+              let name =
+                typeof group.groupname === 'string'
+                  ? group.groupname
+                  : group.groupname[0] === user.name
+                  ? group.groupname[1]
+                  : group.groupname[0]
+              return (
                 <ListItem
                   button
                   key={group.groupId}
                   onClick={() => setSelectedGroup(group)}>
-                  <ListItemText primary={name}>
-                    {name}
-                  </ListItemText>
+                  <ListItemText primary={name}>{name}</ListItemText>
                   <ListItemText align="right"></ListItemText>
                 </ListItem>
               )
@@ -119,13 +123,12 @@ const Chat = () => {
               </ListItem>
             </List>
             <Dialog open={modalOpen} onClose={modalClose}>
-            <NewChat friends={friends} user={user}/>
+              <NewChat friends={friends} user={user} />
             </Dialog>
           </Grid>
         </Drawer>
-        {selectedGroup && <SingleChat group={selectedGroup} groupname={name}/>}
+        {selectedGroup && <SingleChat group={selectedGroup} groupname={name} />}
       </Grid>
-
     </div>
   )
 }

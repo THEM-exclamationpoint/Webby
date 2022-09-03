@@ -202,11 +202,11 @@ function Graph() {
   }, [graphData])
 
   return (
-    <div className="graph-wrapper">
-      <Paper sx={{m: 1, p: 1}}>
+    <Paper sx={{m: 1, p: 1}}>
+      <div className="graph-wrapper">
         <svg className="graph" ref={web}></svg>
-      </Paper>
-    </div>
+      </div>{' '}
+    </Paper>
   )
 }
 
