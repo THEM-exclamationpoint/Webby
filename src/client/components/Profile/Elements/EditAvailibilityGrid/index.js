@@ -122,7 +122,7 @@ const AvailabilityGrid = (props) => {
                   display: 'flex',
                   justifyContent: 'center',
                   '& > *': {
-                    m: 1,
+                    m: 0.5,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
