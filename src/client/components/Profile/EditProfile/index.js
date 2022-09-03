@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {useNavigate, useRoutes} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import interestList from './interestList'
 import {
   Button,
@@ -34,13 +34,8 @@ import {
   updateEmail,
 } from '../../../store/profile/editProfile'
 import {setUser} from '../../../store/auth/user'
-import {fetchAllInterests} from '../../../store/profile/editProfile'
+// import {fetchAllInterests} from '../../../store/profile/editProfile'
 import {setUserInterests} from '../../../store/interests'
-import {
-  getUserProfile,
-  getUserFriends,
-  getUserInterests,
-} from '../../../store/profile'
 import CountrySelect from '../Elements/CountrySelect'
 import './style.css'
 
@@ -68,6 +63,10 @@ const EditProfile = (props) => {
     confirm: '',
   })
 
+  let [newLocation, setNewLocation] = useState(false)
+
+  let [newImage, setNewImage] = useState(false)
+
   let [saved, setSaved] = useState(true)
 
   let [showPassword, setShowPassword] = useState({
@@ -76,8 +75,8 @@ const EditProfile = (props) => {
   })
 
   useEffect(() => {
-    dispatch(setUserInterests(user.uid))
     dispatch(setUser())
+    dispatch(setUserInterests(user.uid))
     // dispatch(fetchAllInterests())
   }, [])
 
@@ -139,6 +138,24 @@ const EditProfile = (props) => {
       userProfile.location.longitude = position.coords.longitude
       setUserProfile(new User(userProfile))
     })
+    setNewLocation(true)
+  }
+
+  const uploadImage = async (e) => {
+    setSaved(false)
+    const file = e.target.files[0]
+    const {name} = file
+    const fileReader = new FileReader()
+    fileReader.addEventListener('load', () => {
+      const image = {
+        name,
+        data: fileReader.result,
+      }
+      userProfile.profilePicture = image.data
+      setUserProfile(new User(userProfile))
+    })
+    fileReader.readAsDataURL(file)
+    setNewImage(true)
   }
 
   return (
@@ -199,7 +216,7 @@ const EditProfile = (props) => {
               options={pronounList}
               helperText="Order will be preserved"
               value={userProfile.pronouns}
-              defaultValue={userProfile.pronouns}
+              defaultValue={user.pronouns}
               id="pronoun-selector"
               setState={(pronouns) => {
                 setSaved(false)
@@ -225,7 +242,7 @@ const EditProfile = (props) => {
 
             <Divider />
             <Typography variant="h6">Profile Picture:</Typography>
-            <TextField
+            {/* <TextField
               required
               label="Image URL"
               type="url"
@@ -234,7 +251,17 @@ const EditProfile = (props) => {
               helperText="You look beautiful ;)"
               onChange={handleChange}
               value={userProfile.profilePicture}
-            />
+            /> */}
+            <Button variant={newImage ? 'text' : 'contained'} component="label">
+              Upload Image
+              <input
+                hidden
+                accept="image/*"
+                type="file"
+                onChange={uploadImage}
+              />
+              {newImage ? <CheckIcon /> : ''}
+            </Button>
           </Box>
         </Paper>
         <Paper sx={{m: 1, p: 1}}>
@@ -292,11 +319,9 @@ const EditProfile = (props) => {
                 {navigator.geolocation ? (
                   <Button
                     onClick={getLocation}
-                    variant={
-                      userProfile.location.latitude ? 'text' : 'contained'
-                    }>
+                    variant={newLocation ? 'text' : 'contained'}>
                     GET LOCATION
-                    {userProfile.location.latitude ? <CheckIcon /> : ''}
+                    {newLocation ? <CheckIcon /> : ''}
                   </Button>
                 ) : (
                   'Location not supported'
