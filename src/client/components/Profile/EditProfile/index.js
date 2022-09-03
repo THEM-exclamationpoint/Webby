@@ -36,6 +36,11 @@ import {
 import {setUser} from '../../../store/auth/user'
 import {fetchAllInterests} from '../../../store/profile/editProfile'
 import {setUserInterests} from '../../../store/interests'
+import {
+  getUserProfile,
+  getUserFriends,
+  getUserInterests,
+} from '../../../store/profile'
 import CountrySelect from '../Elements/CountrySelect'
 import './style.css'
 
@@ -113,7 +118,10 @@ const EditProfile = (props) => {
     }
     dispatch(updateProfile(userProfile))
     setSaved(true)
-    navigate(`../users/${userProfile.uid}`, {replace: true})
+    navigate(`../users/${userProfile.uid}`)
+    getUserProfile(userProfile.uid)
+    getUserFriends(userProfile.uid)
+    getUserInterests(userProfile.uid)
   }
 
   const clickShowPassword = (field) => {
