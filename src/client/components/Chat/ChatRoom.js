@@ -111,7 +111,10 @@ const Chat = () => {
                 <ListItem
                   button
                   key={group.groupId}
-                  onClick={() => setSelectedGroup(group)}>
+                  onClick={() => {
+                    setSelectedGroup(group)
+                    setCollapse()
+                  }}>
                   <ListItemText primary={name}>{name}</ListItemText>
                   <ListItemText align="right"></ListItemText>
                 </ListItem>
