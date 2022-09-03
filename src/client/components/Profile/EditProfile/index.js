@@ -81,6 +81,10 @@ const EditProfile = (props) => {
     // dispatch(fetchAllInterests())
   }, [])
 
+  useEffect(() => {
+    setUserProfile(new User({...user, interests: [...myInterests]}))
+  }, [user])
+
   const handleChange = (e) => {
     setSaved(false)
     if (e.target.name === 'remote' || e.target.name === 'local') {
@@ -117,6 +121,7 @@ const EditProfile = (props) => {
       dispatch(updateEmail(userProfile, newEmail))
     }
     dispatch(updateProfile(userProfile))
+    setUserProfile(userProfile)
     setSaved(true)
     navigate(`../users/${userProfile.uid}`)
   }
