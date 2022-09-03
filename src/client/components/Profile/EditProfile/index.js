@@ -119,7 +119,6 @@ const EditProfile = (props) => {
     dispatch(updateProfile(userProfile))
     setSaved(true)
     navigate(`../users/${userProfile.uid}`)
-    getUserProfile(userProfile.uid)
   }
 
   const clickShowPassword = (field) => {
