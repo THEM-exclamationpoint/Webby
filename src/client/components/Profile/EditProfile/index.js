@@ -120,8 +120,6 @@ const EditProfile = (props) => {
     setSaved(true)
     navigate(`../users/${userProfile.uid}`)
     getUserProfile(userProfile.uid)
-    getUserFriends(userProfile.uid)
-    getUserInterests(userProfile.uid)
   }
 
   const clickShowPassword = (field) => {
