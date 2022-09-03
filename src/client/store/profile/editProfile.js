@@ -37,7 +37,6 @@ const setAllInterests = (interests) => {
 
 export const updateProfile = (user) => {
   return async (dispatch) => {
-    console.log(user)
     await user.updateMyProfile()
     dispatch(_updateProfile(user))
   }

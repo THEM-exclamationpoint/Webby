@@ -41,15 +41,16 @@ export default function TemporaryDrawer() {
     setSearched(true)
   }
 
-    const filteredData = users.filter((user) => {
-      let input = search.toLowerCase()
-      return user.name.toLowerCase().includes(input)
-    })
+  const filteredData = users.filter((user) => {
+    let input = search.toLowerCase()
+    return user.name.toLowerCase().includes(input)
+  })
   const list = (anchor) => (
     <Box
-      sx={{width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250}}
-      role="presentation"
-    >
+      sx={{
+        width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250,
+      }}
+      role="presentation">
       <List>
         <ListItem disablePadding onClick={toggleDrawer(anchor, false)}>
           <ListItemButton component={Link} to="/graph">
@@ -79,21 +80,27 @@ export default function TemporaryDrawer() {
             variant="outlined"
             value={search}
           />
-         <IconButton onClick={onSearch}> <PersonSearchOutlinedIcon  /></IconButton>
-          </ListItem>
-          <ListItem>
+          <IconButton onClick={onSearch}>
+            {' '}
+            <PersonSearchOutlinedIcon />
+          </IconButton>
+        </ListItem>
+        <ListItem>
           {searched && (
-            <List className='searched-user'>
+            <List className="searched-user">
               {filteredData.map((user) => {
                 return (
-                  <Link to={`/users/${user.uid}`} key={user.uid} onClick={toggleDrawer(anchor, false)}>
+                  <Link
+                    to={`/users/${user.uid}`}
+                    key={user.uid}
+                    onClick={toggleDrawer(anchor, false)}>
                     <ListItemButton>{user.name}</ListItemButton>
                   </Link>
                 )
               })}
             </List>
-          )}</ListItem>
-        
+          )}
+        </ListItem>
       </List>
     </Box>
   )
@@ -104,6 +111,7 @@ export default function TemporaryDrawer() {
         <React.Fragment key={anchor}>
           <MenuIcon onClick={toggleDrawer(anchor, true)}>{anchor}</MenuIcon>
           <Drawer
+            sx={{zIndex: 99999}}
             anchor={anchor}
             open={state[anchor]}
             onClose={toggleDrawer(anchor, false)}>
