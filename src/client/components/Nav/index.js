@@ -62,7 +62,7 @@ export default function ProminentAppBar() {
               height: 50,
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'baseline',
             }}
             disabled={isOff}>
             <TemporaryDrawer />
@@ -85,7 +85,7 @@ export default function ProminentAppBar() {
               height: 50,
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'baseline',
             }}
             size="large"
             aria-label="display more actions"
