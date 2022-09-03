@@ -5,6 +5,7 @@ import {useRef, useEffect, useState} from 'react'
 import {_getGraphData} from '../../store/graph/graphData'
 import {setUser} from '../../store/auth/user'
 import {useDispatch, useSelector} from 'react-redux'
+import {Paper} from '@mui/material'
 import './style.css'
 
 // Copyright 2022 Observable, Inc.
@@ -202,7 +203,9 @@ function Graph() {
 
   return (
     <div className="graph-wrapper">
-      <svg className="graph" ref={web}></svg>
+      <Paper sx={{m: 1, p: 1}}>
+        <svg className="graph" ref={web}></svg>
+      </Paper>
     </div>
   )
 }

@@ -86,7 +86,7 @@ export class User {
   async toProfile() {
     if (!this.location.latitude && this.location.zipCode) {
       let geocoded = await zipToCoordinates(this.zipCode, this.country)
-      if (geocoded) this.location = {...geocoded}
+      if (await geocoded) this.location = {...geocoded}
     }
     return {
       uid: this.uid,
@@ -191,6 +191,14 @@ export class User {
       let user = auth.currentUser
       if (!user || user.uid !== this.uid) return
       return await updateEmail(user, email)
+    } catch (err) {
+      console.error(err)
+      alert(err.message)
+    }
+  }
+
+  async uploadImage(img) {
+    try {
     } catch (err) {
       console.error(err)
       alert(err.message)

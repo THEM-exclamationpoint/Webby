@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import MenuIcon from '@mui/icons-material/Menu'
-import { TextField } from '@mui/material'
+import {TextField} from '@mui/material'
 import FadeMenu from './UserMenu'
 import TemporaryDrawer from './NavMenu'
 import './style.css'
@@ -46,7 +46,7 @@ export default function ProminentAppBar() {
         display: 'flex',
         position: 'sticky',
         top: 0,
-        zIndex: 99,
+        zIndex: 9999,
       }}
       className="menu">
       <AppBar position="static" className="navbar">
@@ -77,7 +77,7 @@ export default function ProminentAppBar() {
             sx={{flexGrow: 1, alignSelf: 'center'}}>
             WEBBY
           </Typography>
-          <Webby className="webby" />
+          <Webby style={{width: 100}} className="webby" />
           <IconButton
             sx={{
               ml: 2,

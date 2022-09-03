@@ -48,7 +48,7 @@ const AvailabilityGrid = (props) => {
     <FormControl
       sx={{
         display: 'flex',
-        m: 1,
+        m: 0.5,
       }}>
       {availability.map((day, idx) => {
         return (
@@ -88,8 +88,8 @@ const AvailabilityGrid = (props) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     aspectRatio: '1/1',
-                    m: 1,
-                    p: 1,
+                    m: 0.5,
+                    p: 0.5,
                   },
                 }}>
                 <Card>
@@ -129,7 +129,7 @@ const AvailabilityGrid = (props) => {
                   },
                 }}>
                 <Item key={`${day.day}-am`}>
-                  <Typography sx={{m: 1.5}} variant="h6">
+                  <Typography sx={{m: 1}} variant="h6">
                     DAY
                   </Typography>
                   <ButtonGroup orientation="vertical">
@@ -161,7 +161,7 @@ const AvailabilityGrid = (props) => {
                   </ButtonGroup>
                 </Item>
                 <Item key={`${day.day}-pm`}>
-                  <Typography sx={{m: 1.5}} variant="h6">
+                  <Typography sx={{m: 1}} variant="h6">
                     NIGHT
                   </Typography>
                   <ButtonGroup orientation="vertical">

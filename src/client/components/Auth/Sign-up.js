@@ -1,8 +1,8 @@
 import {useNavigate} from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import {useDispatch} from 'react-redux'
-import {TextField, Button, FormHelperText} from '@mui/material'
-import { signUpUser } from '../../store/auth'
+import {TextField, Button, FormHelperText, Paper} from '@mui/material'
+import {signUpUser} from '../../store/auth'
 import './style.css'
 
 export default function Signup() {
@@ -19,10 +19,9 @@ export default function Signup() {
 
   useEffect(() => {
     if (success) {
-      navigate('/editprofile');
+      navigate('/editprofile')
     }
-  });
-
+  })
 
   function handleChange(e) {
     setUserInfo({
@@ -36,48 +35,62 @@ export default function Signup() {
     setSuccess(true)
   }
 
-
   return (
     <div className="signup-component">
-      <form className="signup-form" onSubmit={handleSubmit}>
-        <TextField
-          onChange={handleChange}
-          className="form-field"
-          name="name"
-          label="Name"
-          variant="filled"
-          required
-        />
-        <TextField
-          onChange={handleChange}
-          className="form-field"
-          name="email"
-          label="Email"
-          variant="filled"
-          type="email"
-          required
-        />
-        <TextField
-          onChange={handleChange}
-          className="form-field"
-          name="password"
-          label="Password"
-          variant="filled"
-          type="password"
-          required
-        />
-        <TextField
-          onChange={handleChange}
-          className="form-field"
-          name="confirmPassword"
-          label="Confirm Password"
-          variant="filled"
-          type="password"
-          error={userInfo.password === userInfo.confirmPassword ? false : true}
-          required
-        />
-        <Button type="submit">Submit</Button>
-      </form>
+      <Paper
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          m: 1,
+          p: 1,
+          '& > *': {
+            m: 1,
+            gap: 1,
+          },
+        }}>
+        <form className="signup-form" onSubmit={handleSubmit}>
+          <TextField
+            onChange={handleChange}
+            className="form-field"
+            name="name"
+            label="Name"
+            variant="filled"
+            required
+          />
+          <TextField
+            onChange={handleChange}
+            className="form-field"
+            name="email"
+            label="Email"
+            variant="filled"
+            type="email"
+            required
+          />
+          <TextField
+            onChange={handleChange}
+            className="form-field"
+            name="password"
+            label="Password"
+            variant="filled"
+            type="password"
+            required
+          />
+          <TextField
+            onChange={handleChange}
+            className="form-field"
+            name="confirmPassword"
+            label="Confirm Password"
+            variant="filled"
+            type="password"
+            error={
+              userInfo.password === userInfo.confirmPassword ? false : true
+            }
+            required
+          />
+          <Button type="submit">Submit</Button>
+        </form>
+      </Paper>
     </div>
   )
 }

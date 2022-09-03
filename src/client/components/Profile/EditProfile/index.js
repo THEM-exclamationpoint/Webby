@@ -113,9 +113,7 @@ const EditProfile = (props) => {
     }
     dispatch(updateProfile(userProfile))
     setSaved(true)
-    if (firstVisit) {
-      navigate(`../users/${userProfile.uid}`, {replace: true})
-    }
+    navigate(`../users/${userProfile.uid}`, {replace: true})
   }
 
   const clickShowPassword = (field) => {
@@ -142,7 +140,7 @@ const EditProfile = (props) => {
     <Paper
       sx={{
         m: 1,
-        p: 2,
+        p: 0.5,
         display: 'flex',
         flexDirection: 'column',
         gap: 1,
@@ -165,12 +163,13 @@ const EditProfile = (props) => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            m: 2,
-            p: 3,
+            m: 1,
+            p: 1,
           }}>
           <Box
             sx={{
-              gap: 2,
+              p: 1,
+              gap: 1.5,
               display: 'flex',
               flexDirection: 'column',
               '& > *': {
@@ -184,7 +183,7 @@ const EditProfile = (props) => {
               label="Name"
               type="text"
               name="name"
-              helperText="This is the name that will be shown on your profile"
+              helperText="This name that will be shown on your profile"
               onChange={handleChange}
               value={userProfile.name}
             />
@@ -232,15 +231,15 @@ const EditProfile = (props) => {
             />
           </Box>
         </Paper>
-        <Paper sx={{m: 2, p: 2}}>
+        <Paper sx={{m: 1, p: 1}}>
           <Typography variant="h5">Search Details:</Typography>
           <Paper
             sx={{
               m: 1,
-              p: 3,
+              p: 1,
               display: 'flex',
               flexDirection: 'column',
-              gap: 2,
+              gap: 1.25,
             }}>
             <Box>
               <FormGroup>
@@ -273,7 +272,7 @@ const EditProfile = (props) => {
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 1,
+                gap: 1.25,
               }}>
               <Typography variant="h6">Location:</Typography>
               <Box
@@ -309,7 +308,7 @@ const EditProfile = (props) => {
                     : ''}
                 </Typography>
               </Box>
-              <Divider sx={{m: 2}} />
+              <Divider sx={{m: 1}} />
               <TextField
                 aria-label="zip code field"
                 label="ZIP Code"
@@ -341,7 +340,7 @@ const EditProfile = (props) => {
               />
             </Box>
           </Paper>
-          <Divider sx={{m: 2}} />
+          <Divider sx={{m: 1}} />
           <Box sx={{display: 'flex', flexDirection: 'column', gap: 1}}>
             <Typography variant="h5">Set Availability:</Typography>
             <EditAvailabilityGrid
@@ -356,9 +355,9 @@ const EditProfile = (props) => {
         </Paper>
         <Card
           sx={{
-            m: 2,
-            p: 2,
-            gap: 2,
+            m: 1,
+            p: 1,
+            gap: 1.25,
             display: 'flex',
             flexDirection: 'column',
           }}>
@@ -366,7 +365,7 @@ const EditProfile = (props) => {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              gap: 1,
+              gap: 1.25,
               '& > *': {
                 m: 0.5,
               },
@@ -406,7 +405,7 @@ const EditProfile = (props) => {
               newEmail.confirm === newEmail.new ? (
                 ''
               ) : (
-                <h6>Emails must match!</h6>
+                <h6 style={{color: 'red'}}>Emails must match!</h6>
               )
             ) : (
               ''
@@ -415,7 +414,7 @@ const EditProfile = (props) => {
           <Divider sx={{m: 1}} />
           <Box
             sx={{
-              gap: 1,
+              gap: 1.25,
               '& > *': {
                 m: 0.5,
               },
@@ -485,7 +484,7 @@ const EditProfile = (props) => {
               newPassword.confirm === newPassword.new ? (
                 ''
               ) : (
-                <h6>Passwords must match!</h6>
+                <h6 style={{color: 'red'}}>Passwords must match!</h6>
               )
             ) : (
               ''
@@ -498,11 +497,11 @@ const EditProfile = (props) => {
           type="submit"
           sx={{
             position: 'fixed',
-            width: '80px',
-            height: '80px',
+            width: '60px',
+            height: '60px',
             top: 'auto',
-            bottom: 25,
-            right: 25,
+            bottom: 15,
+            right: 15,
             left: 'auto',
             m: 0,
           }}>

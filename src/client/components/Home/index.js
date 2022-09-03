@@ -1,6 +1,7 @@
 import Divider from '@mui/material/Divider'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+import Paper from '@mui/material/Paper'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
@@ -30,37 +31,39 @@ const Home = () => {
 
   return (
     <div className="homepage">
-      <h1> Welcome, {user.name}</h1>
-      <small>Build communities!</small>
-      <Divider />
-      <div>
-        <List>
-          <ListItem button component={Link} to="/editprofile">
-            <ListItemText align="center">Add/Edit my interests</ListItemText>
-          </ListItem>
-          <ListItem button component={Link} to="/graph">
-            <ListItemText align="center">My Web</ListItemText>
-          </ListItem>
-          <ListItem button component={Link} to="/chatroom">
-            <ListItemText align="center">Messages</ListItemText>
-          </ListItem>
-          <ListItem button component={Link} to={`/users/${user.uid}`}>
-            <ListItemText align="center">My Profile</ListItemText>
-          </ListItem>
-        </List>
-      </div>
-      <Card variant="outlined">
-        <CardHeader title="My Interests" />
-        <List>
-          {interests.map((interest) => {
-            return (
-              <ListItem key={interest}>
-                <ListItemText align="center">{interest}</ListItemText>
-              </ListItem>
-            )
-          })}
-        </List>
-      </Card>
+      <Paper sx={{m: 1, p: 1, gap: 1}}>
+        <h1> Welcome, {user.name}</h1>
+        <small>Build communities!</small>
+        <Divider />
+        <div>
+          <List>
+            <ListItem button component={Link} to="/editprofile">
+              <ListItemText align="center">Add/Edit my interests</ListItemText>
+            </ListItem>
+            <ListItem button component={Link} to="/graph">
+              <ListItemText align="center">My Web</ListItemText>
+            </ListItem>
+            <ListItem button component={Link} to="/chatroom">
+              <ListItemText align="center">Messages</ListItemText>
+            </ListItem>
+            <ListItem button component={Link} to={`/users/${user.uid}`}>
+              <ListItemText align="center">My Profile</ListItemText>
+            </ListItem>
+          </List>
+        </div>
+        <Card variant="outlined">
+          <CardHeader title="My Interests" />
+          <List>
+            {interests.map((interest) => {
+              return (
+                <ListItem key={interest}>
+                  <ListItemText align="center">{interest}</ListItemText>
+                </ListItem>
+              )
+            })}
+          </List>
+        </Card>
+      </Paper>
     </div>
   )
 }
