@@ -39,6 +39,7 @@ import {setUser} from '../../../store/auth/user'
 import {setUserInterests} from '../../../store/interests'
 import CountrySelect from '../Elements/CountrySelect'
 import './style.css'
+import {maxWidth} from '@mui/system'
 
 const EditProfile = (props) => {
   const navigate = useNavigate()
@@ -261,10 +262,18 @@ const EditProfile = (props) => {
               value={userProfile.profilePicture}
             /> */}
             {userProfile.profilePicture ? (
-              <img
-                src={userProfile.profilePicture}
-                alt={`${userProfile.name}'s Profile Picture`}
-              />
+              <div style={{display: 'flex', flexDirection: 'column'}}>
+                <img
+                  src={userProfile.profilePicture}
+                  alt={`${userProfile.name}'s Profile Picture`}
+                  style={{
+                    maxWidth: '250px',
+                    alignSelf: 'center',
+                    objectFit: 'cover',
+                    overflow: 'hidden',
+                  }}
+                />
+              </div>
             ) : (
               ''
             )}
