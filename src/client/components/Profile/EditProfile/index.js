@@ -255,6 +255,14 @@ const EditProfile = (props) => {
               onChange={handleChange}
               value={userProfile.profilePicture}
             /> */}
+            {userProfile.profilePicture ? (
+              <img
+                src={userProfile.profilePicture}
+                alt={`${userProfile.name}'s Profile Picture`}
+              />
+            ) : (
+              ''
+            )}
             <Button variant={newImage ? 'text' : 'contained'} component="label">
               Upload Image
               <input
