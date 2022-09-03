@@ -121,7 +121,13 @@ const Chat = () => {
               )
             })}
             <List>
-              <ListItem button key="NewChat" onClick={modalToggle}>
+              <ListItem
+                button
+                key="NewChat"
+                onClick={() => {
+                  modalToggle()
+                  setCollapse()
+                }}>
                 <ListItemText primary="New Chat">New Chat</ListItemText>
               </ListItem>
             </List>
