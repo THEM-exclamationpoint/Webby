@@ -2,7 +2,7 @@ import {auth} from '../../../firebase/auth'
 import {User} from '../../../firebase/models/User'
 import {getUserById} from '../../../firebase/profile'
 import {getAllInterests} from '../../../firebase/profile'
-import {getUserProfile} from '.'
+import {getUserProfile, getUserInterests} from '.'
 
 const UPDATE_PROFILE = 'UPDATE_PROFILE'
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
@@ -41,6 +41,7 @@ export const updateProfile = (user) => {
     await user.updateMyProfile()
     dispatch(_updateProfile(user))
     dispatch(getUserProfile(user.uid))
+    dispatch(getUserInterests(user.uid))
   }
 }
 

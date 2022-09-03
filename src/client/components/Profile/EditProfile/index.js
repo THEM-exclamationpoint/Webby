@@ -76,9 +76,9 @@ const EditProfile = (props) => {
   })
 
   useEffect(() => {
+    dispatch(setUserInterests(user.uid))
     dispatch(setUser())
     // dispatch(fetchAllInterests())
-    dispatch(setUserInterests(user.uid))
   }, [])
 
   const handleChange = (e) => {
@@ -214,7 +214,7 @@ const EditProfile = (props) => {
               helperText="Enter up to 5"
               limitSelection="5"
               value={userProfile.interests}
-              defaultValue={userProfile.interests}
+              defaultValue={myInterests}
               id="interest-selector"
               setState={(userInterests) => {
                 setSaved(false)

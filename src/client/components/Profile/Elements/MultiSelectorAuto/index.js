@@ -17,6 +17,10 @@ export default function MultiSelectorAuto(props) {
     fullWidth = false,
   } = props
 
+  useEffect(() => {
+    setValue([...defaultValue])
+  }, [defaultValue])
+
   const printLabel = label
     ? label
         .split(/[^\w]+/gm)
