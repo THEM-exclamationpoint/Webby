@@ -130,7 +130,7 @@ const Chat = () => {
                 <ListItemText primary="New Chat">New Chat</ListItemText>
               </ListItem>
             </List>
-            <Dialog open={modalOpen} onClose={modalClose}>
+            <Dialog open={modalOpen} onClose={modalClose} sx={{zIndex: 999999}}>
               <NewChat friends={friends} user={user} />
             </Dialog>
           </Grid>

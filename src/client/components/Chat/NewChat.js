@@ -3,18 +3,17 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import List from '@mui/material/List'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import TextField from '@mui/material/TextField';
+import TextField from '@mui/material/TextField'
 import ListItemText from '@mui/material/ListItemText'
 import Avatar from '@mui/material/Avatar'
 import ListItemButton from '@mui/material/ListItemButton'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import React, {useState} from 'react'
-import { addNewChat } from '../../store/chat/chatUsers'
+import {addNewChat} from '../../store/chat/chatUsers'
 import {useDispatch} from 'react-redux'
 
-export const NewChat = ({friends,user}) => {
-
+export const NewChat = ({friends, user}) => {
   let [selected, setSelected] = useState([])
   let [name, setName] = useState('')
   let [validate, setValidate] = useState(false)
@@ -31,34 +30,33 @@ export const NewChat = ({friends,user}) => {
     }
   }
 
-  function handleChange (e) {
+  function handleChange(e) {
     setName(e.target.value)
   }
 
-  function submitNewGroup (){
-    if(name !== ''){
-          let uids = selected.map(friend => friend.uid)
-    let newMembers = [...uids, user.uid]
-    dispatch(addNewChat(newMembers,name,user.uid))
+  function submitNewGroup() {
+    if (name !== '') {
+      let uids = selected.map((friend) => friend.uid)
+      let newMembers = [...uids, user.uid]
+      dispatch(addNewChat(newMembers, name, user.uid))
     } else {
       setValidate(true)
     }
-
   }
   return (
     <DialogContent>
-              <TextField
-            autoFocus
-            margin="dense"
-            label="Group Name"
-            value={name}
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={handleChange}
-            error={validate}
-            required
-          />
+      <TextField
+        autoFocus
+        margin="dense"
+        label="Group Name"
+        value={name}
+        type="text"
+        fullWidth
+        variant="standard"
+        onChange={handleChange}
+        error={validate}
+        required
+      />
       <DialogContentText>Friends</DialogContentText>
 
       <Box>
@@ -88,7 +86,9 @@ export const NewChat = ({friends,user}) => {
           })}
         </List>
       </Box>
-      <DialogActions><Button onClick={submitNewGroup}>Make Group</Button></DialogActions>
+      <DialogActions>
+        <Button onClick={submitNewGroup}>Make Group</Button>
+      </DialogActions>
     </DialogContent>
   )
 }
