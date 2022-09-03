@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
@@ -142,20 +143,22 @@ const EditProfile = (props) => {
   }
 
   const uploadImage = async (e) => {
-    setSaved(false)
-    const file = e.target.files[0]
-    const {name} = file
-    const fileReader = new FileReader()
-    fileReader.addEventListener('load', () => {
-      const image = {
-        name,
-        data: fileReader.result,
-      }
-      userProfile.profilePicture = image.data
-      setUserProfile(new User(userProfile))
-    })
-    fileReader.readAsDataURL(file)
-    setNewImage(true)
+    if (e.target.files[0].size <= 1000000) {
+      setSaved(false)
+      const file = e.target.files[0]
+      const fileReader = new FileReader()
+      fileReader.addEventListener('load', () => {
+        userProfile.profilePicture = fileReader.result
+        setUserProfile(new User(userProfile))
+      })
+      fileReader.readAsDataURL(file)
+      setNewImage(true)
+    } else {
+      window.alert(
+        'Your photo file is too big! please limit your files to 1 MB'
+      )
+      e.target.files = null
+    }
   }
 
   return (
