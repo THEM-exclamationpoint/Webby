@@ -4,14 +4,7 @@ import {getUsersFriends} from '../friends'
 import {getListOfGroups} from '../chat'
 import {getInterestsOfUser} from '../graph'
 import {zipToCoordinates} from '../location'
-import {
-  EmailAuthProvider,
-  updatePassword,
-  updateEmail,
-  updateProfile,
-  verifyBeforeUpdateEmail,
-  reauthenticateWithCredential,
-} from 'firebase/auth'
+import {updatePassword, updateEmail} from 'firebase/auth'
 import {
   query,
   collection,
@@ -19,7 +12,6 @@ import {
   doc,
   updateDoc,
   getDocs,
-  setDoc,
   addDoc,
   deleteDoc,
 } from 'firebase/firestore'
@@ -83,11 +75,13 @@ export class User {
     return await getInterestsOfUser(this.uid)
   }
 
-  async toProfile() {
-    let geocoded
-    if (this.zipCode && !this.location.latitude) {
-      geocoded = await zipToCoordinates(this.zipCode, this.country)
-    }
+  async codeLocation() {
+    let geocoded = await zipToCoordinates(this.zipCode, this.country)
+    this.location = {...geocoded}
+    console.log(geocoded)
+  }
+
+  toProfile() {
     return {
       uid: this.uid,
       name: this.name,
@@ -99,7 +93,7 @@ export class User {
         .map((day) => {
           return {...day}
         }),
-      location: geocoded ? {...geocoded} : {...this.location},
+      location: {...this.location},
       zipCode: this.zipCode,
       country: this.country,
       profilePicture: this.profilePicture,
@@ -113,13 +107,14 @@ export class User {
       let user = auth.currentUser
       if (!user || user.uid !== this.uid) return
       let uq = query(collection(db, 'users'), where('uid', '==', this.uid))
+      await this.codeLocation()
       const udocs = await getDocs(uq)
       let udocId
       udocs.forEach((doc) => {
         udocId = doc.id
       })
       const ref = doc(db, 'users', udocId)
-      await updateDoc(ref, await this.toProfile())
+      await updateDoc(ref, this.toProfile())
 
       if (this.interests.length) {
         let interestIds = []
