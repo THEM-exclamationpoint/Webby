@@ -27,6 +27,7 @@ const AvailabilityGrid = (props) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'space-evenly',
+          width: '100%',
         }}>
         {availability &&
           availability.map((day) => {

@@ -11,8 +11,13 @@ import {
   Box,
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import WbSunnyIcon from '@mui/icons-material/WbSunny'
-import NightsStayIcon from '@mui/icons-material/NightsStay'
+import {
+  Event,
+  NotInterested,
+  Check,
+  WbSunny,
+  NightsStay,
+} from '@mui/icons-material'
 import {styled} from '@mui/material/styles'
 import {newAvailability, User} from '../../../../../firebase/models/User'
 import './style.css'
@@ -93,26 +98,24 @@ const EditAvailabilityGrid = (props) => {
                   },
                 }}>
                 <Card>
-                  <WbSunnyIcon
-                    color={
-                      day.am === 'available'
-                        ? 'success'
-                        : day.am === 'notice'
-                        ? 'warning'
-                        : 'error'
-                    }
-                  />
+                  <WbSunny fontSize="small" />
+                  {day.am === 'available' ? (
+                    <Check color="success" fontSize="small" />
+                  ) : day.am === 'notice' ? (
+                    <Event color="warning" fontSize="small" />
+                  ) : (
+                    <NotInterested color="error" fontSize="small" />
+                  )}
                 </Card>
                 <Card>
-                  <NightsStayIcon
-                    color={
-                      day.pm === 'available'
-                        ? 'success'
-                        : day.pm === 'notice'
-                        ? 'warning'
-                        : 'error'
-                    }
-                  />
+                  <NightsStay fontSize="small" />
+                  {day.pm === 'available' ? (
+                    <Check color="success" fontSize="small" />
+                  ) : day.pm === 'notice' ? (
+                    <Event color="warning" fontSize="small" />
+                  ) : (
+                    <NotInterested color="error" fontSize="small" />
+                  )}
                 </Card>
               </Box>
             </AccordionSummary>
