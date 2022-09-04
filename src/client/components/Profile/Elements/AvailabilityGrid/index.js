@@ -26,7 +26,7 @@ const AvailabilityGrid = (props) => {
         sx={{
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'space-evenly',
         }}>
         {availability &&
           availability.map((day) => {
@@ -39,7 +39,7 @@ const AvailabilityGrid = (props) => {
                   display: 'flex',
                   flexDirection: 'column',
                 }}>
-                {day.day[0].toUpperCase()}
+                {day.day[0].toUpperCase() + day.day[1].toLowerCase()}
                 <div style={{p: 1}}>
                   <WbSunny fontSize="24px" />
                   {day.am === 'available' ? (
