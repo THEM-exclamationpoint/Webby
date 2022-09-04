@@ -13,6 +13,7 @@ import {FriendsList} from './Friends'
 import UserProfile from './Profile/UserProfile'
 import {auth} from '../../firebase/auth'
 import './style.css'
+import {Paper} from '@mui/material'
 
 function WebbyRoutes() {
   let dispatch = useDispatch()
@@ -25,7 +26,7 @@ function WebbyRoutes() {
     })
   }, [])
   return (
-    <div className="content">
+    <Paper sx={{background: 'primary'}} className="content">
       <Routes>
         <Route exact path="/home" element={user && <Home />} />
         <Route exact path="/" element={<LogIn />} />
@@ -35,8 +36,9 @@ function WebbyRoutes() {
         <Route exact path="/graph" element={user && <Graph />} />
         <Route exact path="/Friends" element={user && <FriendsList />} />
         <Route path="/users/:uid" element={user && <UserProfile />} />
+        <Route exact path="/settings" element={<AppSettings />} />
       </Routes>
-    </div>
+    </Paper>
   )
 }
 

@@ -1,3 +1,5 @@
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react';
 import Switch from '@mui/material/Switch';
 import { Divider } from '@mui/material';
@@ -6,22 +8,24 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import { toggleTheme } from '../../store/settings'
+import lightMode from './lightMode'
+import darkMode from './darkMode'
 
 
+const Settings = (props) => {
 
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
+    const dispatch = useDispatch()
 
-export default function AppSettings() {
+const settings = useSelector (
 
-    const [theme, setTheme] = useState('LightTheme')
+    (state) => state.settings
 
-    function changeTheme() {
-        if (theme === "LightTheme") {
-            setTheme("DarkTheme")
-        } else {
-            setTheme("LightTheme")
-        }
-    }
+) 
+
+const clickTheme = () => {
+    dispatch(toggleTheme())
+}
 
   return (
     <div>
@@ -30,21 +34,21 @@ export default function AppSettings() {
     App Theme:
         <br />
       Light/Dark: 
-        <Switch onClick={changeTheme} {...label} />            
+        <Switch color='primary' onChange={clickTheme} checked={settings.theme === darkMode}/>            
         <br />
-       High Contrast: <Switch {...label} />
+       High Contrast: <Switch color='primary' />
        <Divider />
     Notifications:
         <br />
-       Friend Requests: <Switch {...label} defaultChecked />
+       Friend Requests: <Switch color='primary'  defaultChecked />
         <br />
-       Messages: <Switch {...label} defaultChecked />
+       Messages: <Switch color='primary' defaultChecked />
         <br />
-       Group Messages: <Switch {...label} defaultChecked />
+       Group Messages: <Switch color='primary' defaultChecked />
         <br />
-       Time To Update!: <Switch {...label} defaultChecked />
+       Time To Update!: <Switch color='primary' defaultChecked />
         <br />
-       New Features: <Switch {...label} defaultChecked />
+       New Features: <Switch color='primary' defaultChecked />
         <Divider />
     Accessibility:
         <br/>
@@ -55,16 +59,16 @@ export default function AppSettings() {
                     defaultValue="Off"
                     name="radio-buttons-group"
                 >
-                    <FormControlLabel value="Red-Green" control={<Radio />} label="Red-Green" />
-                    <FormControlLabel value="Blue-Yellow" control={<Radio />} label="Blue-Yellow" />
-                    <FormControlLabel value="Off" control={<Radio />} label="Off" />
+                    <FormControlLabel value="Red-Green" control={<Radio color='primary' />} label="Red-Green" />
+                    <FormControlLabel value="Blue-Yellow" control={<Radio color='primary' />} label="Blue-Yellow" />
+                    <FormControlLabel value="Off" control={<Radio color='primary' />} label="Off" />
                 </RadioGroup>
             </FormControl>
  
        <br />
-       Large Text: <Switch {...label} />
+       Large Text: <Switch color='primary' />
        <br />
-       Screen Reader Safe: <Switch {...label} />
+       Screen Reader Safe: <Switch color='primary' />
        <Divider />
        Blocked Users {/* this should link to its own page */}
        <br /> 
@@ -73,3 +77,5 @@ export default function AppSettings() {
     </div>
   );
 }
+
+export default Settings

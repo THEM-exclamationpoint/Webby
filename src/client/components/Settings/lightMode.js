@@ -2,23 +2,23 @@ import * as React from 'react';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 // import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 
-const darkMode = createTheme ({
+const lightMode = createTheme ({
   palette: {
-    type: 'dark',
+    type: 'light',
     primary: {
-      main: '#A799B7',
+      main: '#2C2C54',
     },
     secondary: {
-      main: '#028090',
+      main: '#951A4D',
     },
     background: {
-      default: '#282c36',
-      paper: '#282c36',
-      card: '#282c36',
+      default: '#FCF7F8',
+      paper: '#FCF7F8',
+      card: '#FCF7F8',
     },
     text: {
-      primary: '#F3E2E6',
-      secondary: '#DBA9B4',
+      primary: '#090A0C',
+      secondary: '#090A0C',
     },
     error: {
       main: '#F44336',
@@ -32,4 +32,4 @@ const darkMode = createTheme ({
   },
 });
 
-export default darkMode
+export default lightMode
