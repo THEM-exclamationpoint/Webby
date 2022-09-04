@@ -35,7 +35,7 @@ const AvailabilityGrid = (props) => {
                 key={day.day}
                 sx={{
                   p: 0.5,
-                  m: 0.5,
+                  m: 0.25,
                   display: 'flex',
                   flexDirection: 'column',
                 }}>
