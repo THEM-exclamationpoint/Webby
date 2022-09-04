@@ -1,5 +1,4 @@
-
-import {app, db} from './db'
+import {app, db} from './db.js'
 import {
   GoogleAuthProvider,
   getAuth,
@@ -10,7 +9,7 @@ import {
   signOut,
   onAuthStateChanged,
   setPersistence,
-  browserSessionPersistence, 
+  browserSessionPersistence,
 } from 'firebase/auth'
 import {
   query,
@@ -23,7 +22,6 @@ import {
 
 export const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
-
 
 export async function getUserData() {
   const user = auth.currentUser
@@ -50,7 +48,7 @@ export const signInWithGoogle = async () => {
         name: user.displayName,
         authProvider: 'google',
         email: user.email,
-        profilePicture: user.photoURL
+        profilePicture: user.photoURL,
       })
       isNew = true
     }

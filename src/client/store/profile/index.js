@@ -1,63 +1,83 @@
+import {dispatch} from 'd3'
 import {User} from '../../../firebase/models/User'
-import {getUserData} from '../../../firebase/auth'
+import {getUserById} from '../../../firebase/profile'
 
-const UPDATE_PROFILE = 'UPDATE_PROFILE'
-const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
-const UPDATE_EMAIL = 'UPDATE_EMAIL'
+const GET_PROFILE = 'GET_PROFILE'
+const GET_INTERESTS = 'GET_INTERESTS'
+const GET_FRIENDS = 'GET_FRIENDS'
 
-const _updateProfile = (user) => {
+const fetchUserProfile = (user) => {
   return {
-    type: UPDATE_PROFILE,
+    type: GET_PROFILE,
     user,
   }
 }
 
-const _updatePassword = () => {
+const fetchUserFriends = (friends) => {
   return {
-    type: UPDATE_PASSWORD,
+    type: GET_FRIENDS,
+    friends,
   }
 }
 
-const _updateEmail = () => {
+const fetchUserInterests = (interests) => {
   return {
-    type: UPDATE_EMAIL,
+    type: GET_INTERESTS,
+    interests,
   }
 }
 
-export const updateProfile = (user) => {
+export const getUserProfile = (uid) => {
   return async (dispatch) => {
-    console.log(user)
-    await user.updateMyProfile()
-    dispatch(_updateProfile(user))
+    try {
+      const user = await getUserById(uid)
+      const util = new User(user)
+      dispatch(fetchUserProfile(util.toProfile()))
+    } catch (err) {
+      console.error(err)
+    }
   }
 }
-
-export const updatePassword = (user, passwords) => {
+export const getUserFriends = (uid) => {
   return async (dispatch) => {
-    if (passwords.new !== '' && passwords.new === passwords.confirm) {
-      user.updateMyPassword(passwords.new)
-      dispatch(_updatePassword)
+    try {
+      const user = await getUserById(uid)
+      const util = new User(user)
+      const friends = await util.myFriends()
+      dispatch(fetchUserFriends(friends))
+    } catch (err) {
+      console.error(err)
+    }
+  }
+}
+export const getUserInterests = (uid) => {
+  return async (dispatch) => {
+    try {
+      const user = await getUserById(uid)
+      const util = new User(user)
+      const interests = await util.myInterests()
+      dispatch(fetchUserInterests(interests))
+    } catch (err) {
+      console.error(err)
     }
   }
 }
 
-export const updateEmail = (user, email) => {
-  return async (dispatch) => {
-    if (email.new !== '' && email.new === email.confirm) {
-      user.updateMyEmail(email.new)
-      dispatch(_updateEmail)
-    }
-  }
-}
-
-export default function (state = new User(getUserData()), action) {
+export default function (
+  state = {user: {}, friends: [], interests: []},
+  action
+) {
+  let updState = {...state}
   switch (action.type) {
-    case UPDATE_EMAIL:
-      return state
-    case UPDATE_PASSWORD:
-      return state
-    case UPDATE_PROFILE:
-      return new User(action.user)
+    case GET_PROFILE:
+      updState.user = {...action.user}
+      return updState
+    case GET_FRIENDS:
+      updState.friends = [...action.friends]
+      return updState
+    case GET_INTERESTS:
+      updState.interests = [...action.interests]
+      return updState
     default:
       return state
   }

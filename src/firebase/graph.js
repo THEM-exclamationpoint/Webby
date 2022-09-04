@@ -71,7 +71,14 @@ async function getUsersByInterest(interestName) {
       })
     }
     const users = await Promise.all(
-      userIds.map(async (userId) => await getUserById(userId))
+      userIds.map(async (userId) => {
+        const name = await getUserById(userId)
+
+        return {
+          uid: userId,
+          name,
+        }
+      })
     )
     return users
   } catch (e) {
@@ -102,14 +109,15 @@ export async function getGraphData(userId) {
           const usersWithInterest = await getUsersByInterest(interest)
 
           const filteredUsersWithInterest = usersWithInterest.filter((user) => {
-            return user !== username
+            return user.name !== username
           })
 
           return {
             name: interest,
             children: filteredUsersWithInterest.map((user) => {
               return {
-                name: user,
+                name: user.name,
+                uid: user.uid,
                 children: [],
               }
             }),

@@ -1,15 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import {useNavigate} from 'react-router-dom'
-import {Link} from 'react-router-dom'
-import Chip from '@mui/material/Chip'
-import Autocomplete from '@mui/material/Autocomplete'
+import Autocomplete, {createFilterOptions} from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
-import Stack from '@mui/material/Stack'
-import {limit} from 'firebase/firestore'
 import './style.css'
 
-export default function MultiSelctorAuto(props) {
+const filter = createFilterOptions()
+
+export default function MultiSelectorAuto(props) {
   const {
     options = [],
     label = '',
@@ -18,7 +14,12 @@ export default function MultiSelctorAuto(props) {
     defaultValue = [],
     setState = (state) => {},
     id = '',
+    fullWidth = false,
   } = props
+
+  useEffect(() => {
+    setValue([...defaultValue])
+  }, [defaultValue])
 
   const printLabel = label
     ? label
@@ -39,6 +40,8 @@ export default function MultiSelctorAuto(props) {
   }
   return (
     <Autocomplete
+      aria-label={`${printLabel} entry field`}
+      fullWidth={fullWidth}
       freeSolo
       multiple
       id={id}

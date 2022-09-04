@@ -7,11 +7,17 @@ import {
   ButtonGroup,
   Card,
   FormControl,
+  Typography,
   Box,
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import WbSunnyIcon from '@mui/icons-material/WbSunny'
-import NightsStayIcon from '@mui/icons-material/NightsStay'
+import {
+  Event,
+  NotInterested,
+  Check,
+  WbSunny,
+  NightsStay,
+} from '@mui/icons-material'
 import {styled} from '@mui/material/styles'
 import {newAvailability, User} from '../../../../../firebase/models/User'
 import './style.css'
@@ -24,7 +30,7 @@ const Item = styled(Card)(({theme}) => ({
   color: theme.palette.text.secondary,
 }))
 
-const AvailabilityGrid = (props) => {
+const EditAvailabilityGrid = (props) => {
   const {setState = (state) => {}, value} = props
   let [availability, setAvailability] =
     useState(value) || useState(newAvailability())
@@ -47,7 +53,7 @@ const AvailabilityGrid = (props) => {
     <FormControl
       sx={{
         display: 'flex',
-        m: 1,
+        m: 0.5,
       }}>
       {availability.map((day, idx) => {
         return (
@@ -65,16 +71,16 @@ const AvailabilityGrid = (props) => {
               id={`${day.day}-header`}
               sx={{
                 display: 'flex',
-                alignContent: 'center',
+                alignItems: 'center',
                 justifyContent: 'space-between',
               }}>
               <Box
                 sx={{
                   width: '60%',
                   display: 'flex',
-                  alignContent: 'center',
+                  alignItems: 'center',
                 }}>
-                <h3> {day.day} </h3>
+                <Typography variant="h6"> {day.day} </Typography>
               </Box>
               <Box
                 sx={{
@@ -87,32 +93,30 @@ const AvailabilityGrid = (props) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     aspectRatio: '1/1',
-                    m: 1,
-                    p: 1,
+                    m: 0.25,
+                    p: 0.25,
                   },
                 }}>
-                <Card>
-                  <WbSunnyIcon
-                    color={
-                      day.am === 'available'
-                        ? 'success'
-                        : day.am === 'notice'
-                        ? 'warning'
-                        : 'error'
-                    }
-                  />
-                </Card>
-                <Card>
-                  <NightsStayIcon
-                    color={
-                      day.pm === 'available'
-                        ? 'success'
-                        : day.pm === 'notice'
-                        ? 'warning'
-                        : 'error'
-                    }
-                  />
-                </Card>
+                <Box>
+                  <WbSunny fontSize="small" />
+                  {day.am === 'available' ? (
+                    <Check color="success" fontSize="small" />
+                  ) : day.am === 'notice' ? (
+                    <Event color="warning" fontSize="small" />
+                  ) : (
+                    <NotInterested color="error" fontSize="small" />
+                  )}
+                </Box>
+                <Box>
+                  <NightsStay fontSize="small" />
+                  {day.pm === 'available' ? (
+                    <Check color="success" fontSize="small" />
+                  ) : day.pm === 'notice' ? (
+                    <Event color="warning" fontSize="small" />
+                  ) : (
+                    <NotInterested color="error" fontSize="small" />
+                  )}
+                </Box>
               </Box>
             </AccordionSummary>
             <AccordionDetails>
@@ -121,26 +125,37 @@ const AvailabilityGrid = (props) => {
                   display: 'flex',
                   justifyContent: 'center',
                   '& > *': {
-                    m: 1,
-                    p: 1,
+                    m: 0.5,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
                   },
                 }}>
                 <Item key={`${day.day}-am`}>
-                  <h3>DAY</h3>
+                  <Typography sx={{m: 1}} variant="h6">
+                    DAY
+                  </Typography>
                   <ButtonGroup orientation="vertical">
                     <Button
+                      variant={
+                        day.am === 'available' ? 'contained' : 'outlined'
+                      }
                       color={day.am === 'available' ? 'success' : 'secondary'}
                       value={JSON.stringify({...day, am: 'available'})}
                       onClick={handleClick}>
                       available
                     </Button>
                     <Button
+                      variant={day.am === 'notice' ? 'contained' : 'outlined'}
                       color={day.am === 'notice' ? 'warning' : 'secondary'}
                       value={JSON.stringify({...day, am: 'notice'})}
                       onClick={handleClick}>
                       plan ahead
                     </Button>
                     <Button
+                      variant={
+                        day.am === 'unavailable' ? 'contained' : 'outlined'
+                      }
                       color={day.am === 'unavailable' ? 'error' : 'secondary'}
                       value={JSON.stringify({...day, am: 'unavailable'})}
                       onClick={handleClick}>
@@ -149,21 +164,30 @@ const AvailabilityGrid = (props) => {
                   </ButtonGroup>
                 </Item>
                 <Item key={`${day.day}-pm`}>
-                  <h3>NIGHT</h3>
+                  <Typography sx={{m: 1}} variant="h6">
+                    NIGHT
+                  </Typography>
                   <ButtonGroup orientation="vertical">
                     <Button
+                      variant={
+                        day.pm === 'available' ? 'contained' : 'outlined'
+                      }
                       color={day.pm === 'available' ? 'success' : 'secondary'}
                       value={JSON.stringify({...day, pm: 'available'})}
                       onClick={handleClick}>
                       available
                     </Button>
                     <Button
+                      variant={day.pm === 'notice' ? 'contained' : 'outlined'}
                       color={day.pm === 'notice' ? 'warning' : 'secondary'}
                       value={JSON.stringify({...day, pm: 'notice'})}
                       onClick={handleClick}>
                       plan ahead
                     </Button>
                     <Button
+                      variant={
+                        day.pm === 'unavailable' ? 'contained' : 'outlined'
+                      }
                       color={day.pm === 'unavailable' ? 'error' : 'secondary'}
                       value={JSON.stringify({...day, pm: 'unavailable'})}
                       onClick={handleClick}>
@@ -180,4 +204,4 @@ const AvailabilityGrid = (props) => {
   )
 }
 
-export default AvailabilityGrid
+export default EditAvailabilityGrid

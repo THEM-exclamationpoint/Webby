@@ -42,14 +42,14 @@ const SingleChat = ({group}) => {
       scrollRef.current.scrollIntoView({behavior: 'smooth'})
     }
   }, [messages])
-  
+
   useEffect(() => {
     dispatch(setUser())
-    dispatch(setUsers(group.members))
     dispatch(getFriends(user.uid))
   }, [])
 
   useEffect(() => {
+    dispatch(setUsers(group.members))
     const unsubscribe = getMessagesWithGroup(group.groupId, setMessages)
     return unsubscribe
   }, [group.groupId])
@@ -62,7 +62,6 @@ const SingleChat = ({group}) => {
   }
   function handleClick() {
     dispatch(sentMessage(user.uid, group.groupId, message))
-    console.log(message)
     setMessage('')
   }
   function handleChange(e) {
@@ -93,41 +92,54 @@ const SingleChat = ({group}) => {
       <Grid container>
         <Grid item={true} xs={12}>
           <Typography variant="h5" className="header-message" align="center">
-            {group.groupname}
+            {typeof group.groupname === 'string'
+              ? group.groupname
+              : group.groupname[0] === user.name
+              ? group.groupname[1]
+              : group.groupname[0]}
           </Typography>
-          <React.Fragment>
-            <Button onClick={toggleMenu2}>Add Member</Button>
-            <Menu open={menuOpen2} onClose={closeMenu2} anchorEl={anchorEl2}>
-              {friends.map((friend) => {
-                if (!group.members.includes(friend.uid)) {
-                  return (
-                    <MenuItem
-                      value={friend}
-                      key={friend.uid}
-                      onClick={() => handleSelect(friend.uid)}>
-                      {friend.name}
-                    </MenuItem>
-                  )
-                }
-              })}
-            </Menu>
-          </React.Fragment>
-          <React.Fragment>
-            <Button onClick={toggleMenu} align="right">
-              Members
-            </Button>
-            <Menu open={menuOpen} onClose={closeMenu} anchorEl={anchorEl}>
-              {users && users.map((user) => {
-                {
-                  return (
-                    <MenuItem value={user} key={user.uid}>
-                      {user.name}
-                    </MenuItem>
-                  )
-                }
-              })}
-            </Menu>
-          </React.Fragment>
+          {!group.isDm && (
+            <div>
+              {' '}
+              <React.Fragment>
+                <Button onClick={toggleMenu2}>Add Member</Button>
+                <Menu
+                  open={menuOpen2}
+                  onClose={closeMenu2}
+                  anchorEl={anchorEl2}>
+                  {friends.map((friend) => {
+                    if (!group.members.includes(friend.uid)) {
+                      return (
+                        <MenuItem
+                          value={friend}
+                          key={friend.uid}
+                          onClick={() => handleSelect(friend.uid)}>
+                          {friend.name}
+                        </MenuItem>
+                      )
+                    }
+                  })}
+                </Menu>
+              </React.Fragment>
+              <React.Fragment>
+                <Button onClick={toggleMenu} align="right">
+                  Members
+                </Button>
+                <Menu open={menuOpen} onClose={closeMenu} anchorEl={anchorEl}>
+                  {users &&
+                    users.map((user) => {
+                      {
+                        return (
+                          <MenuItem value={user} key={user.uid}>
+                            {user.name}
+                          </MenuItem>
+                        )
+                      }
+                    })}
+                </Menu>
+              </React.Fragment>
+            </div>
+          )}
         </Grid>
       </Grid>
       <List
@@ -140,7 +152,9 @@ const SingleChat = ({group}) => {
           let from = users.find((curuser) => {
             return curuser.uid === message.fromUser
           })
-          let date = new Date(message.timeStamp.seconds * 1000)
+          let date = message.timeStamp
+            ? new Date(message.timeStamp.seconds * 1000)
+            : new Date()
           let splitted = String(date).split(' ').slice(0, 5).join(' ')
           return (
             <ListItem key={i} ref={scrollRef}>
