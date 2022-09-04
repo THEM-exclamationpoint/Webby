@@ -93,11 +93,11 @@ const EditAvailabilityGrid = (props) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     aspectRatio: '1/1',
-                    m: 0.5,
-                    p: 0.5,
+                    m: 0.25,
+                    p: 0.25,
                   },
                 }}>
-                <Card>
+                <Box>
                   <WbSunny fontSize="small" />
                   {day.am === 'available' ? (
                     <Check color="success" fontSize="small" />
@@ -106,8 +106,8 @@ const EditAvailabilityGrid = (props) => {
                   ) : (
                     <NotInterested color="error" fontSize="small" />
                   )}
-                </Card>
-                <Card>
+                </Box>
+                <Box>
                   <NightsStay fontSize="small" />
                   {day.pm === 'available' ? (
                     <Check color="success" fontSize="small" />
@@ -116,7 +116,7 @@ const EditAvailabilityGrid = (props) => {
                   ) : (
                     <NotInterested color="error" fontSize="small" />
                   )}
-                </Card>
+                </Box>
               </Box>
             </AccordionSummary>
             <AccordionDetails>
