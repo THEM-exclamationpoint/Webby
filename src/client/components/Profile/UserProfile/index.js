@@ -41,6 +41,8 @@ import {
   getJunctions,
 } from '../../../store/friends/junctions'
 import {User} from '../../../../firebase/models/User'
+import calculateDistance from './util/calculateDistance'
+import AvailabilityGrid from '../Elements/AvailabilityGrid'
 import './style.css'
 import {border} from '@mui/system'
 
@@ -131,7 +133,7 @@ const UserProfile = (props) => {
               border: '4px double #028090',
             }}
           />
-          <Typography variant="h3" align="center">
+          <Typography variant="h4" align="center">
             {user.name}
           </Typography>
           <Typography variant="subtitle1">
@@ -163,6 +165,7 @@ const UserProfile = (props) => {
               <Grid
                 container
                 sx={{
+                  p: 1,
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'center',
@@ -185,9 +188,21 @@ const UserProfile = (props) => {
               </Grid>
             </Menu>
           </Box>
+          {currentUser.location &&
+          user.location &&
+          currentUser.uid != user.uid ? (
+            <Box>
+              <Typography variant="subtitle1">
+                {calculateDistance(currentUser.location, user.location)} mi
+              </Typography>
+            </Box>
+          ) : (
+            ''
+          )}
         </Paper>
-        <Paper>
-          {user.availability &&
+        <Paper sx={{m: 1, p: 0.5}}>
+          <AvailabilityGrid availability={user.availability} />
+          {/* {user.availability &&
             user.availability.map((day, id) => {
               return (
                 <Paper
@@ -202,10 +217,10 @@ const UserProfile = (props) => {
                   </ListItem>
                 </Paper>
               )
-            })}
+            })} */}
         </Paper>
         {interests.length > 0 && (
-          <Paper sx={{margin: '5px'}}>
+          <Paper sx={{m: 1, p: 1}}>
             <CardHeader align="center" title={`Hobbies`} />
             <List>
               {interests.map((interest, id) => {

@@ -25,7 +25,7 @@ const Item = styled(Card)(({theme}) => ({
   color: theme.palette.text.secondary,
 }))
 
-const AvailabilityGrid = (props) => {
+const EditAvailabilityGrid = (props) => {
   const {setState = (state) => {}, value} = props
   let [availability, setAvailability] =
     useState(value) || useState(newAvailability())
@@ -201,4 +201,4 @@ const AvailabilityGrid = (props) => {
   )
 }
 
-export default AvailabilityGrid
+export default EditAvailabilityGrid
