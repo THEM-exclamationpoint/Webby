@@ -48,8 +48,9 @@ const EditProfile = (props) => {
 
   let user = useSelector((state) => state.user)
   let myInterests = useSelector((state) => state.interests)
-  let interests = interestList
+
   // let {interests} = useSelector((state) => state.editProfile)
+  let interests = interestList
 
   let [userProfile, setUserProfile] = useState(
     new User({...user, interests: [...myInterests]})
@@ -151,6 +152,7 @@ const EditProfile = (props) => {
     setSaved(false)
     userProfile.location = {latitude: null, longitude: null}
     setUserProfile(new User(userProfile))
+    setNewLocation(false)
   }
 
   const uploadImage = async (e) => {
@@ -256,16 +258,6 @@ const EditProfile = (props) => {
 
             <Divider />
             <Typography variant="h6">Profile Picture:</Typography>
-            {/* <TextField
-              required
-              label="Image URL"
-              type="url"
-              name="profilePicture"
-              autoComplete="off"
-              helperText="You look beautiful ;)"
-              onChange={handleChange}
-              value={userProfile.profilePicture}
-            /> */}
             {userProfile.profilePicture ? (
               <div style={{display: 'flex', flexDirection: 'column'}}>
                 <img
@@ -294,6 +286,7 @@ const EditProfile = (props) => {
             </Button>
           </Box>
         </Paper>
+        <Divider />
         <Paper sx={{m: 1, p: 1}}>
           <Typography variant="h5">Search Details:</Typography>
           <Paper
@@ -306,7 +299,7 @@ const EditProfile = (props) => {
             }}>
             <Box>
               <FormGroup>
-                <FormLabel component="legend">Open to:</FormLabel>
+                <Typography variant="h6">Open to:</Typography>
                 <FormControlLabel
                   control={
                     <Switch
@@ -329,7 +322,6 @@ const EditProfile = (props) => {
                 />
               </FormGroup>
             </Box>
-
             <Divider />
             <Box
               sx={{
@@ -342,9 +334,8 @@ const EditProfile = (props) => {
                 sx={{
                   display: 'flex',
                   flexDirection: 'column',
-                  '& > *': {
-                    m: 0.25,
-                  },
+                  gap: 1,
+                  m: 1,
                 }}>
                 {navigator.geolocation ? (
                   <Button
@@ -356,56 +347,75 @@ const EditProfile = (props) => {
                 ) : (
                   'Location not supported'
                 )}
-                <Typography variant="subtitle1">
-                  Lat:{' '}
-                  {userProfile.location.latitude
-                    ? userProfile.location.latitude
-                    : ''}
-                </Typography>
-                <Typography variant="subtitle1">
-                  Lon:{' '}
-                  {userProfile.location.longitude
-                    ? userProfile.location.longitude
-                    : ''}
-                </Typography>
+
                 {userProfile.location.latitude ? (
-                  <Button size="small" onClick={clearLocation}>
-                    CLEAR LOCATION
-                  </Button>
+                  <Box sx={{m: 1, textAlign: 'center'}}>
+                    <Typography variant="subtitle1">
+                      Lat:{' '}
+                      {userProfile.location.latitude
+                        ? Math.round(userProfile.location.latitude * 100) / 100
+                        : ''}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      Lon:{' '}
+                      {userProfile.location.longitude
+                        ? Math.round(userProfile.location.longitude * 100) / 100
+                        : ''}
+                    </Typography>
+                    <Button size="small" onClick={clearLocation} sx={{p: 1}}>
+                      CLEAR LOCATION
+                    </Button>
+                  </Box>
                 ) : (
                   ''
                 )}
               </Box>
-              <Divider sx={{m: 1}} />
-              <TextField
-                aria-label="zip code field"
-                label="ZIP Code"
-                type="text"
-                name="zipCode"
-                onChange={handleChange}
-                value={userProfile.zipCode}
-              />
-              <CountrySelect
-                value={userProfile.country}
-                setState={(country) => {
-                  setSaved(false)
-                  userProfile.country = country
-                  setUserProfile(new User(userProfile))
-                }}
-              />
-              <FormLabel component="legend">
-                <small>Max range: {userProfile.range} miles</small>
-              </FormLabel>
-              <Slider
-                aria-label="range slider"
-                name="range"
-                defaultValue={20}
-                min={1}
-                max={100}
-                valueLabelDisplay="auto"
-                onChange={handleChange}
-                value={userProfile.range}
-              />
+              <Divider sx={{width: '50px', alignSelf: 'center'}} />
+              <Typography variant="caption" sx={{textAlign: 'center'}}>
+                OR
+              </Typography>
+              <Divider sx={{width: '50px', alignSelf: 'center'}} />
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 1,
+                  m: 1,
+                }}>
+                <TextField
+                  aria-label="postal code field"
+                  label="ZIP/Postal Code"
+                  type="text"
+                  name="zipCode"
+                  helperText="Used to calculate your location"
+                  onChange={handleChange}
+                  value={userProfile.zipCode}
+                />
+                <CountrySelect
+                  value={userProfile.country}
+                  setState={(country) => {
+                    setSaved(false)
+                    userProfile.country = country
+                    setUserProfile(new User(userProfile))
+                  }}
+                />
+              </Box>
+              <Divider />
+              <Box sx={{m: 1}}>
+                <Typography variant="subtitle1">
+                  Max range: {userProfile.range} miles
+                </Typography>
+                <Slider
+                  aria-label="range slider"
+                  name="range"
+                  defaultValue={20}
+                  min={1}
+                  max={100}
+                  valueLabelDisplay="auto"
+                  onChange={handleChange}
+                  value={userProfile.range}
+                />
+              </Box>
             </Box>
           </Paper>
           <Divider sx={{m: 1}} />
@@ -421,7 +431,8 @@ const EditProfile = (props) => {
             />
           </Box>
         </Paper>
-        <Card
+        <Divider />
+        <Paper
           sx={{
             m: 1,
             p: 1,
@@ -558,7 +569,7 @@ const EditProfile = (props) => {
               ''
             )}
           </Box>
-        </Card>
+        </Paper>
         <Fab
           disabled={saved ? true : false}
           color="primary"
