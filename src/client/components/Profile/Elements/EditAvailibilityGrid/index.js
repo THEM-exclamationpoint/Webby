@@ -11,8 +11,13 @@ import {
   Box,
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import WbSunnyIcon from '@mui/icons-material/WbSunny'
-import NightsStayIcon from '@mui/icons-material/NightsStay'
+import {
+  Event,
+  NotInterested,
+  Check,
+  WbSunny,
+  NightsStay,
+} from '@mui/icons-material'
 import {styled} from '@mui/material/styles'
 import {newAvailability, User} from '../../../../../firebase/models/User'
 import './style.css'
@@ -25,7 +30,7 @@ const Item = styled(Card)(({theme}) => ({
   color: theme.palette.text.secondary,
 }))
 
-const AvailabilityGrid = (props) => {
+const EditAvailabilityGrid = (props) => {
   const {setState = (state) => {}, value} = props
   let [availability, setAvailability] =
     useState(value) || useState(newAvailability())
@@ -88,32 +93,30 @@ const AvailabilityGrid = (props) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     aspectRatio: '1/1',
-                    m: 0.5,
-                    p: 0.5,
+                    m: 0.25,
+                    p: 0.25,
                   },
                 }}>
-                <Card>
-                  <WbSunnyIcon
-                    color={
-                      day.am === 'available'
-                        ? 'success'
-                        : day.am === 'notice'
-                        ? 'warning'
-                        : 'error'
-                    }
-                  />
-                </Card>
-                <Card>
-                  <NightsStayIcon
-                    color={
-                      day.pm === 'available'
-                        ? 'success'
-                        : day.pm === 'notice'
-                        ? 'warning'
-                        : 'error'
-                    }
-                  />
-                </Card>
+                <Box>
+                  <WbSunny fontSize="small" />
+                  {day.am === 'available' ? (
+                    <Check color="success" fontSize="small" />
+                  ) : day.am === 'notice' ? (
+                    <Event color="warning" fontSize="small" />
+                  ) : (
+                    <NotInterested color="error" fontSize="small" />
+                  )}
+                </Box>
+                <Box>
+                  <NightsStay fontSize="small" />
+                  {day.pm === 'available' ? (
+                    <Check color="success" fontSize="small" />
+                  ) : day.pm === 'notice' ? (
+                    <Event color="warning" fontSize="small" />
+                  ) : (
+                    <NotInterested color="error" fontSize="small" />
+                  )}
+                </Box>
               </Box>
             </AccordionSummary>
             <AccordionDetails>
@@ -201,4 +204,4 @@ const AvailabilityGrid = (props) => {
   )
 }
 
-export default AvailabilityGrid
+export default EditAvailabilityGrid
