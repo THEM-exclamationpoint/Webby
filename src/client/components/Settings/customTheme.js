@@ -1,14 +1,19 @@
 import * as React from 'react';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
 
 const lightTheme = createTheme({
-  palette: {
-    primary:{
-        main: '#ff0000'
-    } ,
-    type: 'light'
-  },
+    palette: {
+        type: 'light',
+        primary: {
+          main: '#2C2C54',
+        },
+        secondary: {
+          main: '#A799B7',
+        },
+        background: {
+          default: '#FCF7F8',
+        },
+      },
 });
 
 // export default function CustomStyles() {
