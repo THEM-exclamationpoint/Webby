@@ -39,7 +39,6 @@ import {setUser} from '../../../store/auth/user'
 import {setUserInterests} from '../../../store/interests'
 import CountrySelect from '../Elements/CountrySelect'
 import './style.css'
-import {maxWidth} from '@mui/system'
 
 const EditProfile = (props) => {
   const navigate = useNavigate()
@@ -146,6 +145,12 @@ const EditProfile = (props) => {
       setUserProfile(new User(userProfile))
     })
     setNewLocation(true)
+  }
+
+  const clearLocation = (e) => {
+    setSaved(false)
+    userProfile.location = {latitude: null, longitude: null}
+    setUserProfile(new User(userProfile))
   }
 
   const uploadImage = async (e) => {
@@ -363,6 +368,13 @@ const EditProfile = (props) => {
                     ? userProfile.location.longitude
                     : ''}
                 </Typography>
+                {userProfile.location.latitude ? (
+                  <Button size="small" onClick={clearLocation}>
+                    CLEAR LOCATION
+                  </Button>
+                ) : (
+                  ''
+                )}
               </Box>
               <Divider sx={{m: 1}} />
               <TextField
