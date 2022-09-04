@@ -200,9 +200,8 @@ const UserProfile = (props) => {
             ''
           )}
         </Paper>
-        <Paper sx={{m: 1, p: 0.5}}>
-          <AvailabilityGrid availability={user.availability} />
-          {/* {user.availability &&
+        <AvailabilityGrid availability={user.availability} />
+        {/* {user.availability &&
             user.availability.map((day, id) => {
               return (
                 <Paper
@@ -218,7 +217,6 @@ const UserProfile = (props) => {
                 </Paper>
               )
             })} */}
-        </Paper>
         {interests.length > 0 && (
           <Paper sx={{m: 1, p: 1}}>
             <CardHeader align="center" title={`Hobbies`} />

@@ -34,30 +34,31 @@ const AvailabilityGrid = (props) => {
               <Item
                 key={day.day}
                 sx={{
-                  p: 0.5,
-                  m: 0.25,
+                  p: 0.25,
+                  ml: 0.125,
+                  mr: 0.125,
                   display: 'flex',
                   flexDirection: 'column',
                 }}>
                 {day.day[0].toUpperCase() + day.day[1].toLowerCase()}
-                <div style={{p: 1}}>
-                  <WbSunny fontSize="24px" />
+                <div>
+                  <WbSunny fontSize="small" />
                   {day.am === 'available' ? (
-                    <Check color="success" fontSize="24px" />
+                    <Check color="success" fontSize="small" />
                   ) : day.am === 'notice' ? (
-                    <Event color="warning" fontSize="24px" />
+                    <Event color="warning" fontSize="small" />
                   ) : (
-                    <NotInterested color="error" fontSize="24px" />
+                    <NotInterested color="error" fontSize="small" />
                   )}
                 </div>
                 <div>
-                  <NightsStay fontSize="24px" />
+                  <NightsStay fontSize="small" />
                   {day.pm === 'available' ? (
-                    <Check color="success" fontSize="24px" />
+                    <Check color="success" fontSize="small" />
                   ) : day.pm === 'notice' ? (
-                    <Event color="warning" fontSize="24px" />
+                    <Event color="warning" fontSize="small" />
                   ) : (
-                    <NotInterested color="error" fontSize="24px" />
+                    <NotInterested color="error" fontSize="small" />
                   )}
                 </div>
               </Item>
