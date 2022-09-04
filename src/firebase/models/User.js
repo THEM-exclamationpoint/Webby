@@ -84,9 +84,9 @@ export class User {
   }
 
   async toProfile() {
-    if (!this.location.latitude && this.location.zipCode) {
-      let geocoded = await zipToCoordinates(this.zipCode, this.country)
-      if (await geocoded) this.location = {...geocoded}
+    let geocoded
+    if (this.zipCode && !this.location.latitude) {
+      geocoded = await zipToCoordinates(this.zipCode, this.country)
     }
     return {
       uid: this.uid,
@@ -99,7 +99,7 @@ export class User {
         .map((day) => {
           return {...day}
         }),
-      location: {...this.location},
+      location: geocoded ? {...geocoded} : {...this.location},
       zipCode: this.zipCode,
       country: this.country,
       profilePicture: this.profilePicture,

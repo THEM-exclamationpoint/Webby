@@ -225,7 +225,7 @@ const EditProfile = (props) => {
               options={pronounList}
               helperText="Order will be preserved"
               value={userProfile.pronouns}
-              defaultValue={user.pronouns}
+              defaultValue={userProfile.pronouns}
               id="pronoun-selector"
               setState={(pronouns) => {
                 setSaved(false)
