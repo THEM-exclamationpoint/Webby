@@ -193,6 +193,7 @@ const UserProfile = (props) => {
           </Box>
           {currentUser.location &&
           user.location &&
+          user.location.latitude !== null &&
           currentUser.uid != user.uid ? (
             <Box>
               <Typography variant="subtitle1">
