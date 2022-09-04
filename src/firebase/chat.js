@@ -121,12 +121,9 @@ export async function sendNewMessage(uid, groupId, content) {
   docs.forEach(doc => {
     groups.push(doc.data())
   })
-  console.log(groups)
   let both = groups.filter(group => group.members.includes(uid2))
-  console.log(both)
  let one = both.filter(group => group.isDm)
  if(one.length !== 0){
-  console.log(one)
   await sendNewMessage(uid1,one[0].groupId,content)
   return one.groupId
  }

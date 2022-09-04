@@ -56,7 +56,8 @@ const UserProfile = (props) => {
   const friendJunctions = useSelector((state) => state.friendJunctions)
   const sentMessage = useSelector((state) => state.sendDM)
 
-  let [isFriend, setIsFriend] = useState(null)
+  let [messageSent,setMessageSent] = useState(false)
+  let [isFriend, setIsFriend] = useState(false)
   let [junctionId, setJunctionId] = useState(null)
 
   let [anchorEl, setAnchorEl] = useState(null)
@@ -67,7 +68,6 @@ const UserProfile = (props) => {
     dispatch(setUser())
     dispatch(getUserProfile(uid))
     dispatch(getUserInterests(uid))
-    dispatch(getUserFriends(uid))
     dispatch(getJunctions(uid))
   }, [])
 
@@ -104,6 +104,7 @@ const UserProfile = (props) => {
     dispatch(
       sendDM(currentUser.uid, user.uid, currentUser.name, user.name, message)
     )
+setMessageSent(true)
   }
   return (
     <div className="user-profile-block">
@@ -170,7 +171,7 @@ const UserProfile = (props) => {
                   flexDirection: 'row',
                   justifyContent: 'center',
                 }}>
-                {sentMessage ? (
+                {messageSent ? (
                   <div>Message sent!</div>
                 ) : (
                   <div>
@@ -182,7 +183,7 @@ const UserProfile = (props) => {
                       variant="standard"
                       onChange={handleChange}
                     />
-                    <SendIcon onClick={handleSend} />
+                    <IconButton><SendIcon onClick={handleSend} /></IconButton>
                   </div>
                 )}
               </Grid>

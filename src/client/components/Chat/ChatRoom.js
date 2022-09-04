@@ -55,11 +55,17 @@ const Chat = () => {
     setSearch(e.target.value)
   }
   const filteredData = groups.filter((group) => {
+    let name =
+                typeof group.groupname === 'string'
+                  ? group.groupname
+                  : group.groupname[0] === user.name
+                  ? group.groupname[1]
+                  : group.groupname[0]
     let input = search.toLowerCase()
     if (input === '') {
       return group
     } else {
-      return group.groupname.toLowerCase().includes(input)
+      return name.toLowerCase().includes(input)
     }
   })
 
