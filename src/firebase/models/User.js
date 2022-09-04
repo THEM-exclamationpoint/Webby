@@ -78,7 +78,6 @@ export class User {
   async codeLocation() {
     let geocoded = await zipToCoordinates(this.zipCode, this.country)
     this.location = {...geocoded}
-    console.log(geocoded)
   }
 
   toProfile() {
