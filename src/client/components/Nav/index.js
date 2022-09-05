@@ -96,10 +96,10 @@ export default function ProminentAppBar() {
             </Typography>
           </Box>
           <Box>
-            {theme === 'light' ? (
-              <Webby style={{width: 100}} className="webby" />
-            ) : (
+            {theme === 'dark' ? (
               <DarkWebby style={{width: 100}} className="webby" />
+            ) : (
+              <Webby style={{width: 100}} className="webby" />
             )}
 
             <IconButton
