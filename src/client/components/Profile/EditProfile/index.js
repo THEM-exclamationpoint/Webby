@@ -44,8 +44,6 @@ const EditProfile = (props) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const {firstVisit = false} = props
-
   let user = useSelector((state) => state.user)
   let myInterests = useSelector((state) => state.interests)
 
@@ -501,6 +499,7 @@ const EditProfile = (props) => {
             <Typography variant="h5">Change Password</Typography>
             <InputLabel htmlFor="newPassword">New Password</InputLabel>
             <OutlinedInput
+              color="primary"
               autoComplete={'off'}
               name="newPassword"
               id="newPassword"
@@ -510,6 +509,7 @@ const EditProfile = (props) => {
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
+                    color="primary"
                     aria-label="toggle new password visibility"
                     onClick={() => clickShowPassword('new')}
                     onMouseDown={mouseDownShowPassword}
@@ -541,6 +541,7 @@ const EditProfile = (props) => {
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
+                    color="primary"
                     aria-label="toggle confirm password visibility"
                     onClick={() => clickShowPassword('confirm')}
                     onMouseDown={mouseDownShowPassword}

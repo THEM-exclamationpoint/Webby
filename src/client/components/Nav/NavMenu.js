@@ -80,7 +80,7 @@ export default function TemporaryDrawer() {
             variant="outlined"
             value={search}
           />
-          <IconButton onClick={onSearch}>
+          <IconButton onClick={onSearch} color="primary">
             {' '}
             <PersonSearchOutlinedIcon />
           </IconButton>

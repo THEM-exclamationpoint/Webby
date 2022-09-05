@@ -151,7 +151,9 @@ const UserProfile = (props) => {
           </Typography>
           <Box>
             {isFriend ? (
-              <IconButton onClick={() => removeUser(junctionId, uid)}>
+              <IconButton
+                color="primary"
+                onClick={() => removeUser(junctionId, uid)}>
                 <PersonRemove />
               </IconButton>
             ) : (
@@ -159,7 +161,7 @@ const UserProfile = (props) => {
                 <PersonAdd />
               </IconButton>
             )}
-            <IconButton onClick={openMenu}>
+            <IconButton onClick={openMenu} color="primary">
               <ChatBubbleRounded />
             </IconButton>
             <Menu open={menuOpen} onClose={closeMenu} anchorEl={anchorEl}>
@@ -183,7 +185,7 @@ const UserProfile = (props) => {
                       variant="standard"
                       onChange={handleChange}
                     />
-                    <IconButton onClick={handleSend}>
+                    <IconButton onClick={handleSend} color="primary">
                       <SendIcon />
                     </IconButton>
                   </div>

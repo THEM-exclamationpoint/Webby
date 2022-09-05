@@ -66,7 +66,7 @@ const EditAvailabilityGrid = (props) => {
               flexDirection: 'column',
             }}>
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
+              expandIcon={<ExpandMoreIcon color="primary" />}
               aria-controls={`${day.day}-content`}
               id={`${day.day}-header`}
               sx={{

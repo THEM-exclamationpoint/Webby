@@ -1,4 +1,3 @@
-
 import {styled} from '@mui/material/styles'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
@@ -15,6 +14,8 @@ import {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {setUser} from '../../store/auth/user'
 import {ReactComponent as Webby} from '../../../Spider-light.svg'
+import {ReactComponent as DarkWebby} from '../../../Spider.svg'
+import {local} from 'd3'
 
 const StyledToolbar = styled(Toolbar)(({theme}) => ({
   alignItems: 'center',
@@ -25,6 +26,7 @@ const StyledToolbar = styled(Toolbar)(({theme}) => ({
 export default function ProminentAppBar() {
   let dispatch = useDispatch()
   let user = useSelector((state) => state.user)
+  let theme = localStorage.getItem('theme')
 
   let [isOff, setIsOff] = useState(null)
 
@@ -51,49 +53,71 @@ export default function ProminentAppBar() {
       }}
       className="menu">
       <AppBar position="static" className="navbar">
-        <StyledToolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{
-              mr: 2,
-              width: 50,
-              height: 50,
+        <StyledToolbar
+          sx={{
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'space-between',
+            '& > *': {
               display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'baseline',
-            }}
-            disabled={isOff}>
-            <TemporaryDrawer />
-          </IconButton>
+              alignItems: 'center',
+            },
+          }}>
+          <Box>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              sx={{
+                mr: 2,
+                width: 50,
+                height: 50,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'baseline',
+              }}
+              disabled={isOff}>
+              <TemporaryDrawer />
+            </IconButton>
 
-          <Typography
-            variant="h5"
-            noWrap
-            component={Link}
-            to="/home"
-            className="brand"
-            sx={{flexGrow: 1, alignSelf: 'center'}}>
-            WEBBY
-          </Typography>
-          <Webby style={{width: 100}} className="webby" />
-          <IconButton
-            sx={{
-              ml: 2,
-              width: 50,
-              height: 50,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'baseline',
-            }}
-            size="large"
-            aria-label="display more actions"
-            edge="end"
-            color="inherit">
-            <FadeMenu />
-          </IconButton>
+            <Typography
+              color="inherit"
+              variant="h5"
+              noWrap
+              component={Link}
+              to="/home"
+              className="brand"
+              sx={{
+                fontWeight: 'bold',
+                textDecoration: 'none',
+              }}>
+              WEBBY
+            </Typography>
+          </Box>
+          <Box>
+            {theme === 'light' ? (
+              <Webby style={{width: 100}} className="webby" />
+            ) : (
+              <DarkWebby style={{width: 100}} className="webby" />
+            )}
+
+            <IconButton
+              sx={{
+                ml: 2,
+                width: 50,
+                height: 50,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'baseline',
+              }}
+              size="large"
+              aria-label="display more actions"
+              edge="end"
+              color="inherit">
+              <FadeMenu />
+            </IconButton>
+          </Box>
         </StyledToolbar>
       </AppBar>
     </Box>

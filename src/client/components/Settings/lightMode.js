@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import * as React from 'react'
+import {createTheme, ThemeProvider, styled} from '@mui/material/styles'
 // import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 
-const lightMode = createTheme ({
+const lightMode = createTheme({
   palette: {
     type: 'light',
     primary: {
@@ -30,6 +30,6 @@ const lightMode = createTheme ({
       main: '#4CAF50',
     },
   },
-});
+})
 
 export default lightMode
