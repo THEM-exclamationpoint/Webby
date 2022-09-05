@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography'
 import FadeMenu from './UserMenu'
 import TemporaryDrawer from './NavMenu'
 
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
@@ -17,11 +17,10 @@ import {ReactComponent as DarkWebby} from '../../../Spider.svg'
 
 const StyledToolbar = styled(Toolbar)(({theme}) => ({
   alignItems: 'center',
-  paddingTop: theme.spacing(1),
-  paddingBottom: theme.spacing(2),
 }))
 
 export default function ProminentAppBar() {
+  let nav = useNavigate()
   let dispatch = useDispatch()
   let user = useSelector((state) => state.user)
   let theme = localStorage.getItem('theme')
@@ -41,74 +40,67 @@ export default function ProminentAppBar() {
   }, [user])
 
   return (
-    <AppBar position="static" className="navbar">
+    <AppBar
+      className="navbar"
+      sx={{
+        position: 'sticky',
+        top: 0,
+      }}>
       <StyledToolbar
         sx={{
           display: 'flex',
-          justifyContent: 'space-around',
-          '& > *': {
-            m: 0,
-            display: 'flex',
-            alignItems: 'center',
-          },
+          justifyContent: 'space-between',
         }}>
-        <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="open drawer"
-          sx={{
-            mr: 2,
-            width: 50,
-            height: 50,
-            display: 'flex',
-            alignItems: 'baseline',
-          }}
-          disabled={isOff}>
-          <TemporaryDrawer />
-        </IconButton>
+        <Box sx={{display: 'flex', alignItems: 'center'}}>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            sx={{
+              width: 50,
+              height: 50,
+              display: 'flex',
+              alignItems: 'baseline',
+            }}
+            disabled={isOff}>
+            <TemporaryDrawer />
+          </IconButton>
+          {theme === 'dark' ? (
+            <img
+              onClick={() => nav('./home')}
+              src={'/Webby-logotype-light.png'}
+              style={{width: 150}}
+            />
+          ) : (
+            <img
+              onClick={() => nav('./home')}
+              src={'/Webby-logotype-dark.png'}
+              style={{width: 150}}
+            />
+          )}
+        </Box>
 
-        {/* <Typography
-              color="inherit"
-              variant="h5"
-              noWrap
-              component={Link}
-              to="/home"
-              className="brand"
-              sx={{
-                fontWeight: 'bold',
-                textDecoration: 'none',
-              }}>
-              WEBBY
-            </Typography> */}
-        {theme === 'dark' ? (
-          <Link to="/home">
-            <img src={'/Webby-logotype-light.png'} style={{width: 130}} />
-          </Link>
-        ) : (
-          <Link to="/home">
-            <img src={'/Webby-logotype-dark.png'} style={{width: 130}} />
-          </Link>
-        )}
-        {theme === 'dark' ? (
-          <DarkWebby style={{width: 80}} className="webby" />
-        ) : (
-          <Webby style={{width: 80}} className="webby" />
-        )}
-        <IconButton
-          sx={{
-            ml: 2,
-            width: 50,
-            height: 50,
-            display: 'flex',
-            alignItems: 'baseline',
-          }}
-          size="large"
-          aria-label="display more actions"
-          edge="end"
-          color="inherit">
-          <FadeMenu />
-        </IconButton>
+        <Box sx={{display: 'flex', alignItems: 'center'}}>
+          {theme === 'dark' ? (
+            <DarkWebby style={{width: 80}} className="webby" />
+          ) : (
+            <Webby style={{width: 80}} className="webby" />
+          )}
+          <IconButton
+            sx={{
+              width: 50,
+              height: 50,
+              display: 'flex',
+              alignItems: 'baseline',
+            }}
+            size="large"
+            aria-label="display more actions"
+            edge="end"
+            color="inherit">
+            <FadeMenu />
+          </IconButton>
+        </Box>
       </StyledToolbar>
     </AppBar>
   )
