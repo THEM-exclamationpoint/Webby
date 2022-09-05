@@ -100,6 +100,22 @@ export async function sendNewMessage(uid, groupId, content) {
   }
   catch(err){console.error(err)}
  }
+ 
+ export async function changeGroupName(newName, groupId){
+  try{
+    const q = query(collection(db, 'groups'),where('groupId','==',groupId))
+    const docs = await getDocs(q)
+    let docId
+    docs.forEach(doc => {
+      docId = doc.id
+    })
+    const ref = doc(db,'groups',docId)
+    await updateDoc(ref, {
+      groupname: newName
+    })
+  }
+  catch(err){console.error(err)}
+ }
 
  export async function newGroup(uids, groupname){
   try{
