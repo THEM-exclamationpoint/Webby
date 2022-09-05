@@ -28,7 +28,7 @@ function WebbyRoutes() {
   return (
     <Box sx={{background: 'primary'}} className="content">
       <Routes>
-        <Route exact path="/home" element={user && <Home />} />
+        <Route exact path="/home" element={user ? <Home /> : <LogIn />} />
         <Route exact path="/" element={<LogIn />} />
         <Route exact path="/register" element={<Signup />} />
         <Route exact path="/editprofile" element={user && <EditProfile />} />

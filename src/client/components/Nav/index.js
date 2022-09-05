@@ -4,18 +4,16 @@ import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import MenuIcon from '@mui/icons-material/Menu'
-import {TextField} from '@mui/material'
 import FadeMenu from './UserMenu'
 import TemporaryDrawer from './NavMenu'
-// import './style.css'
+
 import {Link} from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+
 import {setUser} from '../../store/auth/user'
 import {ReactComponent as Webby} from '../../../Spider-light.svg'
 import {ReactComponent as DarkWebby} from '../../../Spider.svg'
-import {local} from 'd3'
 
 const StyledToolbar = styled(Toolbar)(({theme}) => ({
   alignItems: 'center',
@@ -81,7 +79,7 @@ export default function ProminentAppBar() {
               <TemporaryDrawer />
             </IconButton>
 
-            <Typography
+            {/* <Typography
               color="inherit"
               variant="h5"
               noWrap
@@ -93,15 +91,25 @@ export default function ProminentAppBar() {
                 textDecoration: 'none',
               }}>
               WEBBY
-            </Typography>
+            </Typography> */}
+
+            {theme === 'dark' ? (
+              <div>
+                <Link to="/home">
+                  <img src={'/Webby-logotype-light.png'} style={{width: 130}} />
+                </Link>
+                <DarkWebby style={{width: 80}} className="webby" />
+              </div>
+            ) : (
+              <div>
+                <Link to="/home">
+                  <img src={'/Webby-logotype-dark.png'} style={{width: 130}} />
+                </Link>
+                <Webby style={{width: 80}} className="webby" />
+              </div>
+            )}
           </Box>
           <Box>
-            {theme === 'dark' ? (
-              <DarkWebby style={{width: 100}} className="webby" />
-            ) : (
-              <Webby style={{width: 100}} className="webby" />
-            )}
-
             <IconButton
               sx={{
                 ml: 2,
