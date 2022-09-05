@@ -1,7 +1,6 @@
 {
   "name": "webby",
   "version": "0.1.0",
-  "homepage": "https://them-exclamationpoint.github.io/Webby/",
   "private": true,
   "engines": {
     "npm": ">=7.0.0",
