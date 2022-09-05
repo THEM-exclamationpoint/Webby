@@ -482,7 +482,9 @@ const EditProfile = (props) => {
               newEmail.confirm === newEmail.new ? (
                 ''
               ) : (
-                <h6 style={{color: 'red'}}>Emails must match!</h6>
+                <Typography variant="caption" color="error">
+                  Emails must match!
+                </Typography>
               )
             ) : (
               ''
@@ -564,7 +566,9 @@ const EditProfile = (props) => {
               newPassword.confirm === newPassword.new ? (
                 ''
               ) : (
-                <h6 style={{color: 'red'}}>Passwords must match!</h6>
+                <Typography variant="caption" color="error">
+                  Passwords must match!
+                </Typography>
               )
             ) : (
               ''
