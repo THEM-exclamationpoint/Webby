@@ -9,9 +9,11 @@ import Avatar from '@mui/material/Avatar'
 import ListItemButton from '@mui/material/ListItemButton'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+
 import React, {useState} from 'react'
-import {addNewChat} from '../../store/chat/chatUsers'
 import {useDispatch} from 'react-redux'
+
+import {addNewChat} from '../../store/chat/chatUsers'
 
 export const NewChat = ({friends, user}) => {
   let [selected, setSelected] = useState([])
