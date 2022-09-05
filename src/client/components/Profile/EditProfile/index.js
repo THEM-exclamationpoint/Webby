@@ -272,7 +272,10 @@ const EditProfile = (props) => {
             ) : (
               ''
             )}
-            <Button variant={newImage ? 'text' : 'contained'} component="label">
+            <Button
+              aria-label="image upload"
+              variant={newImage ? 'text' : 'contained'}
+              component="label">
               Upload Image
               <input
                 hidden
@@ -301,6 +304,7 @@ const EditProfile = (props) => {
                 <FormControlLabel
                   control={
                     <Switch
+                      aria-label="remote meetup switch"
                       onChange={handleChange}
                       name="remote"
                       checked={userProfile.remote}
@@ -311,6 +315,7 @@ const EditProfile = (props) => {
                 <FormControlLabel
                   control={
                     <Switch
+                      aria-label="local meetup switch"
                       onChange={handleChange}
                       name="local"
                       checked={userProfile.local}
@@ -337,6 +342,7 @@ const EditProfile = (props) => {
                 }}>
                 {navigator.geolocation ? (
                   <Button
+                    aria-label="get location button"
                     onClick={getLocation}
                     variant={newLocation ? 'text' : 'contained'}>
                     GET LOCATION

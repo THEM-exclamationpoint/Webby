@@ -58,6 +58,7 @@ export default function MultiSelectorAuto(props) {
           label={printLabel}
           helperText={helperText}
           value={value}
+          disabled={limitSelection && value.length === +limitSelection}
         />
       )}
     />
