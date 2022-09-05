@@ -11,7 +11,8 @@ import {
   onSnapshot,
   doc,
   updateDoc,
-  arrayUnion
+  arrayUnion,
+  arrayRemove
 } from 'firebase/firestore'
 
 export async function getListOfGroups() {
@@ -101,7 +102,7 @@ export async function sendNewMessage(uid, groupId, content) {
   catch(err){console.error(err)}
  }
  
- export async function changeGroupName(newName, groupId){
+ export async function removeFromGroup(uid, groupId){
   try{
     const q = query(collection(db, 'groups'),where('groupId','==',groupId))
     const docs = await getDocs(q)
@@ -111,7 +112,24 @@ export async function sendNewMessage(uid, groupId, content) {
     })
     const ref = doc(db,'groups',docId)
     await updateDoc(ref, {
-      groupname: newName
+      members: arrayRemove(uid)
+    })
+  }
+  catch(err){console.error(err)}
+ }
+ 
+ export async function changeGroupName(newName, groupId){
+  try{
+    const q = query(collection(db, 'groups'),where('groupId','==',groupId))
+    const docs = await getDocs(q)
+    let docId
+    docs.forEach(doc => {
+      docId = doc.id
+    })
+    console.log(newName)
+    const ref = doc(db,'groups',docId)
+    await updateDoc(ref, {
+      groupname: newName,
     })
   }
   catch(err){console.error(err)}

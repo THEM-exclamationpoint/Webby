@@ -68,12 +68,12 @@ const UserProfile = (props) => {
     dispatch(setUser())
     dispatch(getUserProfile(uid))
     dispatch(getUserInterests(uid))
-    dispatch(getJunctions(uid))
+    dispatch(getJunctions(currentUser.uid))
   }, [])
 
   useEffect(() => {
     friendJunctions.forEach((friend) => {
-      if (friend.friends.includes(currentUser.uid)) {
+      if (friend.friends.includes(uid)) {
         setIsFriend(true)
         setJunctionId(friend.id)
       }

@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {Link} from 'react-router-dom'
+import {Link, useRoutes} from 'react-router-dom'
 
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
@@ -13,63 +13,45 @@ import ListItemText from '@mui/material/ListItemText'
 import Avatar from '@mui/material/Avatar'
 
 import {getFriends} from '../../store/friends'
-import {addChatUsers} from '../../store/chat/chatUsers'
-import { editGroupName } from '../../store/chat/chatUsers'
+import {addChatUsers, removeChatUsers} from '../../store/chat/chatUsers'
+import { setUsers } from '../../store/auth/users'
 
-export const GroupProfile = ({group, user, users}) => {
+export const GroupProfile = ({group, user}) => {
   let dispatch = useDispatch()
   let friends = useSelector((state) => state.friends)
-  let [name, setName] = useState(group.groupname)
-  let [enter, setEnter] = useState(false)
+  let users = useSelector((state) => state.users)
   let [openAdd, setOpenAdd] = useState(false)
-  let [members, setMembers] = useState(users)
+let [members, setMembers] = useState(null)
 
   useEffect(() => {
     dispatch(getFriends(user.uid))
+    dispatch(setUsers(group.members))
+     if(users.length !== 0){
+    setMembers(users)}
   }, [])
-
-  useEffect(() => {
-    setMembers(users)
-  }, [group.groupId])
-
-  function handleChange(e) {
-    setName(e.target.value)
-  }
 
   function handleSelect(friend) {
     dispatch(addChatUsers(friend.uid, user.uid, group.groupId))
-    setMembers(...users, friend)
+    setMembers([...members,friend])
   }
-function handleNewName(){
-    editGroupName(name,group.groupId,user.uid)
-}
+
+  function handleRemoveUser(uid){
+    dispatch(removeChatUsers(uid,user.uid,group.groupId))
+    setMembers(members.filter(member => member.uid !== uid))
+  }
 
   return (
-    <div className="group-profile-container">
-      {enter ? (
-        <div>
-        <TextField
-          autoFocus
-          margin="dense"
-          value={name}
-          type="text"
-          variant="standard"
-          onChange={handleChange}
-        />
-        <Button onClick={handleNewName}>Change name</Button>
-        </div>
-      ) : (
+    <div className="group-profile-container" align='center'>
         <Typography variant="h5">{group.groupname}</Typography>
-      )}
-      <small>
-        <Button onClick={()=> setEnter(true)}>Change group name</Button>
-      </small>
       <List>
-        {members.map((user) => {
-          ;<ListItemButton key={user.uid}>
-            <Avatar alt={user.name} src={user.profilePicture} />
-            {user.name}
-          </ListItemButton>
+        {members && members.map((curuser) => {
+          return (
+            <ListItemButton key={curuser.uid}>
+              <Avatar alt={curuser.name} src={curuser.profilePicture} sx={{margin:'5px'}}/>
+              {curuser.name}
+              {curuser.uid !== user.uid && <Button onClick={()=>handleRemoveUser(curuser.uid)}>X</Button>}
+            </ListItemButton>
+          )
         })}
       </List>
       <Button onClick={() => setOpenAdd(true)}>Add Member</Button>
@@ -77,7 +59,7 @@ function handleNewName(){
         <div>
           <List>
             {friends.map((friend) => {
-              if (!members.includes(friend.uid)) {
+              if (!group.members.includes(friend.uid)) {
                 return (
                   <ListItemButton
                     key={friend.uid}

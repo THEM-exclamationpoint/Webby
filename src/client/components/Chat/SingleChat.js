@@ -19,7 +19,7 @@ import {setUser} from '../../store/auth/user'
 import {sentMessage} from '../../store/chat/sendMessage'
 import {getMessagesWithGroup} from '../../../firebase/chat'
 import {setUsers} from '../../store/auth/users'
-
+import {editGroupName} from '../../store/chat/chatUsers'
 import {GroupProfile} from './Group'
 
 const SingleChat = ({group}) => {
@@ -30,18 +30,20 @@ const SingleChat = ({group}) => {
   let [message, setMessage] = useState('')
   let [messages, setMessages] = useState([])
   let users = useSelector((state) => state.users)
-  // let [menuOpen, setMenuOpen] = useState(false)
-  // let [menuOpen2, setMenuOpen2] = useState(false)
-  // let [anchorEl, setAnchorEl] = useState(null)
-  // let [anchorEl2, setAnchorEl2] = useState(null)
   let [isGroup, setIsGroup] = useState(null)
-
-  let[collapse,setCollapse] = useState(false)
+  let [enter, setEnter] = useState(false)
+  let [collapse, setCollapse] = useState(false)
+  let [name, setName] = useState(group.groupname)
 
   function clickMenu() {
     setCollapse(!collapse)
   }
-  
+
+  function handleNewName() {
+    dispatch(editGroupName(name, group.groupId, user.uid))
+    setEnter(false)
+  }
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({behavior: 'smooth'})
@@ -72,15 +74,46 @@ const SingleChat = ({group}) => {
   function handleChange(e) {
     setMessage(e.target.value)
   }
+  function handleNameChange(e) {
+    setName(e.target.value)
+  }
 
   return (
     <Grid onKeyPress={isEnter}>
       <Grid container>
         <Grid item={true} xs={12}>
           {isGroup ? (
-            <Typography variant="h5" className="header-message" align="center" onClick={clickMenu}>
-              {group.groupname}
-            </Typography>
+            enter ? (
+              <div>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  value={name}
+                  type="text"
+                  align="center"
+                  variant="standard"
+                  onChange={handleNameChange}
+                />
+                <Button onClick={handleNewName}>Change name</Button>
+              </div>
+            ) : (
+              <div align="center">
+                <Button onClick={clickMenu}>
+                  <Typography
+                    variant="h5"
+                    className="header-message"
+                    align="center">
+                    {name}
+                  </Typography>
+                </Button>
+                <Button
+                  onClick={() => setEnter(true)}
+                  align="center"
+                  size="small">
+                  Change group name
+                </Button>
+              </div>
+            )
           ) : (
             <div>
               <Typography
@@ -150,8 +183,12 @@ const SingleChat = ({group}) => {
           </Fab>
         </Grid>
       </Grid>
-      <Drawer sx={{zIndex: 99999}} anchor="right" open={collapse}  ModalProps={{ onBackdropClick: clickMenu }}>
-        <GroupProfile group={group} users={users} user={user}/>
+      <Drawer
+        sx={{zIndex: 99999}}
+        anchor="right"
+        open={collapse}
+        ModalProps={{onBackdropClick: clickMenu}}>
+        <GroupProfile group={group} users={users} user={user} />
       </Drawer>
     </Grid>
   )
