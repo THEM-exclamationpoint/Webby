@@ -8,27 +8,6 @@ import {useDispatch, useSelector} from 'react-redux'
 import {Paper} from '@mui/material'
 import './style.css'
 
-const stylePalette = {
-  dark: {
-    backgroundColor: '#282C36',
-    halo: '#282C36',
-    currentUserLabelColor: '#a9a9eb',
-    InterestsLabelColor: '#51d7e8',
-    otherUsersLabelColor: '#a9a9eb',
-    nodeFill: '#A799B7',
-    stroke: '#A799B7', // stroke color for web
-  },
-  light: {
-    backgroundColor: '#FCF7F8',
-    halo: '#FCF7F8',
-    currentUserLabelColor: '#2C2C54',
-    InterestsLabelColor: '#028090',
-    otherUsersLabelColor: '#2C2C54',
-    nodeFill: '#A799B7',
-    stroke: '#A799B7', // stroke color for web
-  },
-}
-
 // Copyright 2022 Observable, Inc.
 // Released under the ISC license.
 // https://observablehq.com/@d3/radial-tree
@@ -67,6 +46,27 @@ function Tree(
     clickHandler,
   } = {}
 ) {
+  const stylePalette = {
+    dark: {
+      backgroundColor: '#282C36',
+      halo: '#282C36',
+      currentUserLabelColor: '#a9a9eb',
+      InterestsLabelColor: '#51d7e8',
+      otherUsersLabelColor: '#a9a9eb',
+      nodeFill: '#A799B7',
+      stroke: '#A799B7', // stroke color for web
+    },
+    light: {
+      backgroundColor: '#FCF7F8',
+      halo: '#FCF7F8',
+      currentUserLabelColor: '#2C2C54',
+      InterestsLabelColor: '#028090',
+      otherUsersLabelColor: '#2C2C54',
+      nodeFill: '#A799B7',
+      stroke: '#A799B7', // stroke color for web
+    },
+  }
+
   const palette = stylePalette[theme]
 
   svg.html('') //clears the svg so that duplicates are not made on re-render
