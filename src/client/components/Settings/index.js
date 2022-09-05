@@ -2,7 +2,7 @@ import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {useState} from 'react'
 import Switch from '@mui/material/Switch'
-import {Divider} from '@mui/material'
+import {Paper, Box, Divider, Typography, Button} from '@mui/material'
 import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -22,34 +22,55 @@ const Settings = (props) => {
   }
 
   return (
-    <div>
-      Settings:
+    <Paper sx={{m: 1, p: 1, gap: 1, display: 'flex', flexDirection: 'column'}}>
+      <Typography variant="h4">Settings:</Typography>
       <Divider />
-      App Theme:
-      <br />
-      Light/Dark:
-      <Switch
-        color="primary"
-        onChange={clickTheme}
-        checked={settings.theme === darkMode}
+      <Typography variant="h5">App Theme:</Typography>
+      <FormControlLabel
+        value="light-dark"
+        label="Light/Dark Mode"
+        control={
+          <Switch
+            color="primary"
+            onChange={clickTheme}
+            checked={settings.theme === darkMode}
+          />
+        }
       />
-      <br />
-      High Contrast: <Switch color="primary" />
+      <FormControlLabel
+        value="high-contrast"
+        label="High Contrast"
+        control={<Switch color="primary" />}
+      />
       <Divider />
-      Notifications:
-      <br />
-      Friend Requests: <Switch color="primary" defaultChecked />
-      <br />
-      Messages: <Switch color="primary" defaultChecked />
-      <br />
-      Group Messages: <Switch color="primary" defaultChecked />
-      <br />
-      Time To Update!: <Switch color="primary" defaultChecked />
-      <br />
-      New Features: <Switch color="primary" defaultChecked />
+      <Typography variant="h5">Notifications:</Typography>
+      <FormControlLabel
+        value="friend-request-notifications"
+        label="Friend Requests"
+        control={<Switch color="primary" defaultChecked />}
+      />
+      <FormControlLabel
+        value="message-notifications"
+        label="Messages"
+        control={<Switch color="primary" defaultChecked />}
+      />{' '}
+      <FormControlLabel
+        value="group-message-notifications"
+        label="Group Messages"
+        control={<Switch color="primary" defaultChecked />}
+      />{' '}
+      <FormControlLabel
+        value="update-notifications"
+        label="Time To Update!"
+        control={<Switch color="primary" defaultChecked />}
+      />{' '}
+      <FormControlLabel
+        value="new-feature-notifications"
+        label="New Feature"
+        control={<Switch color="primary" defaultChecked />}
+      />
       <Divider />
-      Accessibility:
-      <br />
+      <Typography variant="h5">Accessibility:</Typography>
       <FormControl>
         <FormLabel id="demo-radio-buttons-group-label">
           Colorblind Mode:
@@ -75,15 +96,22 @@ const Settings = (props) => {
           />
         </RadioGroup>
       </FormControl>
-      <br />
-      Large Text: <Switch color="primary" />
-      <br />
-      Screen Reader Safe: <Switch color="primary" />
+      <FormControlLabel
+        value="large-text"
+        label="Large Text"
+        control={<Switch color="primary" />}
+      />
+      <FormControlLabel
+        value="screen-reader-safe"
+        label="Screen Reader Safe"
+        control={<Switch color="primary" />}
+      />
       <Divider />
-      Blocked Users {/* this should link to its own page */}
-      <br />
-      Delete Account
-    </div>
+      <Box sx={{m: 2, gap: 1, display: 'flex', flexDirection: 'column'}}>
+        <Button color="error">Blocked Users</Button>
+        <Button color="error">Delete Account</Button>
+      </Box>
+    </Paper>
   )
 }
 

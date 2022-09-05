@@ -57,7 +57,7 @@ export class User {
     this.location =
       user && user.location ? user.location : {latitude: null, longitude: null}
     this.zipCode = user && user.zipCode ? user.zipCode : ''
-    this.country = user && user.country ? user.country : null
+    this.country = user && user.country ? user.country : ''
     this.profilePicture = user && user.profilePicture ? user.profilePicture : ''
     this.range = user && user.range ? user.range : 20
     this.interests = user && user.interests ? [...user.interests] : []
@@ -102,11 +102,12 @@ export class User {
 
   async updateMyProfile() {
     try {
+      if (this.location && !this.location.latitude) await this.codeLocation()
+
       // update user entry
       let user = auth.currentUser
       if (!user || user.uid !== this.uid) return
       let uq = query(collection(db, 'users'), where('uid', '==', this.uid))
-      await this.codeLocation()
       const udocs = await getDocs(uq)
       let udocId
       udocs.forEach((doc) => {
