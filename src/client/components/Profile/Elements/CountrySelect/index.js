@@ -15,6 +15,7 @@ export default function CountrySelect(props) {
 
   return (
     <Autocomplete
+      aria-label="country selector"
       id="country-select"
       value={country}
       options={countryNames}

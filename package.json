@@ -2,6 +2,7 @@
   "name": "webby",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://webby-social.netlify.app/",
   "engines": {
     "npm": ">=7.0.0",
     "node": "16.x"

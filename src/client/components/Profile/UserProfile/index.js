@@ -129,8 +129,8 @@ const UserProfile = (props) => {
             alt={user.name}
             src={user.profilePicture}
             sx={{
-              width: 150,
-              height: 150,
+              width: 200,
+              height: 200,
             }}
           />
           <Typography variant="h4" align="center">
