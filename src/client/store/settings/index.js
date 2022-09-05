@@ -8,7 +8,6 @@ const TOGGLE_THEME = 'TOGGLE_THEME'
 //ACTION CREATOR
 
 export const toggleTheme = () => {
-    console.log('BUSSY')
     return {
         type: TOGGLE_THEME
     }
