@@ -44,8 +44,6 @@ const EditProfile = (props) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const {firstVisit = false} = props
-
   let user = useSelector((state) => state.user)
   let myInterests = useSelector((state) => state.interests)
 
@@ -484,7 +482,9 @@ const EditProfile = (props) => {
               newEmail.confirm === newEmail.new ? (
                 ''
               ) : (
-                <h6 style={{color: 'red'}}>Emails must match!</h6>
+                <Typography variant="caption" color="error">
+                  Emails must match!
+                </Typography>
               )
             ) : (
               ''
@@ -501,6 +501,7 @@ const EditProfile = (props) => {
             <Typography variant="h5">Change Password</Typography>
             <InputLabel htmlFor="newPassword">New Password</InputLabel>
             <OutlinedInput
+              color="primary"
               autoComplete={'off'}
               name="newPassword"
               id="newPassword"
@@ -510,6 +511,7 @@ const EditProfile = (props) => {
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
+                    color="primary"
                     aria-label="toggle new password visibility"
                     onClick={() => clickShowPassword('new')}
                     onMouseDown={mouseDownShowPassword}
@@ -541,6 +543,7 @@ const EditProfile = (props) => {
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
+                    color="primary"
                     aria-label="toggle confirm password visibility"
                     onClick={() => clickShowPassword('confirm')}
                     onMouseDown={mouseDownShowPassword}
@@ -563,7 +566,9 @@ const EditProfile = (props) => {
               newPassword.confirm === newPassword.new ? (
                 ''
               ) : (
-                <h6 style={{color: 'red'}}>Passwords must match!</h6>
+                <Typography variant="caption" color="error">
+                  Passwords must match!
+                </Typography>
               )
             ) : (
               ''

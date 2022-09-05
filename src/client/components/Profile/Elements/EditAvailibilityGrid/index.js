@@ -66,7 +66,7 @@ const EditAvailabilityGrid = (props) => {
               flexDirection: 'column',
             }}>
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
+              expandIcon={<ExpandMoreIcon color="primary" />}
               aria-controls={`${day.day}-content`}
               id={`${day.day}-header`}
               sx={{
@@ -98,7 +98,7 @@ const EditAvailabilityGrid = (props) => {
                   },
                 }}>
                 <Box>
-                  <WbSunny fontSize="small" />
+                  <WbSunny fontSize="small" color="primary" />
                   {day.am === 'available' ? (
                     <Check color="success" fontSize="small" />
                   ) : day.am === 'notice' ? (
@@ -108,7 +108,7 @@ const EditAvailabilityGrid = (props) => {
                   )}
                 </Box>
                 <Box>
-                  <NightsStay fontSize="small" />
+                  <NightsStay fontSize="small" color="primary" />
                   {day.pm === 'available' ? (
                     <Check color="success" fontSize="small" />
                   ) : day.pm === 'notice' ? (

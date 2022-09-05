@@ -7,11 +7,6 @@
 
 .homepage h1 {
     font-size:medium;
-       color:#2C2C54
-}
-.homepage button {
-    background-color: #ddddff;
-    color: black;
 }
 .homepage small {
     opacity: 50%;

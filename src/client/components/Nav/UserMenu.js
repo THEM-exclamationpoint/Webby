@@ -35,6 +35,12 @@ export default function FadeMenu() {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  const goToEditor = () => {
+    setAnchorEl(null)
+    navigate('./editprofile')
+  }
+
   const handleLogout = () => {
     dispatch(logOutUser())
     setIsLoggedIn(false)
@@ -62,9 +68,7 @@ export default function FadeMenu() {
         sx={{zIndex: 99999}}>
         {isLoggedIn ? (
           <div>
-            <Link to="/editprofile">
-              <MenuItem onClick={handleClose}>Edit my profile</MenuItem>
-            </Link>
+            <MenuItem onClick={goToEditor}>Edit my profile</MenuItem>
 
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </div>

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {Link} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import Divider from '@mui/material/Divider'
@@ -25,6 +25,7 @@ import {getChatUsers} from '../../store/chat/chatUsers'
 import {NewChat} from './NewChat'
 
 const Chat = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   let [collapse, setCollapse] = useState(true)
   let [modalOpen, setModalOpen] = useState(false)
@@ -54,13 +55,17 @@ const Chat = () => {
   function handleChange(e) {
     setSearch(e.target.value)
   }
+  function toMyProfile() {
+    navigate(`../users/${user.uid}`)
+  }
+
   const filteredData = groups.filter((group) => {
     let name =
-                typeof group.groupname === 'string'
-                  ? group.groupname
-                  : group.groupname[0] === user.name
-                  ? group.groupname[1]
-                  : group.groupname[0]
+      typeof group.groupname === 'string'
+        ? group.groupname
+        : group.groupname[0] === user.name
+        ? group.groupname[1]
+        : group.groupname[0]
     let input = search.toLowerCase()
     if (input === '') {
       return group
@@ -85,14 +90,12 @@ const Chat = () => {
           <Grid>
             <ArrowBackIosIcon onClick={clickMenu} />
             <List className="user">
-              <Link to={`/users/${user.uid}`}>
-                <ListItem button key="user">
-                  <ListItemIcon>
-                    <Avatar alt="User" src={user.profilePicture} />
-                  </ListItemIcon>
-                  <ListItemText primary={user.name}></ListItemText>
-                </ListItem>
-              </Link>
+              <ListItem button key="user" onClick={toMyProfile}>
+                <ListItemIcon>
+                  <Avatar alt="User" src={user.profilePicture} />
+                </ListItemIcon>
+                <ListItemText primary={user.name}></ListItemText>
+              </ListItem>
             </List>
             <Divider />
             <Grid item={true} xs={12} style={{padding: '10px'}}>
