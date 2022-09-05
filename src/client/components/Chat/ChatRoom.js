@@ -34,14 +34,16 @@ const Chat = () => {
   let user = useSelector((state) => state.user)
   let groups = useSelector((state) => state.chatUsers)
   let friends = useSelector((state) => state.friends)
+let [selectedGroup, setSelectedGroup] = useState(null)
 
   useEffect(() => {
     dispatch(setUser())
     dispatch(getChatUsers())
     dispatch(getFriends(user.uid))
+    setSelectedGroup(groups[0])
   }, [])
 
-  let [selectedGroup, setSelectedGroup] = useState(groups[0])
+  
 
   function clickMenu() {
     setCollapse(!collapse)
