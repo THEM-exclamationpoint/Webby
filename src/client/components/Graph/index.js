@@ -14,6 +14,7 @@ import './style.css'
 function Tree(
   data,
   {
+    theme = 'light', //dark or light theme, for styling
     children, // if hierarchical data, given a d in data, returns its children
     tree = d3.tree, // layout algorithm (typically d3.tree or d3.cluster)
     separation = tree === d3.tree
@@ -36,20 +37,38 @@ function Tree(
       height - marginTop - marginBottom
     ) / 2, // outer radius
     r = 3, // radius of nodes
-    padding = 1, // horizontal padding for first and last column
-    fill = '#A799B7', // fill for nodes
-    fillOpacity, // fill opacity for nodes
-    stroke = '#A799B7', // stroke for links
     strokeWidth = 2, // stroke width for links
     strokeOpacity = 0.4, // stroke opacity for links
     strokeLinejoin, // stroke line join for links
     strokeLinecap, // stroke line cap for links
-    halo = '#fcf7f8', // color of label halo
     haloWidth = 10, // padding around the labels
     svg = d3.create('svg'),
     clickHandler,
   } = {}
 ) {
+  const stylePalette = {
+    dark: {
+      backgroundColor: '#282C36',
+      halo: '#282C36',
+      currentUserLabelColor: '#a9a9eb',
+      InterestsLabelColor: '#51d7e8',
+      otherUsersLabelColor: '#a9a9eb',
+      nodeFill: '#A799B7',
+      stroke: '#A799B7', // stroke color for web
+    },
+    light: {
+      backgroundColor: '#FCF7F8',
+      halo: '#FCF7F8',
+      currentUserLabelColor: '#2C2C54',
+      InterestsLabelColor: '#028090',
+      otherUsersLabelColor: '#2C2C54',
+      nodeFill: '#A799B7',
+      stroke: '#A799B7', // stroke color for web
+    },
+  }
+
+  const palette = stylePalette[theme]
+
   svg.html('') //clears the svg so that duplicates are not made on re-render
 
   const root = d3.hierarchy(data, children)
@@ -70,15 +89,18 @@ function Tree(
     .attr('viewBox', [-marginLeft - radius, -marginTop - radius, width, height])
     .attr('width', width)
     .attr('height', height)
-    .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
+    .attr(
+      'style',
+      `background-color : ${palette.backgroundColor}; max-width: 100%; height: auto; height: intrinsic;`
+    )
     .attr('font-family', 'sans-serif')
     .attr('font-size', 20)
-    .attr('fill', '#028090') //colors the text
+    .attr('fill', palette.otherUsersLabelColor) ///default text color
 
   svg
     .append('g') //appends a g element to the svg. g element is used to group svg shapes together
     .attr('fill', 'none') //prevents paths from filling in solid
-    .attr('stroke', stroke)
+    .attr('stroke', palette.stroke)
     .attr('stroke-opacity', strokeOpacity)
     .attr('stroke-linecap', strokeLinecap)
     .attr('stroke-linejoin', strokeLinejoin)
@@ -106,11 +128,11 @@ function Tree(
       'transform',
       (d) => `rotate(${(d.x * 180) / Math.PI - 90}) translate(${d.y},0)`
     )
-    .attr('fill', '#028090') //by adding this line, links, whether or not clicked, stay the same color (#028090) as the rest of the test
+    .attr('fill', palette.InterestsLabelColor) //by adding this line, links, whether or not clicked, stay the same color as the rest of the test
 
   node
     .append('circle') //adds a circle at each node
-    .attr('fill', (d) => (d.children ? stroke : fill))
+    .attr('fill', (d) => (d.children ? palette.stroke : palette.fill))
     .attr('r', r)
 
   //interactivity
@@ -135,7 +157,7 @@ function Tree(
         d.x < Math.PI === !d.children ? 'start' : 'end'
       )
       .attr('paint-order', 'stroke')
-      .attr('stroke', halo)
+      .attr('stroke', palette.halo)
       .attr('stroke-width', haloWidth)
       .text((d, i) => L[i])
   }
@@ -145,7 +167,7 @@ function Tree(
     .selectAll('g')
     .selectAll('a')
     .filter((node) => node.data.name === L[0])
-    .attr('fill', '#2C2C54')
+    .attr('fill', palette.currentUserLabelColor)
 
   //selecting other users
   svg
@@ -158,7 +180,7 @@ function Tree(
     .selectAll('g')
     .selectAll('a')
     .filter((node) => node.depth === 2)
-    .attr('fill', '#2C2C54')
+    .attr('fill', palette.otherUsersLabelColor)
 
   return svg.node()
 }
@@ -168,6 +190,7 @@ function Graph() {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
   const graphData = useSelector((state) => state.graphData)
+  let theme = localStorage.getItem('theme')
 
   useEffect(() => {
     dispatch(setUser())
@@ -181,6 +204,7 @@ function Graph() {
 
   useEffect(() => {
     Tree(graphData, {
+      theme: theme,
       screenReader: true,
       label: (d) => d.name,
       title: (d) => {
@@ -188,9 +212,6 @@ function Graph() {
           //checks to see if a node is another user (having no children), and if so, make a hover message over link to profile
           return `View ${d.name}'s profile`
       },
-      // link: (d, n) => {
-      //   if (n.depth === 2) return `/users/${d.uid}`
-      // },
       clickHandler: (e, d) => {
         nav(`../users/${d.uid}`)
       },
@@ -203,7 +224,9 @@ function Graph() {
 
   return (
     <Paper sx={{m: 1, p: 1}}>
-      <div className="graph-wrapper">
+      <div
+        className="graph-wrapper"
+        style={{display: 'flex', justifyContent: 'center'}}>
         <svg className="graph" ref={web}></svg>
       </div>{' '}
     </Paper>

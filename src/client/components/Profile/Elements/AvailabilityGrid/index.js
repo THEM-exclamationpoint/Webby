@@ -1,5 +1,5 @@
 import React from 'react'
-import {Grid, Box, Card} from '@mui/material'
+import {Grid, Box, Card, Typography} from '@mui/material'
 import {
   Event,
   NotInterested,
@@ -14,59 +14,57 @@ const Item = styled(Card)(({theme}) => ({
   display: 'flex',
   flexDirection: 'column',
   textAlign: 'center',
-  color: theme.palette.text.secondary,
+  color: theme.palette.text.primary,
 }))
 
 const AvailabilityGrid = (props) => {
   const {availability} = props
   return (
-    <div className="availability-grid">
-      <Grid
-        container
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'space-evenly',
-          width: '100%',
-        }}>
-        {availability &&
-          availability.map((day) => {
-            return (
-              <Item
-                key={day.day}
-                sx={{
-                  p: 0.2,
-                  ml: 0.2,
-                  mr: 0.2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'space-evenly',
+        m: 0,
+      }}>
+      {availability &&
+        availability.map((day) => {
+          return (
+            <Item
+              elevation={3}
+              key={day.day}
+              sx={{
+                p: 0.22,
+                ml: 0.22,
+                mr: 0.22,
+              }}>
+              <Typography variant="caption">
                 {day.day[0].toUpperCase() + day.day[1].toLowerCase()}
-                <div>
-                  <WbSunny fontSize="small" />
-                  {day.am === 'available' ? (
-                    <Check color="success" fontSize="small" />
-                  ) : day.am === 'notice' ? (
-                    <Event color="warning" fontSize="small" />
-                  ) : (
-                    <NotInterested color="error" fontSize="small" />
-                  )}
-                </div>
-                <div>
-                  <NightsStay fontSize="small" />
-                  {day.pm === 'available' ? (
-                    <Check color="success" fontSize="small" />
-                  ) : day.pm === 'notice' ? (
-                    <Event color="warning" fontSize="small" />
-                  ) : (
-                    <NotInterested color="error" fontSize="small" />
-                  )}
-                </div>
-              </Item>
-            )
-          })}
-      </Grid>
-    </div>
+              </Typography>
+              <Box>
+                <WbSunny fontSize="small" color="primary" />
+                {day.am === 'available' ? (
+                  <Check color="success" fontSize="small" />
+                ) : day.am === 'notice' ? (
+                  <Event color="warning" fontSize="small" />
+                ) : (
+                  <NotInterested color="error" fontSize="small" />
+                )}
+              </Box>
+              <Box>
+                <NightsStay fontSize="small" color="primary" />
+                {day.pm === 'available' ? (
+                  <Check color="success" fontSize="small" />
+                ) : day.pm === 'notice' ? (
+                  <Event color="warning" fontSize="small" />
+                ) : (
+                  <NotInterested color="error" fontSize="small" />
+                )}
+              </Box>
+            </Item>
+          )
+        })}
+    </Box>
   )
 }
 

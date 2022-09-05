@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
@@ -8,7 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import React, {useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {setAllUsers} from '../../store/auth/users'
@@ -21,6 +22,7 @@ export default function TemporaryDrawer() {
     right: false,
   })
   let dispatch = useDispatch()
+  let nav = useNavigate()
   let users = useSelector((state) => state.users)
   let [searched, setSearched] = useState(false)
   const toggleDrawer = (anchor, open) => (event) => {
@@ -80,26 +82,34 @@ export default function TemporaryDrawer() {
             variant="outlined"
             value={search}
           />
-          <IconButton onClick={onSearch}>
+          <IconButton onClick={onSearch} color="primary">
             {' '}
             <PersonSearchOutlinedIcon />
           </IconButton>
         </ListItem>
         <ListItem>
-          {searched && (
-            <List className="searched-user">
-              {filteredData.map((user) => {
-                return (
-                  <Link
-                    to={`/users/${user.uid}`}
-                    key={user.uid}
-                    onClick={toggleDrawer(anchor, false)}>
-                    <ListItemButton>{user.name}</ListItemButton>
-                  </Link>
-                )
-              })}
-            </List>
-          )}
+          <Box>
+            {searched && (
+              <List
+                className="searched-user"
+                sx={{m: 0, display: 'flex', flexDirection: 'column'}}>
+                {filteredData.map((user) => {
+                  return (
+                    <ListItemButton
+                      sx={{m: 0}}
+                      color="primary"
+                      key={user.uid}
+                      onClick={() => {
+                        toggleDrawer(anchor, false)
+                        nav(`./users/${user.uid}`)
+                      }}>
+                      {user.name}
+                    </ListItemButton>
+                  )
+                })}
+              </List>
+            )}
+          </Box>
         </ListItem>
       </List>
     </Box>

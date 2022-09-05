@@ -7,9 +7,8 @@ import ListItemText from '@mui/material/ListItemText'
 import Fab from '@mui/material/Fab'
 import SendIcon from '@mui/icons-material/Send'
 import Typography from '@mui/material/Typography'
-import MenuItem from '@mui/material/MenuItem'
-import Menu from '@mui/material/Menu'
 import Button from '@mui/material/Button'
+import Drawer from '@mui/material/Drawer'
 
 import React, {useState, useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
@@ -18,24 +17,30 @@ import {setUser} from '../../store/auth/user'
 import {sentMessage} from '../../store/chat/sendMessage'
 import {getMessagesWithGroup} from '../../../firebase/chat'
 import {setUsers} from '../../store/auth/users'
-import {getFriends} from '../../store/friends'
-import {addChatUsers} from '../../store/chat/chatUsers'
+import {editGroupName} from '../../store/chat/chatUsers'
+import {GroupProfile} from './Group'
 
 const SingleChat = ({group}) => {
   const dispatch = useDispatch()
   let user = useSelector((state) => state.user)
-  let users = useSelector((state) => state.users)
-  let friends = useSelector((state) => state.friends)
-
   const scrollRef = useRef(null)
 
   let [message, setMessage] = useState('')
   let [messages, setMessages] = useState([])
+  let users = useSelector((state) => state.users)
+  let [isGroup, setIsGroup] = useState(null)
+  let [enter, setEnter] = useState(false)
+  let [collapse, setCollapse] = useState(false)
+  let [name, setName] = useState(group.groupname)
 
-  let [menuOpen, setMenuOpen] = useState(false)
-  let [menuOpen2, setMenuOpen2] = useState(false)
-  let [anchorEl, setAnchorEl] = useState(null)
-  let [anchorEl2, setAnchorEl2] = useState(null)
+  function clickMenu() {
+    setCollapse(!collapse)
+  }
+
+  function handleNewName() {
+    dispatch(editGroupName(name, group.groupId, user.uid))
+    setEnter(false)
+  }
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -45,10 +50,10 @@ const SingleChat = ({group}) => {
 
   useEffect(() => {
     dispatch(setUser())
-    dispatch(getFriends(user.uid))
   }, [])
 
   useEffect(() => {
+    typeof group.groupname === 'string' ? setIsGroup(true) : setIsGroup(false)
     dispatch(setUsers(group.members))
     const unsubscribe = getMessagesWithGroup(group.groupId, setMessages)
     return unsubscribe
@@ -67,85 +72,64 @@ const SingleChat = ({group}) => {
   function handleChange(e) {
     setMessage(e.target.value)
   }
-  function handleSelect(uid) {
-    dispatch(addChatUsers(uid, user.uid, group.groupId))
-  }
-  function toggleMenu(e) {
-    setMenuOpen(true)
-    setAnchorEl(e.target)
-  }
-  let closeMenu = () => {
-    setMenuOpen(false)
-    setAnchorEl(null)
+  function handleNameChange(e) {
+    setName(e.target.value)
   }
 
-  function toggleMenu2(e) {
-    setMenuOpen2(true)
-    setAnchorEl2(e.target)
-  }
-  let closeMenu2 = () => {
-    setMenuOpen2(false)
-    setAnchorEl2(null)
-  }
   return (
-    <Grid onKeyPress={isEnter}>
+    <Grid onKeyPress={isEnter} sx={{width: '100%'}}>
       <Grid container>
         <Grid item={true} xs={12}>
-          <Typography variant="h5" className="header-message" align="center">
-            {typeof group.groupname === 'string'
-              ? group.groupname
-              : group.groupname[0] === user.name
-              ? group.groupname[1]
-              : group.groupname[0]}
-          </Typography>
-          {!group.isDm && (
-            <div>
-              {' '}
-              <React.Fragment>
-                <Button onClick={toggleMenu2}>Add Member</Button>
-                <Menu
-                  open={menuOpen2}
-                  onClose={closeMenu2}
-                  anchorEl={anchorEl2}>
-                  {friends.map((friend) => {
-                    if (!group.members.includes(friend.uid)) {
-                      return (
-                        <MenuItem
-                          value={friend}
-                          key={friend.uid}
-                          onClick={() => handleSelect(friend.uid)}>
-                          {friend.name}
-                        </MenuItem>
-                      )
-                    }
-                  })}
-                </Menu>
-              </React.Fragment>
-              <React.Fragment>
-                <Button onClick={toggleMenu} align="right">
-                  Members
+          {isGroup ? (
+            enter ? (
+              <div>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  value={name}
+                  type="text"
+                  align="center"
+                  variant="standard"
+                  onChange={handleNameChange}
+                />
+                <Button onClick={handleNewName}>Change name</Button>
+              </div>
+            ) : (
+              <div align="center">
+                <Button onClick={clickMenu}>
+                  <Typography
+                    variant="h5"
+                    className="header-message"
+                    align="center">
+                    {name}
+                  </Typography>
                 </Button>
-                <Menu open={menuOpen} onClose={closeMenu} anchorEl={anchorEl}>
-                  {users &&
-                    users.map((user) => {
-                      {
-                        return (
-                          <MenuItem value={user} key={user.uid}>
-                            {user.name}
-                          </MenuItem>
-                        )
-                      }
-                    })}
-                </Menu>
-              </React.Fragment>
+                <Button
+                  onClick={() => setEnter(true)}
+                  align="center"
+                  size="small">
+                  Change group name
+                </Button>
+              </div>
+            )
+          ) : (
+            <div>
+              <Typography
+                variant="h5"
+                className="header-message"
+                align="center">
+                {group.groupname[0] === user.name
+                  ? group.groupname[1]
+                  : group.groupname[0]}
+              </Typography>
             </div>
           )}
         </Grid>
       </Grid>
       <List
-        height="70vh"
         style={{
-          maxHeight: 300,
+          width: '100%',
+          maxHeight: '400px',
           overflow: 'auto',
         }}>
         {messages.map((message, i) => {
@@ -158,8 +142,8 @@ const SingleChat = ({group}) => {
           let splitted = String(date).split(' ').slice(0, 5).join(' ')
           return (
             <ListItem key={i} ref={scrollRef}>
-              <Grid container>
-                <Grid item={true} xs={12}>
+              <Grid container sx={{display: 'flex', flexDirection: 'column'}}>
+                <Grid item={true}>
                   <ListItemText
                     align={message.fromUser !== user.uid ? 'left' : 'right'}
                     secondary={from && from.name}></ListItemText>
@@ -167,7 +151,7 @@ const SingleChat = ({group}) => {
                     align={message.fromUser !== user.uid ? 'left' : 'right'}
                     primary={message.content}></ListItemText>
                 </Grid>
-                <Grid item={true} xs={12}>
+                <Grid item={true}>
                   <ListItemText
                     align={message.fromUser !== user.uid ? 'left' : 'right'}
                     secondary={splitted}></ListItemText>
@@ -178,25 +162,34 @@ const SingleChat = ({group}) => {
         })}
       </List>
       <Divider />
-      <Grid container style={{padding: '20px'}}>
-        <Grid item={true} xs={11}>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Type Something"
-            value={message}
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid onClick={handleClick} item={true} xs={1} align="right">
-          <Fab color="primary" aria-label="add">
-            <SendIcon />
-          </Fab>
-        </Grid>
+      <Grid
+        container
+        sx={{display: 'flex', m: 1, p: 1, justifyContent: 'space-between'}}>
+        <TextField
+          sx={{width: '75%'}}
+          autoFocus
+          margin="dense"
+          label="Type Something"
+          value={message}
+          type="text"
+          variant="standard"
+          onChange={handleChange}
+        />
+        <Fab
+          sx={{width: 60, height: 60, mr: 2}}
+          onClick={handleClick}
+          color="primary"
+          aria-label="add">
+          <SendIcon />
+        </Fab>
       </Grid>
+      <Drawer
+        sx={{zIndex: 99999}}
+        anchor="right"
+        open={collapse}
+        ModalProps={{onBackdropClick: clickMenu}}>
+        <GroupProfile group={group} users={users} user={user} />
+      </Drawer>
     </Grid>
   )
 }

@@ -19,7 +19,7 @@ import {
   NightsStay,
 } from '@mui/icons-material'
 import {styled} from '@mui/material/styles'
-import {newAvailability, User} from '../../../../../firebase/models/User'
+import {newAvailability} from '../../../../../firebase/models/User'
 import './style.css'
 
 const Item = styled(Card)(({theme}) => ({
@@ -58,6 +58,7 @@ const EditAvailabilityGrid = (props) => {
       {availability.map((day, idx) => {
         return (
           <Accordion
+            aria-label={`${day.day} accordion`}
             expanded={expanded === day.day}
             onChange={accordionControl(day.day)}
             key={`${day.day}block`}
@@ -66,7 +67,7 @@ const EditAvailabilityGrid = (props) => {
               flexDirection: 'column',
             }}>
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
+              expandIcon={<ExpandMoreIcon color="primary" />}
               aria-controls={`${day.day}-content`}
               id={`${day.day}-header`}
               sx={{
@@ -98,7 +99,7 @@ const EditAvailabilityGrid = (props) => {
                   },
                 }}>
                 <Box>
-                  <WbSunny fontSize="small" />
+                  <WbSunny fontSize="small" color="primary" />
                   {day.am === 'available' ? (
                     <Check color="success" fontSize="small" />
                   ) : day.am === 'notice' ? (
@@ -108,7 +109,7 @@ const EditAvailabilityGrid = (props) => {
                   )}
                 </Box>
                 <Box>
-                  <NightsStay fontSize="small" />
+                  <NightsStay fontSize="small" color="primary" />
                   {day.pm === 'available' ? (
                     <Check color="success" fontSize="small" />
                   ) : day.pm === 'notice' ? (
@@ -137,6 +138,7 @@ const EditAvailabilityGrid = (props) => {
                   </Typography>
                   <ButtonGroup orientation="vertical">
                     <Button
+                      aria-label={`${day.day} am available`}
                       variant={
                         day.am === 'available' ? 'contained' : 'outlined'
                       }
@@ -146,6 +148,7 @@ const EditAvailabilityGrid = (props) => {
                       available
                     </Button>
                     <Button
+                      aria-label={`${day.day} am plan ahead`}
                       variant={day.am === 'notice' ? 'contained' : 'outlined'}
                       color={day.am === 'notice' ? 'warning' : 'secondary'}
                       value={JSON.stringify({...day, am: 'notice'})}
@@ -153,6 +156,7 @@ const EditAvailabilityGrid = (props) => {
                       plan ahead
                     </Button>
                     <Button
+                      aria-label={`${day.day} am unavailable`}
                       variant={
                         day.am === 'unavailable' ? 'contained' : 'outlined'
                       }
@@ -169,6 +173,7 @@ const EditAvailabilityGrid = (props) => {
                   </Typography>
                   <ButtonGroup orientation="vertical">
                     <Button
+                      aria-label={`${day.day} pm available`}
                       variant={
                         day.pm === 'available' ? 'contained' : 'outlined'
                       }
@@ -178,6 +183,7 @@ const EditAvailabilityGrid = (props) => {
                       available
                     </Button>
                     <Button
+                      aria-label={`${day.day} pm plan ahead`}
                       variant={day.pm === 'notice' ? 'contained' : 'outlined'}
                       color={day.pm === 'notice' ? 'warning' : 'secondary'}
                       value={JSON.stringify({...day, pm: 'notice'})}
@@ -185,6 +191,7 @@ const EditAvailabilityGrid = (props) => {
                       plan ahead
                     </Button>
                     <Button
+                      aria-label={`${day.day} pm unavailable`}
                       variant={
                         day.pm === 'unavailable' ? 'contained' : 'outlined'
                       }

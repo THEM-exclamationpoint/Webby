@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import * as React from 'react'
+import {createTheme, ThemeProvider, styled} from '@mui/material/styles'
 // import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 
-const darkMode = createTheme ({
+const darkMode = createTheme({
   palette: {
     type: 'dark',
     primary: {
@@ -14,7 +14,6 @@ const darkMode = createTheme ({
     background: {
       default: '#282c36',
       paper: '#282c36',
-      card: '#282c36',
     },
     text: {
       primary: '#F3E2E6',
@@ -30,6 +29,6 @@ const darkMode = createTheme ({
       main: '#4CAF50',
     },
   },
-});
+})
 
 export default darkMode

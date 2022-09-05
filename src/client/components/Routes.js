@@ -7,13 +7,13 @@ import Chat from './Chat/ChatRoom'
 import Graph from './Graph'
 import {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import AppSettings from './Settings';
+import AppSettings from './Settings'
 import User, {setUser} from '../store/auth/user'
 import {FriendsList} from './Friends'
 import UserProfile from './Profile/UserProfile'
 import {auth} from '../../firebase/auth'
 import './style.css'
-import {Paper} from '@mui/material'
+import {Box} from '@mui/material'
 
 function WebbyRoutes() {
   let dispatch = useDispatch()
@@ -26,9 +26,9 @@ function WebbyRoutes() {
     })
   }, [])
   return (
-    <Paper sx={{background: 'primary'}} className="content">
+    <Box sx={{background: 'primary'}} className="content">
       <Routes>
-        <Route exact path="/home" element={user && <Home />} />
+        <Route exact path="/home" element={user ? <Home /> : <LogIn />} />
         <Route exact path="/" element={<LogIn />} />
         <Route exact path="/register" element={<Signup />} />
         <Route exact path="/editprofile" element={user && <EditProfile />} />
@@ -38,7 +38,7 @@ function WebbyRoutes() {
         <Route path="/users/:uid" element={user && <UserProfile />} />
         <Route exact path="/settings" element={<AppSettings />} />
       </Routes>
-    </Paper>
+    </Box>
   )
 }
 

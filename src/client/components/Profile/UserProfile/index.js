@@ -68,12 +68,12 @@ const UserProfile = (props) => {
     dispatch(setUser())
     dispatch(getUserProfile(uid))
     dispatch(getUserInterests(uid))
-    dispatch(getJunctions(uid))
+    dispatch(getJunctions(currentUser.uid))
   }, [])
 
   useEffect(() => {
     friendJunctions.forEach((friend) => {
-      if (friend.friends.includes(currentUser.uid)) {
+      if (friend.friends.includes(uid)) {
         setIsFriend(true)
         setJunctionId(friend.id)
       }
@@ -119,6 +119,7 @@ const UserProfile = (props) => {
           sx={{
             m: 1,
             p: 1,
+            gap: 0.5,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -128,10 +129,8 @@ const UserProfile = (props) => {
             alt={user.name}
             src={user.profilePicture}
             sx={{
-              m: 1,
-              width: 150,
-              height: 150,
-              border: '4px double #028090',
+              width: 200,
+              height: 200,
             }}
           />
           <Typography variant="h4" align="center">
@@ -151,15 +150,19 @@ const UserProfile = (props) => {
           </Typography>
           <Box>
             {isFriend ? (
-              <IconButton onClick={() => removeUser(junctionId, uid)}>
+              <IconButton
+                color="primary"
+                onClick={() => removeUser(junctionId, uid)}>
                 <PersonRemove />
               </IconButton>
             ) : (
-              <IconButton onClick={() => addUser(uid, currentUser.uid)}>
+              <IconButton
+                onClick={() => addUser(uid, currentUser.uid)}
+                color="primary">
                 <PersonAdd />
               </IconButton>
             )}
-            <IconButton onClick={openMenu}>
+            <IconButton onClick={openMenu} color="primary">
               <ChatBubbleRounded />
             </IconButton>
             <Menu open={menuOpen} onClose={closeMenu} anchorEl={anchorEl}>
@@ -183,7 +186,7 @@ const UserProfile = (props) => {
                       variant="standard"
                       onChange={handleChange}
                     />
-                    <IconButton onClick={handleSend}>
+                    <IconButton onClick={handleSend} color="primary">
                       <SendIcon />
                     </IconButton>
                   </div>
@@ -193,6 +196,7 @@ const UserProfile = (props) => {
           </Box>
           {currentUser.location &&
           user.location &&
+          user.location.latitude !== null &&
           currentUser.uid != user.uid ? (
             <Box>
               <Typography variant="subtitle1">
@@ -204,22 +208,6 @@ const UserProfile = (props) => {
           )}
         </Paper>
         <AvailabilityGrid availability={user.availability} />
-        {/* {user.availability &&
-            user.availability.map((day, id) => {
-              return (
-                <Paper
-                  sx={{justifyContent: 'center', textAlign: 'center'}}
-                  key={id}>
-                  <Typography variant="h5">{day.day}</Typography>
-                  <ListItem>
-                    <WbSunnyOutlined sx={{margin: '5px'}} /> {day.am}
-                  </ListItem>
-                  <ListItem>
-                    <NightlightOutlined sx={{margin: '5px'}} /> {day.pm}
-                  </ListItem>
-                </Paper>
-              )
-            })} */}
         {interests.length > 0 && (
           <Paper sx={{m: 1, p: 1}}>
             <CardHeader align="center" title={`Hobbies`} />
