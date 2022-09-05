@@ -41,45 +41,34 @@ export default function ProminentAppBar() {
   }, [user])
 
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        display: 'flex',
-        position: 'sticky',
-        top: 0,
-        zIndex: 9999,
-      }}
-      className="menu">
-      <AppBar position="static" className="navbar">
-        <StyledToolbar
-          sx={{
+    <AppBar position="static" className="navbar">
+      <StyledToolbar
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          '& > *': {
+            m: 0,
             display: 'flex',
-            width: '100%',
-            justifyContent: 'space-between',
-            '& > *': {
-              display: 'flex',
-              alignItems: 'center',
-            },
-          }}>
-          <Box>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{
-                mr: 2,
-                width: 50,
-                height: 50,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'baseline',
-              }}
-              disabled={isOff}>
-              <TemporaryDrawer />
-            </IconButton>
+            alignItems: 'center',
+          },
+        }}>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="open drawer"
+          sx={{
+            mr: 2,
+            width: 50,
+            height: 50,
+            display: 'flex',
+            alignItems: 'baseline',
+          }}
+          disabled={isOff}>
+          <TemporaryDrawer />
+        </IconButton>
 
-            {/* <Typography
+        {/* <Typography
               color="inherit"
               variant="h5"
               noWrap
@@ -92,42 +81,35 @@ export default function ProminentAppBar() {
               }}>
               WEBBY
             </Typography> */}
-
-            {theme === 'dark' ? (
-              <div>
-                <Link to="/home">
-                  <img src={'/Webby-logotype-light.png'} style={{width: 130}} />
-                </Link>
-                <DarkWebby style={{width: 80}} className="webby" />
-              </div>
-            ) : (
-              <div>
-                <Link to="/home">
-                  <img src={'/Webby-logotype-dark.png'} style={{width: 130}} />
-                </Link>
-                <Webby style={{width: 80}} className="webby" />
-              </div>
-            )}
-          </Box>
-          <Box>
-            <IconButton
-              sx={{
-                ml: 2,
-                width: 50,
-                height: 50,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'baseline',
-              }}
-              size="large"
-              aria-label="display more actions"
-              edge="end"
-              color="inherit">
-              <FadeMenu />
-            </IconButton>
-          </Box>
-        </StyledToolbar>
-      </AppBar>
-    </Box>
+        {theme === 'dark' ? (
+          <Link to="/home">
+            <img src={'/Webby-logotype-light.png'} style={{width: 130}} />
+          </Link>
+        ) : (
+          <Link to="/home">
+            <img src={'/Webby-logotype-dark.png'} style={{width: 130}} />
+          </Link>
+        )}
+        {theme === 'dark' ? (
+          <DarkWebby style={{width: 80}} className="webby" />
+        ) : (
+          <Webby style={{width: 80}} className="webby" />
+        )}
+        <IconButton
+          sx={{
+            ml: 2,
+            width: 50,
+            height: 50,
+            display: 'flex',
+            alignItems: 'baseline',
+          }}
+          size="large"
+          aria-label="display more actions"
+          edge="end"
+          color="inherit">
+          <FadeMenu />
+        </IconButton>
+      </StyledToolbar>
+    </AppBar>
   )
 }
