@@ -14,7 +14,7 @@ import './style.css'
 function Tree(
   data,
   {
-    theme = light, //dark or light theme, for styling
+    theme = 'light', //dark or light theme, for styling
     children, // if hierarchical data, given a d in data, returns its children
     tree = d3.tree, // layout algorithm (typically d3.tree or d3.cluster)
     separation = tree === d3.tree
