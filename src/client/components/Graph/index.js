@@ -91,7 +91,9 @@ function Tree(
     .attr('height', height)
     .attr(
       'style',
-      `background-color : ${palette.backgroundColor}; max-width: 100%; height: auto; height: intrinsic;`
+      `background-color : ${
+        palette && palette.backgroundColor
+      }; max-width: 100%; height: auto; height: intrinsic;`
     )
     .attr('font-family', 'sans-serif')
     .attr('font-size', 20)
