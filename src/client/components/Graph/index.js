@@ -41,7 +41,7 @@ function Tree(
     strokeOpacity = 0.4, // stroke opacity for links
     strokeLinejoin, // stroke line join for links
     strokeLinecap, // stroke line cap for links
-    haloWidth = 10, // padding around the labels
+    haloWidth = 5, // padding around the labels
     svg = d3.create('svg'),
     clickHandler,
   } = {}
