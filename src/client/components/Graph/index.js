@@ -141,19 +141,16 @@ function Tree(
     .attr('r', r)
 
   //interactivity
-  if (zoomAndPan === 'on') {
-    function handleZoom(e) {
-      svg.attr('transform', e.transform)
-    }
-
     let zoom = d3
       .zoom()
-      .on('zoom', handleZoom)
-      .scaleExtent([1, 3])
-      .translateExtent([
+      .on('zoom', (e) => {
+        svg.attr('transform', e.transform)
+      })
+      .extent([
         [(width / 2) * -1, (height / 2) * -1],
         [width / 2, height / 2],
       ])
+      .scaleExtent([1, 3])
 
     svg.call(zoom)
   }
