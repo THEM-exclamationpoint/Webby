@@ -232,8 +232,6 @@ function Graph() {
     <Paper
       className="graph-wrapper"
       sx={{
-        m: 1,
-        p: 1,
         height: '100%',
         display: 'flex',
         justifyContent: 'center',
