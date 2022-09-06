@@ -97,12 +97,12 @@ function Tree(
     )
     .attr('font-family', 'sans-serif')
     .attr('font-size', 20)
-    .attr('fill', palette.otherUsersLabelColor) ///default text color
+    .attr('fill', palette && palette.otherUsersLabelColor) ///default text color
 
   svg
     .append('g') //appends a g element to the svg. g element is used to group svg shapes together
     .attr('fill', 'none') //prevents paths from filling in solid
-    .attr('stroke', palette.stroke)
+    .attr('stroke', palette && palette.stroke)
     .attr('stroke-opacity', strokeOpacity)
     .attr('stroke-linecap', strokeLinecap)
     .attr('stroke-linejoin', strokeLinejoin)
@@ -130,11 +130,13 @@ function Tree(
       'transform',
       (d) => `rotate(${(d.x * 180) / Math.PI - 90}) translate(${d.y},0)`
     )
-    .attr('fill', palette.InterestsLabelColor) //by adding this line, links, whether or not clicked, stay the same color as the rest of the test
+    .attr('fill', palette && palette.InterestsLabelColor) //by adding this line, links, whether or not clicked, stay the same color as the rest of the test
 
   node
     .append('circle') //adds a circle at each node
-    .attr('fill', (d) => (d.children ? palette.stroke : palette.fill))
+    .attr('fill', (d) =>
+      d.children ? palette && palette.stroke : palette && palette.fill
+    )
     .attr('r', r)
 
   //interactivity
@@ -159,7 +161,7 @@ function Tree(
         d.x < Math.PI === !d.children ? 'start' : 'end'
       )
       .attr('paint-order', 'stroke')
-      .attr('stroke', palette.halo)
+      .attr('stroke', palette && palette.halo)
       .attr('stroke-width', haloWidth)
       .text((d, i) => L[i])
   }
@@ -169,7 +171,7 @@ function Tree(
     .selectAll('g')
     .selectAll('a')
     .filter((node) => node.data.name === L[0])
-    .attr('fill', palette.currentUserLabelColor)
+    .attr('fill', palette && palette.currentUserLabelColor)
 
   //selecting other users
   svg
@@ -182,7 +184,7 @@ function Tree(
     .selectAll('g')
     .selectAll('a')
     .filter((node) => node.depth === 2)
-    .attr('fill', palette.otherUsersLabelColor)
+    .attr('fill', palette && palette.otherUsersLabelColor)
 
   return svg.node()
 }
