@@ -60,12 +60,12 @@ const LogIn = () => {
         <Paper sx={{m: 2, p: 2}}>
           {theme === 'dark' ? (
             <img
-              src={'/Webby-logotype-light-transparent.png'}
+              src={'/Webby-logotype-dark-transparent.png'}
               style={{width: 250}}
             />
           ) : (
             <img
-              src={'/Webby-logotype-dark-transparent.png'}
+              src={'/Webby-logotype-light-transparent.png'}
               style={{width: 250}}
             />
           )}
