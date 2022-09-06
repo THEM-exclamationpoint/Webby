@@ -8,8 +8,6 @@ import {useDispatch, useSelector} from 'react-redux'
 import {Paper} from '@mui/material'
 import './style.css'
 
-//This is the graph file from the commit right before we began making light/dark modes for the graph
-
 // Copyright 2022 Observable, Inc.
 // Released under the ISC license.
 // https://observablehq.com/@d3/radial-tree
@@ -48,6 +46,21 @@ function Tree(
     clickHandler,
   } = {}
 ) {
+  function handleZoom(e) {
+    svg.attr('transform', e.transform)
+  }
+
+  let zoom = d3
+    .zoom()
+    .on('zoom', handleZoom)
+    .scaleExtent([1, 3])
+    .translateExtent([
+      [width * -1, height * -1],
+      [width, height],
+    ])
+
+  svg.call(zoom)
+
   const stylePalette = {
     dark: {
       backgroundColor: '#282C36',
@@ -175,18 +188,19 @@ function Tree(
     .filter((node) => node.data.name === L[0])
     .attr('fill', palette && palette.currentUserLabelColor)
 
-  //selecting other users
+  //selecting interests
   svg
     .selectAll('g')
     .selectAll('a')
     .filter((node) => node.depth === 1)
 
-  //selecting interests
+  //selecting other users
   svg
     .selectAll('g')
     .selectAll('a')
     .filter((node) => node.depth === 2)
     .attr('fill', palette && palette.otherUsersLabelColor)
+    .attr('class', 'otherUsers')
 
   return svg.node()
 }
@@ -229,12 +243,8 @@ function Graph() {
   }, [graphData])
 
   return (
-    <Paper sx={{m: 1, p: 1}}>
-      <div
-        className="graph-wrapper"
-        style={{display: 'flex', justifyContent: 'center'}}>
-        <svg className="graph" ref={web}></svg>
-      </div>{' '}
+    <Paper sx={{m: 1, p: 1, display: 'flex', justifyContent: 'center'}}>
+      <svg className="graph" ref={web}></svg>{' '}
     </Paper>
   )
 }
