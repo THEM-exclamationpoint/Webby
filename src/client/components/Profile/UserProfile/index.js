@@ -3,17 +3,13 @@ import {useDispatch, useSelector} from 'react-redux'
 import {useNavigate, useParams} from 'react-router-dom'
 import SendIcon from '@mui/icons-material/Send'
 import {
-  Button,
   Box,
   TextField,
   Typography,
   Avatar,
-  Switch,
-  Card,
   CardHeader,
   Paper,
   IconButton,
-  Slider,
   List,
   ListItem,
   Menu,
@@ -21,16 +17,12 @@ import {
 } from '@mui/material'
 import {
   PersonAdd,
-  PeopleAlt,
   PersonRemove,
-  Pending,
   ChatBubbleRounded,
-  WbSunnyOutlined,
-  NightlightOutlined,
+
 } from '@mui/icons-material'
 import {
   getUserProfile,
-  getUserFriends,
   getUserInterests,
 } from '../../../store/profile'
 import {setUser} from '../../../store/auth/user'
@@ -43,8 +35,6 @@ import {
 import {User} from '../../../../firebase/models/User'
 import calculateDistance from './util/calculateDistance'
 import AvailabilityGrid from '../Elements/AvailabilityGrid'
-import './style.css'
-import {border} from '@mui/system'
 
 const UserProfile = (props) => {
   const navigate = useNavigate()
@@ -52,7 +42,7 @@ const UserProfile = (props) => {
   const {uid} = useParams()
   const profile = useSelector((state) => state.profile)
   const currentUser = useSelector((state) => state.user)
-  const {user, friends, interests} = profile
+  const {user, interests} = profile
   const friendJunctions = useSelector((state) => state.friendJunctions)
   const sentMessage = useSelector((state) => state.sendDM)
 

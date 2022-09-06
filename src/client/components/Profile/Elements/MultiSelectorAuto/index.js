@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Autocomplete, {createFilterOptions} from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
-import './style.css'
 
 const filter = createFilterOptions()
 

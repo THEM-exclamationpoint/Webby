@@ -35,10 +35,8 @@ import {
   updateEmail,
 } from '../../../store/profile/editProfile'
 import {setUser} from '../../../store/auth/user'
-// import {fetchAllInterests} from '../../../store/profile/editProfile'
 import {setUserInterests} from '../../../store/interests'
 import CountrySelect from '../Elements/CountrySelect'
-import './style.css'
 
 const EditProfile = (props) => {
   const navigate = useNavigate()
@@ -47,7 +45,6 @@ const EditProfile = (props) => {
   let user = useSelector((state) => state.user)
   let myInterests = useSelector((state) => state.interests)
 
-  // let {interests} = useSelector((state) => state.editProfile)
   let interests = interestList
 
   let [userProfile, setUserProfile] = useState(
@@ -77,7 +74,6 @@ const EditProfile = (props) => {
   useEffect(() => {
     dispatch(setUser())
     dispatch(setUserInterests(user.uid))
-    // dispatch(fetchAllInterests())
   }, [])
 
   useEffect(() => {
