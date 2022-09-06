@@ -3,13 +3,9 @@ import {useDispatch, useSelector} from 'react-redux'
 import {Link, useRoutes} from 'react-router-dom'
 
 import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'
 import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
 import Avatar from '@mui/material/Avatar'
 
 import {getFriends} from '../../store/friends'

@@ -31,7 +31,7 @@ const SingleChat = ({group}) => {
   let [isGroup, setIsGroup] = useState(null)
   let [enter, setEnter] = useState(false)
   let [collapse, setCollapse] = useState(false)
-  let [name, setName] = useState(group.groupname)
+  let [name, setName] = useState('')
 
   function clickMenu() {
     setCollapse(!collapse)
@@ -55,9 +55,10 @@ const SingleChat = ({group}) => {
   useEffect(() => {
     typeof group.groupname === 'string' ? setIsGroup(true) : setIsGroup(false)
     dispatch(setUsers(group.members))
+    setName(group.groupname)
     const unsubscribe = getMessagesWithGroup(group.groupId, setMessages)
     return unsubscribe
-  }, [group.groupId])
+  }, [group.groupname])
 
   function isEnter(e) {
     if (e.key === 'Enter') {
