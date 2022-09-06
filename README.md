@@ -1,4 +1,4 @@
-![Webby](/Webby-logotype-dark.png)
+![image](/webby-logo.png)
 
 A hobby-centric social media application
 
