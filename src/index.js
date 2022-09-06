@@ -10,7 +10,6 @@ import reportWebVitals from './reportWebVitals'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-  // <React.StrictMode>
   <Provider store={store}>
     {/* DEV */}
     <Router history={history} basename="/">
@@ -19,7 +18,6 @@ root.render(
       <App />
     </Router>
   </Provider>
-  // </React.StrictMode>
 )
 
 // If you want to start measuring performance in your app, pass a function

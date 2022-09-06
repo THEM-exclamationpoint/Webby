@@ -33,3 +33,6 @@ This project was created with create-react-app, as the capstone project for the 
 ### Noelle Huchette
 - [Github](https://github.com/noellehuchette)
 - [LinkedIn](https://www.linkedin.com/in/noelle-huchette/)
+
+
+##### We would like to thank Alec and Drew for helping us with whatever we needed, and especially to Alec for being our amazing cohort instructor.

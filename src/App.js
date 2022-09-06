@@ -1,4 +1,3 @@
-import './App.css'
 import WebbyRoutes from './client/components/Routes'
 import NavBar from './client/components/Nav'
 import {ThemeProvider, CssBaseline} from '@mui/material'
