@@ -70,13 +70,13 @@ export default function ProminentAppBar() {
             <img
               onClick={() => nav('./home')}
               src={'/Webby-logotype-light.png'}
-              style={{width: 150}}
+              style={{width: 150, cursor: 'pointer'}}
             />
           ) : (
             <img
               onClick={() => nav('./home')}
               src={'/Webby-logotype-dark.png'}
-              style={{width: 150}}
+              style={{width: 150, cursor: 'pointer'}}
             />
           )}
         </Box>

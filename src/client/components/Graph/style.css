@@ -1,12 +1,21 @@
+text {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+ }
 
+  .otherUsers{
+    cursor: pointer
+  }
 .graph{
-    background-color: #fcf7f8;
 }
 
 .graph-wrapper{
     display: flex;
-    background-color: #fcf7f8;
     justify-content: center;
 }
 
-/* This is the CSS file from the commit right before we began making light/dark modes for the graph */
