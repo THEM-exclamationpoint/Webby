@@ -120,7 +120,7 @@ function Tree(
     )
 
   const node = svg
-    .append('g')
+    .selectAll('g')
     .selectAll('a') //selects all 'a' elements (links)
     .data(root.descendants())
     .join('a')
@@ -143,7 +143,8 @@ function Tree(
   //interactivity
   if (zoomAndPan === 'on') {
     function handleZoom(e) {
-      svg.attr('transform', e.transform)
+      const g = d3.selectAll('g')
+      g.attr('transform', e.transform)
     }
 
     let zoom = d3
