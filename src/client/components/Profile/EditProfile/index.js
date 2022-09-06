@@ -180,7 +180,7 @@ const EditProfile = (props) => {
         display: 'flex',
         flexDirection: 'column',
         gap: 1,
-        mb: 12,
+        pb: 12,
       }}>
       <Box
         sx={{

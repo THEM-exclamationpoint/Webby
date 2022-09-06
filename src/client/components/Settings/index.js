@@ -41,7 +41,10 @@ const Settings = (props) => {
           />
         }
       />
-      <FormControlLabel
+      <Typography variant="h5" sx={{textAlign: 'center'}}>
+        More to come!
+      </Typography>
+      {/* <FormControlLabel
         value="high-contrast"
         label="High Contrast"
         control={
@@ -80,7 +83,7 @@ const Settings = (props) => {
         control={<Switch color="primary" />}
       />
       <Divider />
-      <Typography variant="h5">Accessibility:</Typography>
+      <Typography variant="h5">Accessibility:</Typography> */}
       {/* <FormControl>
         <FormLabel id="demo-radio-buttons-group-label">
           Colorblind Mode:
@@ -106,7 +109,7 @@ const Settings = (props) => {
           />
         </RadioGroup>
       </FormControl> */}
-      <FormControlLabel
+      {/* <FormControlLabel
         value="large-text"
         label="Large Text"
         control={<Switch color="primary" />}
@@ -119,8 +122,9 @@ const Settings = (props) => {
       <Divider />
       <Box sx={{m: 2, gap: 1, display: 'flex', flexDirection: 'column'}}>
         <Button color="error">Blocked Users</Button>
+        <Divider sx={{m: 2}} />
         <Button color="error">Delete Account</Button>
-      </Box>
+      </Box> */}
     </Paper>
   )
 }

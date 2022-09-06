@@ -229,12 +229,16 @@ function Graph() {
   }, [graphData])
 
   return (
-    <Paper sx={{m: 1, p: 1}}>
-      <div
-        className="graph-wrapper"
-        style={{display: 'flex', justifyContent: 'center'}}>
-        <svg className="graph" ref={web}></svg>
-      </div>{' '}
+    <Paper
+      className="graph-wrapper"
+      sx={{
+        m: 1,
+        p: 1,
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+      }}>
+      <svg className="graph" ref={web}></svg>
     </Paper>
   )
 }

@@ -11,8 +11,12 @@ function App() {
   return (
     <ThemeProvider theme={settings ? settings.theme : lightMode}>
       <CssBaseline />
-      <NavBar />
-      <WebbyRoutes />
+      <div>
+        <NavBar />
+      </div>
+      <div id="content-body">
+        <WebbyRoutes />
+      </div>
     </ThemeProvider>
   )
 }
