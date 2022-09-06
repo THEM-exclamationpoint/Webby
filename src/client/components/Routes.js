@@ -12,7 +12,6 @@ import User, {setUser} from '../store/auth/user'
 import {FriendsList} from './Friends'
 import UserProfile from './Profile/UserProfile'
 import {auth} from '../../firebase/auth'
-import './style.css'
 import {Box} from '@mui/material'
 
 function WebbyRoutes() {
@@ -26,19 +25,17 @@ function WebbyRoutes() {
     })
   }, [])
   return (
-    <Box sx={{background: 'primary'}} className="content">
-      <Routes>
-        <Route exact path="/home" element={user ? <Home /> : <LogIn />} />
-        <Route exact path="/" element={<LogIn />} />
-        <Route exact path="/register" element={<Signup />} />
-        <Route exact path="/editprofile" element={user && <EditProfile />} />
-        <Route exact path="/chatroom" element={user && <Chat />} />
-        <Route exact path="/graph" element={user && <Graph />} />
-        <Route exact path="/Friends" element={user && <FriendsList />} />
-        <Route path="/users/:uid" element={user && <UserProfile />} />
-        <Route exact path="/settings" element={<AppSettings />} />
-      </Routes>
-    </Box>
+    <Routes>
+      <Route exact path="/home" element={user ? <Home /> : <LogIn />} />
+      <Route exact path="/" element={<LogIn />} />
+      <Route exact path="/register" element={<Signup />} />
+      <Route exact path="/editprofile" element={user && <EditProfile />} />
+      <Route exact path="/chatroom" element={user && <Chat />} />
+      <Route exact path="/graph" element={user && <Graph />} />
+      <Route exact path="/Friends" element={user && <FriendsList />} />
+      <Route path="/users/:uid" element={user && <UserProfile />} />
+      <Route exact path="/settings" element={<AppSettings />} />
+    </Routes>
   )
 }
 

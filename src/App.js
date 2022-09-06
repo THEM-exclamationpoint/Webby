@@ -1,7 +1,7 @@
 import './App.css'
 import WebbyRoutes from './client/components/Routes'
 import NavBar from './client/components/Nav'
-import {ThemeProvider, CssBaseline} from '@mui/material'
+import {ThemeProvider, CssBaseline, GlobalStyles} from '@mui/material'
 import {useSelector} from 'react-redux'
 import lightMode from './client/components/Settings/lightMode'
 
@@ -11,8 +11,12 @@ function App() {
   return (
     <ThemeProvider theme={settings ? settings.theme : lightMode}>
       <CssBaseline />
-      <NavBar />
-      <WebbyRoutes />
+      <div>
+        <NavBar />
+      </div>
+      <div id="content-body">
+        <WebbyRoutes />
+      </div>
     </ThemeProvider>
   )
 }

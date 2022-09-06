@@ -43,7 +43,7 @@ export default function ProminentAppBar() {
     <AppBar
       className="navbar"
       sx={{
-        position: 'sticky',
+        position: 'fixed',
         top: 0,
       }}>
       <StyledToolbar
