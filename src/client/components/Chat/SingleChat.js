@@ -31,7 +31,7 @@ const SingleChat = ({group}) => {
   let [isGroup, setIsGroup] = useState(null)
   let [enter, setEnter] = useState(false)
   let [collapse, setCollapse] = useState(false)
-  let [name, setName] = useState(group.groupname)
+  let [name, setName] = useState('')
 
   function clickMenu() {
     setCollapse(!collapse)
@@ -55,9 +55,10 @@ const SingleChat = ({group}) => {
   useEffect(() => {
     typeof group.groupname === 'string' ? setIsGroup(true) : setIsGroup(false)
     dispatch(setUsers(group.members))
+    setName(group.groupname)
     const unsubscribe = getMessagesWithGroup(group.groupId, setMessages)
     return unsubscribe
-  }, [group.groupId])
+  }, [group.groupname])
 
   function isEnter(e) {
     if (e.key === 'Enter') {
@@ -77,7 +78,7 @@ const SingleChat = ({group}) => {
   }
 
   return (
-    <Grid onKeyPress={isEnter}>
+    <Grid onKeyPress={isEnter} sx={{width: '100%'}}>
       <Grid container>
         <Grid item={true} xs={12}>
           {isGroup ? (
@@ -127,9 +128,9 @@ const SingleChat = ({group}) => {
         </Grid>
       </Grid>
       <List
-        height="70vh"
         style={{
-          maxHeight: 300,
+          width: '100%',
+          maxHeight: '400px',
           overflow: 'auto',
         }}>
         {messages.map((message, i) => {
@@ -142,8 +143,8 @@ const SingleChat = ({group}) => {
           let splitted = String(date).split(' ').slice(0, 5).join(' ')
           return (
             <ListItem key={i} ref={scrollRef}>
-              <Grid container>
-                <Grid item={true} xs={12}>
+              <Grid container sx={{display: 'flex', flexDirection: 'column'}}>
+                <Grid item={true}>
                   <ListItemText
                     align={message.fromUser !== user.uid ? 'left' : 'right'}
                     secondary={from && from.name}></ListItemText>
@@ -151,7 +152,7 @@ const SingleChat = ({group}) => {
                     align={message.fromUser !== user.uid ? 'left' : 'right'}
                     primary={message.content}></ListItemText>
                 </Grid>
-                <Grid item={true} xs={12}>
+                <Grid item={true}>
                   <ListItemText
                     align={message.fromUser !== user.uid ? 'left' : 'right'}
                     secondary={splitted}></ListItemText>
@@ -162,24 +163,26 @@ const SingleChat = ({group}) => {
         })}
       </List>
       <Divider />
-      <Grid container style={{padding: '20px'}}>
-        <Grid item={true} xs={11}>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Type Something"
-            value={message}
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid onClick={handleClick} item={true} xs={1} align="right">
-          <Fab color="primary" aria-label="add">
-            <SendIcon />
-          </Fab>
-        </Grid>
+      <Grid
+        container
+        sx={{display: 'flex', m: 1, p: 1, justifyContent: 'space-between'}}>
+        <TextField
+          sx={{width: '75%'}}
+          autoFocus
+          margin="dense"
+          label="Type Something"
+          value={message}
+          type="text"
+          variant="standard"
+          onChange={handleChange}
+        />
+        <Fab
+          sx={{width: 60, height: 60, mr: 2}}
+          onClick={handleClick}
+          color="primary"
+          aria-label="add">
+          <SendIcon />
+        </Fab>
       </Grid>
       <Drawer
         sx={{zIndex: 99999}}

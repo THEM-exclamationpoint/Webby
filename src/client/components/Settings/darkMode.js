@@ -14,7 +14,6 @@ const darkMode = createTheme({
     background: {
       default: '#282c36',
       paper: '#282c36',
-      card: '#282c36',
     },
     text: {
       primary: '#F3E2E6',

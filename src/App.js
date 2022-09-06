@@ -11,12 +11,8 @@ function App() {
   return (
     <ThemeProvider theme={settings ? settings.theme : lightMode}>
       <CssBaseline />
-      <div className="App">
-        <header className="App-header">
-          <NavBar />
-          <WebbyRoutes />
-        </header>
-      </div>
+      <NavBar />
+      <WebbyRoutes />
     </ThemeProvider>
   )
 }

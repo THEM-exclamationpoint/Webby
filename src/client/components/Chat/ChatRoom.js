@@ -24,6 +24,7 @@ import {getFriends} from '../../store/friends'
 import {setUser} from '../../store/auth/user'
 import {getChatUsers} from '../../store/chat/chatUsers'
 import {NewChat} from './NewChat'
+import {Box} from '@mui/material'
 
 const Chat = () => {
   const navigate = useNavigate()
@@ -35,7 +36,7 @@ const Chat = () => {
   let user = useSelector((state) => state.user)
   let groups = useSelector((state) => state.chatUsers)
   let friends = useSelector((state) => state.friends)
-let [selectedGroup, setSelectedGroup] = useState(null)
+  let [selectedGroup, setSelectedGroup] = useState(null)
 
   useEffect(() => {
     dispatch(setUser())
@@ -43,8 +44,6 @@ let [selectedGroup, setSelectedGroup] = useState(null)
     dispatch(getFriends(user.uid))
     setSelectedGroup(groups[0])
   }, [])
-
-  
 
   function clickMenu() {
     setCollapse(!collapse)
@@ -78,7 +77,9 @@ let [selectedGroup, setSelectedGroup] = useState(null)
   })
 
   return (
-    <div className="chat-component">
+    <Paper
+      sx={{m: 1, p: 1, display: 'flex', flexDirection: 'column'}}
+      className="chat-component">
       <Grid container>
         <Grid item={true} xs={12}>
           <Typography variant="h5" className="header-message">
@@ -91,7 +92,7 @@ let [selectedGroup, setSelectedGroup] = useState(null)
       <Grid container component={Paper}>
         <Drawer sx={{zIndex: 99999}} anchor="left" open={collapse}>
           <Grid>
-            <ArrowBackIosIcon onClick={clickMenu} />
+            <ArrowBackIosIcon sx={{m: 1}} onClick={clickMenu} />
             <List className="user">
               <ListItem button key="user" onClick={toMyProfile}>
                 <ListItemIcon>
@@ -149,7 +150,7 @@ let [selectedGroup, setSelectedGroup] = useState(null)
         </Drawer>
         {selectedGroup && <SingleChat group={selectedGroup} groupname={name} />}
       </Grid>
-    </div>
+    </Paper>
   )
 }
 
