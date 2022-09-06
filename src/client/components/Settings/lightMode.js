@@ -14,6 +14,7 @@ const lightMode = createTheme({
     background: {
       default: '#FCF7F8',
       paper: '#FCF7F8',
+      card: '#FCF7F8',
     },
     text: {
       primary: '#090A0C',
