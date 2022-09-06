@@ -81,7 +81,7 @@ const Settings = (props) => {
       />
       <Divider />
       <Typography variant="h5">Accessibility:</Typography>
-      <FormControl>
+      {/* <FormControl>
         <FormLabel id="demo-radio-buttons-group-label">
           Colorblind Mode:
         </FormLabel>
@@ -105,7 +105,7 @@ const Settings = (props) => {
             label="Off"
           />
         </RadioGroup>
-      </FormControl>
+      </FormControl> */}
       <FormControlLabel
         value="large-text"
         label="Large Text"
