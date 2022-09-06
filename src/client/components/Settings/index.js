@@ -119,6 +119,7 @@ const Settings = (props) => {
       <Divider />
       <Box sx={{m: 2, gap: 1, display: 'flex', flexDirection: 'column'}}>
         <Button color="error">Blocked Users</Button>
+        <Divider sx={{m: 2}} />
         <Button color="error">Delete Account</Button>
       </Box>
     </Paper>
