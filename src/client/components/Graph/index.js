@@ -8,6 +8,8 @@ import {useDispatch, useSelector} from 'react-redux'
 import {Paper} from '@mui/material'
 import './style.css'
 
+//This is the graph file from the commit right before we began making light/dark modes for the graph
+
 // Copyright 2022 Observable, Inc.
 // Released under the ISC license.
 // https://observablehq.com/@d3/radial-tree
