@@ -8,7 +8,7 @@ import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
-import {toggleTheme} from '../../store/settings'
+import {toggleTheme, toggleHighContrast} from '../../store/settings'
 import lightMode from './lightMode'
 import darkMode from './darkMode'
 
@@ -19,6 +19,10 @@ const Settings = (props) => {
 
   const clickTheme = () => {
     dispatch(toggleTheme())
+  }
+
+  const clickHighContrast = () => {
+    dispatch(toggleHighContrast())
   }
 
   return (
@@ -40,34 +44,40 @@ const Settings = (props) => {
       <FormControlLabel
         value="high-contrast"
         label="High Contrast"
-        control={<Switch color="primary" />}
+        control={
+          <Switch
+            color="primary"
+            checked={settings.highContrast}
+            onChange={clickHighContrast}
+          />
+        }
       />
       <Divider />
       <Typography variant="h5">Notifications:</Typography>
       <FormControlLabel
         value="friend-request-notifications"
         label="Friend Requests"
-        control={<Switch color="primary" defaultChecked />}
+        control={<Switch color="primary" />}
       />
       <FormControlLabel
         value="message-notifications"
         label="Messages"
-        control={<Switch color="primary" defaultChecked />}
+        control={<Switch color="primary" />}
       />{' '}
       <FormControlLabel
         value="group-message-notifications"
         label="Group Messages"
-        control={<Switch color="primary" defaultChecked />}
+        control={<Switch color="primary" />}
       />{' '}
       <FormControlLabel
         value="update-notifications"
         label="Time To Update!"
-        control={<Switch color="primary" defaultChecked />}
+        control={<Switch color="primary" />}
       />{' '}
       <FormControlLabel
         value="new-feature-notifications"
         label="New Feature"
-        control={<Switch color="primary" defaultChecked />}
+        control={<Switch color="primary" />}
       />
       <Divider />
       <Typography variant="h5">Accessibility:</Typography>
