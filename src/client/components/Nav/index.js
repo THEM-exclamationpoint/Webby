@@ -12,8 +12,6 @@ import {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
 import {setUser} from '../../store/auth/user'
-import {ReactComponent as Webby} from '../../../Spider-light.svg'
-import {ReactComponent as DarkWebby} from '../../../Spider.svg'
 
 const StyledToolbar = styled(Toolbar)(({theme}) => ({
   alignItems: 'center',
@@ -83,9 +81,9 @@ export default function ProminentAppBar() {
 
         <Box sx={{display: 'flex', alignItems: 'center'}}>
           {theme === 'dark' ? (
-            <DarkWebby style={{width: 80}} className="webby" />
+            <img src={'/spider-dark-transparent.png'} style={{width: 80}} />
           ) : (
-            <Webby style={{width: 80}} className="webby" />
+            <img src={'/spider-light-transparent.png'} style={{width: 80}} />
           )}
           <IconButton
             sx={{
