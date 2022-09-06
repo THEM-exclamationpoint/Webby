@@ -247,14 +247,13 @@ function Graph() {
 
   return (
     <Paper
+      className="graph-wrapper"
       sx={{
-        m: 1,
-        p: 1,
+        height: '100%',
         display: 'flex',
         justifyContent: 'center',
-        height: '100%',
       }}>
-      <svg className="graph" ref={web}></svg>{' '}
+      <svg className="graph" ref={web}></svg>
     </Paper>
   )
 }

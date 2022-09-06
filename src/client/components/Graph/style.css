@@ -11,3 +11,11 @@ text {
   .otherUsers{
     cursor: pointer
   }
+.graph{
+}
+
+.graph-wrapper{
+    display: flex;
+    justify-content: center;
+}
+

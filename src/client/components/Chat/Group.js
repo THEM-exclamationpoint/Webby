@@ -10,45 +10,55 @@ import Avatar from '@mui/material/Avatar'
 
 import {getFriends} from '../../store/friends'
 import {addChatUsers, removeChatUsers} from '../../store/chat/chatUsers'
-import { setUsers } from '../../store/auth/users'
+import {setUsers} from '../../store/auth/users'
 
 export const GroupProfile = ({group, user}) => {
   let dispatch = useDispatch()
   let friends = useSelector((state) => state.friends)
   let users = useSelector((state) => state.users)
   let [openAdd, setOpenAdd] = useState(false)
-let [members, setMembers] = useState(null)
+  let [members, setMembers] = useState(null)
 
   useEffect(() => {
     dispatch(getFriends(user.uid))
     dispatch(setUsers(group.members))
-     if(users.length !== 0){
-    setMembers(users)}
+    if (users.length !== 0) {
+      setMembers(users)
+    }
   }, [])
 
   function handleSelect(friend) {
     dispatch(addChatUsers(friend.uid, user.uid, group.groupId))
-    setMembers([...members,friend])
+    setMembers([...members, friend])
   }
 
-  function handleRemoveUser(uid){
-    dispatch(removeChatUsers(uid,user.uid,group.groupId))
-    setMembers(members.filter(member => member.uid !== uid))
+  function handleRemoveUser(uid) {
+    dispatch(removeChatUsers(uid, user.uid, group.groupId))
+    setMembers(members.filter((member) => member.uid !== uid))
   }
 
   return (
-    <div className="group-profile-container" align='center'>
-        <Typography variant="h5">{group.groupname}</Typography>
+    <div className="group-profile-container" align="center">
+      <Typography variant="h5">{group.groupname}</Typography>
       <List>
-        {members && members.map((curuser) => {
-          return (
-            <ListItemButton key={curuser.uid}>
-              <Avatar alt={curuser.name} src={curuser.profilePicture} sx={{margin:'5px'}}/>
-              {curuser.name}
-              {curuser.uid !== user.uid && <Button onClick={()=>handleRemoveUser(curuser.uid)}>X</Button>}
-            </ListItemButton>
-          )
-        })}
+        {members &&
+          members.map((curuser) => {
+            return (
+              <ListItemButton key={curuser.uid}>
+                <Avatar
+                  alt={curuser.name}
+                  src={curuser.profilePicture}
+                  sx={{margin: '5px'}}
+                />
+                {curuser.name}
+                {curuser.uid !== user.uid && (
+                  <Button onClick={() => handleRemoveUser(curuser.uid)}>
+                    X
+                  </Button>
+                )}
+              </ListItemButton>
+            )
+          })}
       </List>
       <Button onClick={() => setOpenAdd(true)}>Add Member</Button>
       {openAdd && (
