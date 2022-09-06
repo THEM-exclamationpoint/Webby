@@ -73,10 +73,7 @@ export default function FadeMenu() {
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </div>
         ) : (
-          <Link to="/">
-            {' '}
-            <MenuItem>Login</MenuItem>{' '}
-          </Link>
+          <MenuItem onClick={() => navigate('/')}>Login</MenuItem>
         )}
       </Menu>
     </div>
