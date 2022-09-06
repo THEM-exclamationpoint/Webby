@@ -69,13 +69,13 @@ export default function ProminentAppBar() {
           {theme === 'dark' ? (
             <img
               onClick={() => nav('./home')}
-              src={'/Webby-logotype-light.png'}
+              src={'/Webby-logotype-light-transparent.png'}
               style={{width: 150, cursor: 'pointer'}}
             />
           ) : (
             <img
               onClick={() => nav('./home')}
-              src={'/Webby-logotype-dark.png'}
+              src={'/Webby-logotype-dark-transparent.png'}
               style={{width: 150, cursor: 'pointer'}}
             />
           )}
