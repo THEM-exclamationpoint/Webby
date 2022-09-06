@@ -26,8 +26,8 @@ const initialState = () => {
   let highContrast = JSON.parse(hc)
   let theme = localStorage.getItem('theme')
   if (!theme || theme === 'light') theme = lightMode
-  if (!highContrast) highContrast = false
   else theme = darkMode
+  if (!highContrast) highContrast = false
   return {
     theme,
     highContrast,
