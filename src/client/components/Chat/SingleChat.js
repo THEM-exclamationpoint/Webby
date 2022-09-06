@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Drawer from '@mui/material/Drawer'
 
+import {Edit, Save} from '@mui/icons-material'
+
 import React, {useState, useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
@@ -83,7 +85,12 @@ const SingleChat = ({group}) => {
         <Grid item={true} xs={12}>
           {isGroup ? (
             enter ? (
-              <div>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  margin: '12px',
+                }}>
                 <TextField
                   autoFocus
                   margin="dense"
@@ -93,7 +100,9 @@ const SingleChat = ({group}) => {
                   variant="standard"
                   onChange={handleNameChange}
                 />
-                <Button onClick={handleNewName}>Change name</Button>
+                <Button onClick={handleNewName}>
+                  <Save />
+                </Button>
               </div>
             ) : (
               <div align="center">
@@ -109,7 +118,7 @@ const SingleChat = ({group}) => {
                   onClick={() => setEnter(true)}
                   align="center"
                   size="small">
-                  Change group name
+                  <Edit />
                 </Button>
               </div>
             )
