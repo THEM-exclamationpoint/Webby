@@ -15,6 +15,7 @@ This project was created with create-react-app, as the capstone project for the 
 - React.js
 - Redux
 - D3
+- Geoapify
 - Faker.js
 - Netlify
 - Material UI
