@@ -14,6 +14,7 @@ import './style.css'
 function Tree(
   data,
   {
+    zoomAndPan = 'on',
     theme = 'light', //dark or light theme, for styling
     children, // if hierarchical data, given a d in data, returns its children
     tree = d3.tree, // layout algorithm (typically d3.tree or d3.cluster)
@@ -46,21 +47,6 @@ function Tree(
     clickHandler,
   } = {}
 ) {
-  function handleZoom(e) {
-    svg.attr('transform', e.transform)
-  }
-
-  let zoom = d3
-    .zoom()
-    .on('zoom', handleZoom)
-    .scaleExtent([1, 3])
-    .translateExtent([
-      [width * -1, height * -1],
-      [width, height],
-    ])
-
-  svg.call(zoom)
-
   const stylePalette = {
     dark: {
       backgroundColor: '#282C36',
@@ -155,6 +141,23 @@ function Tree(
     .attr('r', r)
 
   //interactivity
+  if (zoomAndPan === 'on') {
+    function handleZoom(e) {
+      svg.attr('transform', e.transform)
+    }
+
+    let zoom = d3
+      .zoom()
+      .on('zoom', handleZoom)
+      .scaleExtent([1, 3])
+      .translateExtent([
+        [(width / 2) * -1, (height / 2) * -1],
+        [width / 2, height / 2],
+      ])
+
+    svg.call(zoom)
+  }
+
   {
     clickHandler
       ? node.on('click', (e, d) =>
@@ -243,7 +246,14 @@ function Graph() {
   }, [graphData])
 
   return (
-    <Paper sx={{m: 1, p: 1, display: 'flex', justifyContent: 'center'}}>
+    <Paper
+      sx={{
+        m: 1,
+        p: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        height: '100%',
+      }}>
       <svg className="graph" ref={web}></svg>{' '}
     </Paper>
   )
