@@ -285,4 +285,4 @@ const seedDatabase = async function () {
   seedUsers(100)
 }
 
-seedDatabase()
+// seedDatabase()
