@@ -282,7 +282,7 @@ const seedUserInterestJunctions = function (uid, numberOfInterests = 5) {
 
 const seedDatabase = async function () {
   await seedInterests()
-  seedUsers(100)
+  seedUsers(150)
 }
 
 seedDatabase()

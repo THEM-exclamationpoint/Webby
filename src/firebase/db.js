@@ -22,27 +22,27 @@ import {getFirestore} from 'firebase/firestore'
 
 //Webby2 - for testing
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyAWg2P1znzVm686OX_TlqJnmvq_Ym3K72U',
-  authDomain: 'webby2-ea4e7.firebaseapp.com',
-  projectId: 'webby2-ea4e7',
-  storageBucket: 'webby2-ea4e7.appspot.com',
-  messagingSenderId: '537189817627',
-  appId: '1:537189817627:web:4f594041c23124168d07be',
-  measurementId: 'G-MFR0JXBV3J',
-}
+// const firebaseConfig = {
+//   apiKey: 'AIzaSyAWg2P1znzVm686OX_TlqJnmvq_Ym3K72U',
+//   authDomain: 'webby2-ea4e7.firebaseapp.com',
+//   projectId: 'webby2-ea4e7',
+//   storageBucket: 'webby2-ea4e7.appspot.com',
+//   messagingSenderId: '537189817627',
+//   appId: '1:537189817627:web:4f594041c23124168d07be',
+//   measurementId: 'G-MFR0JXBV3J',
+// }
 
 //DemoWebby
 
-// const firebaseConfig = {
-//   apiKey: 'AIzaSyB359HlzzOSKQCU9jedVLo1OyYtHx1orZg',
-//   authDomain: 'demowebby.firebaseapp.com',
-//   projectId: 'demowebby',
-//   storageBucket: 'demowebby.appspot.com',
-//   messagingSenderId: '504856882376',
-//   appId: '1:504856882376:web:9ae877464221cd48bc09fd',
-//   measurementId: 'G-VCXTXP8JGG',
-// }
+const firebaseConfig = {
+  apiKey: 'AIzaSyB359HlzzOSKQCU9jedVLo1OyYtHx1orZg',
+  authDomain: 'demowebby.firebaseapp.com',
+  projectId: 'demowebby',
+  storageBucket: 'demowebby.appspot.com',
+  messagingSenderId: '504856882376',
+  appId: '1:504856882376:web:9ae877464221cd48bc09fd',
+  measurementId: 'G-VCXTXP8JGG',
+}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
