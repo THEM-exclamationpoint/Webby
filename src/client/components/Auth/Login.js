@@ -134,7 +134,14 @@ const LogIn = () => {
           </Box>
         </Paper>
         <Paper
-          sx={{display: 'flex', flexDirection: 'column', m: 2, p: 2, gap: 1}}>
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            m: 2,
+            p: 2,
+            gap: 1,
+            pb: 8,
+          }}>
           <Typography variant="h4">Welcome to Webby!</Typography>
           <Divider sx={{m: 1}} />
           <Typography variant="body1">
