@@ -15,16 +15,8 @@ import {
   Menu,
   Grid,
 } from '@mui/material'
-import {
-  PersonAdd,
-  PersonRemove,
-  ChatBubbleRounded,
-
-} from '@mui/icons-material'
-import {
-  getUserProfile,
-  getUserInterests,
-} from '../../../store/profile'
+import {PersonAdd, PersonRemove, ChatBubbleRounded} from '@mui/icons-material'
+import {getUserProfile, getUserInterests} from '../../../store/profile'
 import {setUser} from '../../../store/auth/user'
 import {sendDM} from '../../../store/chat/sendDm'
 import {
@@ -126,7 +118,7 @@ const UserProfile = (props) => {
           <Typography variant="h4" align="center">
             {user.name}
           </Typography>
-          <Typography variant="subtitle1">
+          <Typography variant="subtitle1" sx={{textAlign: 'center'}}>
             {user.pronouns
               ? user.pronouns.map((pronoun, idx) => {
                   return (

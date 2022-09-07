@@ -127,9 +127,7 @@ const LogIn = () => {
             }}>
             Need an Account?
             <div className="line">
-              <Link to="/register">
-                <Button>Sign Up</Button>
-              </Link>
+              <Button onClick={() => navigate('/register')}>Sign Up</Button>
             </div>
           </Box>
         </Paper>
