@@ -102,7 +102,8 @@ export class User {
 
   async updateMyProfile() {
     try {
-      if (this.zipCode && !this.location.latitude) await this.codeLocation()
+      if (!this.location.latitude && this.zipCode && this.country)
+        await this.codeLocation()
 
       // update user entry
       let user = auth.currentUser
