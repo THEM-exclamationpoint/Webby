@@ -5,7 +5,7 @@ import {useRef, useEffect, useState} from 'react'
 import {_getGraphData} from '../../store/graph/graphData'
 import {setUser} from '../../store/auth/user'
 import {useDispatch, useSelector} from 'react-redux'
-import {Paper} from '@mui/material'
+import {Paper, Typography, Button} from '@mui/material'
 import './style.css'
 
 // Copyright 2022 Observable, Inc.
@@ -214,7 +214,8 @@ function Graph() {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
   const graphData = useSelector((state) => state.graphData)
-  let theme = localStorage.getItem('theme')
+  let theme = localStorage.getItem('theme') || 'light'
+  // theme ? {} : (theme = 'light')
 
   useEffect(() => {
     dispatch(setUser())
@@ -254,7 +255,18 @@ function Graph() {
         display: 'flex',
         justifyContent: 'center',
       }}>
-      <svg className="graph" ref={web}></svg>
+      {graphData.children && graphData.children.length > 0 ? (
+        <svg className="graph" ref={web}></svg>
+      ) : (
+        <div className="nointerests">
+          <Typography variant="h5">
+            Before you can make connections, you'll need to add some interests!
+          </Typography>
+          <Button onClick={() => nav('../editprofile')} variant="contained">
+            Edit Profile
+          </Button>
+        </div>
+      )}
     </Paper>
   )
 }

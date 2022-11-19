@@ -24,8 +24,9 @@ export const toggleHighContrast = () => {
 const initialState = () => {
   let hc = localStorage.getItem('highcontrast')
   let highContrast = JSON.parse(hc)
-  let theme = localStorage.getItem('theme')
-  if (!theme || theme === 'light') theme = lightMode
+  let themeStored = localStorage.getItem('theme')
+  let theme
+  if (!themeStored || themeStored === 'light') theme = lightMode
   else theme = darkMode
   if (!highContrast) highContrast = false
   return {
