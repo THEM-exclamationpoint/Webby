@@ -29,9 +29,9 @@ This project was created with create-react-app, as the capstone project for the 
 ### Davi Lux
 - [Github](https://github.com/davilux)
 - [LinkedIn](https://www.linkedin.com/in/davilux/)
-### Eve Frances
+### Wren Frances
 - [Github](https://github.com/L0tusPetal)
-- [LinkedIn](https://www.linkedin.com/in/eve-frances/)
+- [LinkedIn](https://www.linkedin.com/in/wrenfrances/)
 ### Fiona Murray
 - [Github](https://github.com/lavenderfi)
 - [LinkedIn](https://www.linkedin.com/in/fiona-murray-dev/)
@@ -40,4 +40,4 @@ This project was created with create-react-app, as the capstone project for the 
 - [LinkedIn](https://www.linkedin.com/in/noelle-huchette/)
 
 
-##### We would like to thank Alec and Drew for helping us with whatever we needed, and especially to Alec for being our amazing cohort instructor.
+##### We would like to thank Alec and Drew for helping us with whatever we needed.
